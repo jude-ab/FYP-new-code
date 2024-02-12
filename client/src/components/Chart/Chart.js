@@ -221,22 +221,28 @@ function Chart() {
     setVisibleWeek((prevWeek) => (prevWeek < totalWeeks - 1 ? prevWeek + 1 : totalWeeks - 1));
   };
 
-  const handleRecommendationClick = async () => {
+ const handleRecommendationClick = async () => {
     try {
-      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      const userId = userInfo?._id;
-      const response = await fetch('/api/health/recommend', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId, weekNumber: visibleWeek })
-      });
-      const result = await response.json();
-      setRecommendation(result);
-      setIsModalOpen(true);
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const userId = userInfo?._id;
+        const response = await fetch('/api/health/recommend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, weekNumber: visibleWeek })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        setRecommendation(data);
+        setIsModalOpen(true);
     } catch (error) {
-      console.error('Error fetching recommendation:', error);
+        console.error('Error fetching recommendation:', error);
     }
-  };
+};
+
 
   const handleMouseEnter = (event, dateStr, moodsForDate) => {
     const position = { x: event.clientX, y: event.clientY + window.scrollY }; // Adjust for scrolling
@@ -342,7 +348,7 @@ function Chart() {
     const response = await fetch("/recommend", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mood: moodData.mood }),
+      body: JSON.stringify({ moods: moodData.mood }),
     });
     const result = await response.json();
     setRecommendationsM(result);
@@ -411,7 +417,7 @@ function Chart() {
       </LegendContainer>
         <Flex direction="column" alignItems="center" width="100%" justifyContent="center" marginRight="57%" marginTop="1%" fontFamily="Work sans" fontWeight="bold">
         <Text fontSize="xl" my="4">How are you feeling today?</Text>
-        <Flex direction="row" wrap="wrap" justifyContent="center" width="100%">
+        <Flex direction="row" wrap="wrap" justifyContent="center" width="90%">
         {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
           .map(({ src, mood }) => (
             <Box key={mood} textAlign="center" mx="2rem" my="1rem">
@@ -421,7 +427,7 @@ function Chart() {
           ))}
       </Flex>
     </Flex>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-7.2%', marginLeft: '37%' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-6%', marginLeft: '37%' }}>
         <NavigationButton onClick={handlePrevWeek} disabled={visibleWeek === 0}>
           &lt;
         </NavigationButton>

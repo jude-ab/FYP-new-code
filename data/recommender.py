@@ -93,8 +93,17 @@ def get_health_plan_recommendation():
         data = request.json
         user_id = data.get('userId')
         week_number = data.get('weekNumber')
+        print(f"Received user_id: {user_id}, week_number: {week_number}")
+
+        # Before fetching user data
+        print("Fetching user data...")
+        # Before calculating the most common mood
+        print("Calculating most common mood...")
+        # Before recommending health plan
+        print("Recommending health plan...")
 
         if user_id is None or week_number is None:
+            print("Missing user_id or week_number")  # Debug print
             return jsonify({"error": "User ID or week number not specified"}), 400
 
         # Calculate the start and end date for the given week number
@@ -113,6 +122,7 @@ def get_health_plan_recommendation():
         return jsonify(recommended_plan)
 
     except Exception as e:
+        print(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
 
 def get_most_common_mood_for_user(user_id, start, end):
