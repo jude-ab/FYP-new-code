@@ -1,0 +1,72 @@
+Exercise Type,Duration,Meal Plan,Supplements,Duration_mins,cluster
+Cycling,45 mins,Low-Fat Diet,Iron Supplement,45,0
+Pilates,30 mins,Vegan Diet,Vitamin E,30,0
+Boxing,60 mins,Keto Diet,Magnesium Supplement,60,0
+Rowing,40 mins,Paleo Diet,Coenzyme Q10,40,0
+Dancing,45 mins,Gluten-Free Diet,Fish Oil,45,0
+Jump Rope,20 mins,Intermittent Fasting,Zinc Supplement,20,0
+Pilates,45 mins,Plant-Based Diet,Protein Shake,45,0
+Yoga,60 mins,High Fiber Diet,Vitamin A,60,0
+Swimming,90 mins,Low-Sodium Diet,Calcium Supplement,90,3
+Cardio,45 mins, Mediterranean Diet,Probiotics,45,0
+Hiking,120 mins,Whole Foods Diet,Vitamin B Complex,120,1
+Yoga,30 mins,Low-Carb Diet,Fish Oil,30,0
+Running,50 mins,Balanced Diet,Multivitamin,50,0
+Strength Training,75 mins,High-Protein Diet,Protein Powder,75,3
+HIIT,30 mins,Vegetarian Diet,Vitamin D,30,0
+Swimming,45 mins,Low-Calorie Diet,Iron Supplement,45,0
+Cycling,60 mins,Keto Diet,Magnesium Supplement,60,0
+Boxing,45 mins,Paleo Diet,Coenzyme Q10,45,0
+Dancing,60 mins,Gluten-Free Diet,Vitamin C,60,0
+Jump Rope,25 mins,Intermittent Fasting,Zinc Supplement,25,0
+Pilates,45 mins,Plant-Based Diet,Protein Shake,45,0
+Yoga,75 mins,High Fiber Diet,Vitamin B12,75,3
+Hiking,150 mins,Whole Foods Diet,Vitamin E,150,4
+Yoga,40 mins,Low-Carb Diet,Fish Oil,40,0
+Running,55 mins,Balanced Diet,Multivitamin,55,0
+Strength Training,90 mins,High-Protein Diet,Protein Powder,90,3
+HIIT,35 mins,Vegetarian Diet,Vitamin D,35,0
+Swimming,50 mins,Low-Calorie Diet,Iron Supplement,50,0
+Cycling,75 mins,Keto Diet,Magnesium Supplement,75,3
+Yoga,50 mins,Paleo Diet,Coenzyme Q10,50,0
+Dancing,75 mins,Gluten-Free Diet,Vitamin C,75,3
+Jump Rope,30 mins,Intermittent Fasting,Zinc Supplement,30,0
+Pilates,50 mins,Plant-Based Diet,Protein Shake,50,0
+Yoga,90 mins,High Fiber Diet,Vitamin A,90,3
+Hiking,180 mins,Whole Foods Diet,Vitamin B Complex,180,4
+Yoga,50 mins,Low-Carb Diet,Fish Oil,50,0
+Running,60 mins,Balanced Diet,Multivitamin,60,0
+Strength Training,120 mins,High-Protein Diet,Protein Powder,120,1
+HIIT,45 mins,Vegetarian Diet,Vitamin D,45,0
+Swimming,60 mins,Low-Calorie Diet,Iron Supplement,60,0
+Cycling,90 mins,Keto Diet,Magnesium Supplement,90,3
+Boxing,60 mins,Paleo Diet,Coenzyme Q10,60,0
+Dancing,90 mins,Gluten-Free Diet,Vitamin E,90,3
+Jump Rope,35 mins,Intermittent Fasting,Zinc Supplement,35,0
+Yoga,60 mins,Plant-Based Diet,Protein Shake,60,0
+Yoga,120 mins,High Fiber Diet,Vitamin C,120,1
+Hiking,210 mins,Whole Foods Diet,Vitamin B12,210,2
+Yoga,60 mins,Low-Carb Diet,Fish Oil,60,0
+Running,75 mins,Balanced Diet,Multivitamin,75,3
+Strength Training,150 mins,High-Protein Diet,Protein Powder,150,4
+HIIT,50 mins,Vegetarian Diet,Vitamin D,50,0
+Swimming,75 mins,Low-Calorie Diet,Iron Supplement,75,3
+Cycling,120 mins,Keto Diet,Magnesium Supplement,120,1
+Boxing,75 mins,Paleo Diet,Coenzyme Q10,75,3
+Dancing,120 mins,Gluten-Free Diet,Vitamin A,120,1
+Jump Rope,40 mins,Intermittent Fasting,Zinc Supplement,40,0
+Pilates,75 mins,Plant-Based Diet,Protein Shake,75,3
+Yoga,150 mins,High Fiber Diet,Vitamin B Complex,150,4
+Hiking,240 mins,Whole Foods Diet,Vitamin C,240,2
+Yoga,75 mins,Low-Carb Diet,Fish Oil,75,3
+Running,90 mins,Balanced Diet,Multivitamin,90,3
+Strength Training,180 mins,High-Protein Diet,Protein Powder,180,4
+HIIT,60 mins,Vegetarian Diet,Vitamin E,60,0
+Swimming,90 mins,Low-Calorie Diet,Iron Supplement,90,3
+Cycling,150 mins,Keto Diet,Magnesium Supplement,150,4
+Boxing,90 mins,Paleo Diet,Coenzyme Q10,90,3
+Dancing,150 mins,Gluten-Free Diet,Vitamin D,150,4
+Jump Rope,45 mins,Intermittent Fasting,Zinc Supplement,45,0
+Pilates,90 mins,Plant-Based Diet,Protein Shake,90,3
+Yoga,180 mins,High Fiber Diet,Vitamin B12,180,4
+Hiking,270 mins,Whole Foods Diet,Vitamin A,270,2

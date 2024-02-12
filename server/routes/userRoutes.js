@@ -1,0 +1,84 @@
+const express = require("express");
+const {
+  authUser,
+  registerUser,
+  getUsers,
+} = require("../controllers/userController.js");
+const { protect } = require("../middleware/authenticationMiddleware.js");
+const User = require("../models/userModel.js");
+
+const router = express.Router();
+
+router.route("/").post(registerUser).get(protect, getUsers); // get all users
+router.post("/login", authUser);
+router.post('/moods', protect, async (req, res) => {
+  const { userId, mood } = req.body;
+  console.log(`Updating moods for user ID: ${userId} with mood: ${mood}`);
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      $push: { moods: { mood: mood } }
+    }, { new: true });
+
+    console.log('Updated user:', updatedUser);
+
+    if (!updatedUser) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser.moods);
+  } catch (error) {
+    console.error('Error updating moods:', error);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+router.get('/:userId/moods', protect, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId).select('moods');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user.moods);
+  } catch (error) {
+    console.error('Error fetching user moods:', error);
+    res.status(500).json({ message: 'Error fetching user moods' });
+  }
+});
+
+
+// Fetch user profile information
+router.get('/profile', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password'); // Assuming `req.user` is set by your `protect` middleware
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ message: 'Error fetching user profile' });
+  }
+});
+
+// Update user profile information
+router.put('/profile', protect, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+      new: true,
+      runValidators: true
+    }).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    res.status(400).json({ message: 'Error updating user profile', error: error.message });
+  }
+});
+
+module.exports = router;
