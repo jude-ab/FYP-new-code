@@ -8,6 +8,7 @@ import ChatP from "./Providers/ChatP";
 import Health from "./pages/Health";
 import UserProfile from "./pages/UserProfile";
 import PosesByLevel from "./pages/PosesByLevel";
+// import { Chart } from "chart.js";
 
 function App() {
   return (

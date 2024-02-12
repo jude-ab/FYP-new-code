@@ -13,7 +13,6 @@ import {
 import {
   DrawerOverlay,
   DrawerContent,
-  DrawerCloseButton,
   DrawerHeader,
   DrawerBody,
 } from "@chakra-ui/modal";
@@ -42,10 +41,10 @@ const SidePopUp = () => {
     history.push("/");
   };
 
-  const moodNav = () => {
-    onClose();
-    history.push("/mood");
-  };
+  // const moodNav = () => {
+  //   onClose();
+  //   history.push("/mood");
+  // };
 
   const chatNav = () => {
     onClose();
@@ -116,7 +115,18 @@ const SidePopUp = () => {
     </DrawerHeader>
     <DrawerBody color="white" bg="rgba(12, 48, 31, 0.5)" borderRadius="0px 0px 20px 0px">
       {user && (
-        <>
+      <>
+{/*                   
+           <Text
+            cursor="pointer"
+            onClick={moodNav}
+            mt={4}
+            fontFamily="Work sans"
+            fontSize="xl"
+          >
+            Mood
+          </Text>
+                 */}
           <Text
             mt={4}
             cursor="pointer"

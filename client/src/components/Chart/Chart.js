@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import HealthModal from './HealthModal.js';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { Button } from '@chakra-ui/react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,8 +17,7 @@ import {
   ArcElement,
 } from 'chart.js';
 import '../style.css';
-import { Button, Box, Image, Text, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useDisclosure, List, ListItem } from '@chakra-ui/react';
-
+import { List, ListItem, Flex, Box, Text, Image, Modal, ModalContent, ModalOverlay, ModalHeader, useDisclosure, ModalCloseButton, ModalBody } from "@chakra-ui/react";
 import frustratedImg from '../../assets/images/a_frustrated.png';
 import sadImg from '../../assets/images/a_sad.png';
 import anxiousImg from '../../assets/images/a_anxiety.png';
@@ -103,8 +103,8 @@ const CalendarContainer = styled.div`
   line-height: 1.12em;
 `;
 
+
 function Chart() {
-  const [moods, setMoods] = useState({ happy: [], sad: [], anxious: [], frustrated: [] });
   const [recommendation, setRecommendation] = useState(null);
   const [visibleWeek, setVisibleWeek] = useState(0);
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -112,66 +112,10 @@ function Chart() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [moodsByDate, setMoodsByDate] = useState({});
   const [tooltipContent, setTooltipContent] = useState({ date: null, moods: [], position: { x: 0, y: 0 } });
-  const [recommendations, setRecommendations] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [moods, setMoods] = useState({ happy: [], sad: [], anxious: [], frustrated: [] });
+  const [recommendationsM, setRecommendationsM] = useState([]);
+  const { isOpen: isMoodModalOpen, onOpen: onMoodModalOpen, onClose: onMoodModalClose } = useDisclosure();
 
-  async function fetchRecommendations(data) {
-    try {
-      const response = await fetch("/recommend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      setRecommendations(result);
-    } catch (error) {
-      console.error("error fetching recommendations:", error);
-    }
-  }
-
-  async function saveUserMood(moodData) {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  if (!userInfo || !userInfo.token) {
-    console.error("No user token found, user might not be logged in");
-    return;
-  }
-
-  const token = userInfo.token;
-
-  try {
-    const response = await fetch("/api/user/moods", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // Include the token in the authorization header
-      },
-      body: JSON.stringify(moodData),
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    } else {
-      const data = await response.json();
-      console.log('Mood saved:', data);
-    }
-  } catch (error) {
-    console.error("error saving user mood:", error);
-  }
-}
-
-  function handleMoodClick(mood) {
-    // Retrieve user data from local storage
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (!userInfo) {
-      console.error("No user info found, user might not be logged in");
-      return;
-    }
-
-    const userId = userInfo._id; // Assuming the user's ID is stored in the _id field
-    const moodData = { userId, mood };
-    fetchRecommendations(moodData);
-    saveUserMood(moodData);
-    onOpen();
-  }
 
   useEffect(() => {
     const fetchMoods = async () => {
@@ -377,7 +321,6 @@ function Chart() {
   );
 };
 
-
   const legendItems = Object.entries(moods).map(([mood, moodEntries]) => {
     const moodColor = {
       happy: 'rgba(75, 192, 192, 0.6)',
@@ -394,23 +337,65 @@ function Chart() {
     );
   });
 
-   // Mood selection UI integrated below the calendar
-  const MoodSelectionUI = () => (
-    <Flex direction="column" alignItems="center" justifyContent="center" marginRight="57%" marginTop="2%" fontFamily="Work sans" fontWeight="bold">
-      <Text fontSize="xl" my="4">How are you feeling today?</Text>
-      <Flex direction="row" wrap="wrap" justifyContent="center">
-        {/* Mood images */}
-        {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
-        .map(({ src, mood }) => (
-          <Box key={mood} textAlign="center" m="2">
-            <Image src={src} boxSize="100px" objectFit="cover" onClick={() => handleMoodClick(mood)} cursor="pointer" />
-            <Text mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
-          </Box>
-        ))}
-      </Flex>
-    </Flex>
-  );
+ async function fetchRecommendations(moodData) {
+  try {
+    const response = await fetch("/recommend", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mood: moodData.mood }),
+    });
+    const result = await response.json();
+    setRecommendationsM(result);
+    onMoodModalOpen(); // Open the modal to display recommendations
+  } catch (error) {
+    console.error("Error fetching recommendations:", error);
+  }
+}
 
+   async function saveUserMood(moodData) {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (!userInfo || !userInfo.token) {
+    console.error("No user token found, user might not be logged in");
+    return;
+  }
+
+  const token = userInfo.token;
+
+  try {
+    const response = await fetch("/api/user/moods", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, // Include the token in the authorization header
+      },
+      body: JSON.stringify(moodData),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+      const data = await response.json();
+      console.log('Mood saved:', data);
+    }
+  } catch (error) {
+    console.error("error saving user mood:", error);
+  }
+   }
+  
+  function handleMoodClick(mood) {
+    // Retrieve user data from local storage
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (!userInfo) {
+      console.error("No user info found, user might not be logged in");
+      return;
+    }
+
+    const moodData = { userId: userInfo._id, mood };
+    fetchRecommendations(moodData);
+    saveUserMood(moodData);
+    onMoodModalOpen();
+  }
+
+  
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <ChartContainer>
@@ -424,8 +409,19 @@ function Chart() {
       <LegendContainer>
         {legendItems}
       </LegendContainer>
-      <MoodSelectionUI />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-5.5%', marginLeft: '37%' }}>
+        <Flex direction="column" alignItems="center" width="100%" justifyContent="center" marginRight="57%" marginTop="1%" fontFamily="Work sans" fontWeight="bold">
+        <Text fontSize="xl" my="4">How are you feeling today?</Text>
+        <Flex direction="row" wrap="wrap" justifyContent="center" width="100%">
+        {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
+          .map(({ src, mood }) => (
+            <Box key={mood} textAlign="center" mx="2rem" my="1rem">
+              <Image src={src} boxSize="100px" objectFit="cover" onClick={() => handleMoodClick(mood)} cursor="pointer" />
+              <Text mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
+            </Box>
+          ))}
+      </Flex>
+    </Flex>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-7.2%', marginLeft: '37%' }}>
         <NavigationButton onClick={handlePrevWeek} disabled={visibleWeek === 0}>
           &lt;
         </NavigationButton>
@@ -436,11 +432,10 @@ function Chart() {
       </div>
       <Button
         _hover={{ bg: "#1E4D38" }}
-        background='#0C301F'
-        marginLeft='37.5%'
-        marginTop='0.2%'
+        backgroundColor="#0C301F"
+        marginLeft='38%'
+        marginTop='-0.2%'
         color='white'
-        fontFamily="Work sans"
         onClick={handleRecommendationClick}>Get Health Plan Recommendation
       </Button>
       <HealthModal
@@ -448,25 +443,24 @@ function Chart() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-      <Modal isOpen={isOpen} onClose={onClose} size="4xl" isCentered>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Recommended Yoga Poses</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Flex wrap="wrap" justify="center">
-            <List spacing={3}>
-              {Array.isArray(recommendations) && recommendations.map((recommendation, index) => (
-                <ListItem key={index}>{recommendation}</ListItem>
-              ))}
-            </List>
-          </Flex>
-        </ModalBody>
-      </ModalContent>
-      </Modal>
-    </div>
+      <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose} size="4xl" isCentered>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Recommended Yoga Poses</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      <Flex wrap="wrap" justify="center">
+        <List spacing={3}>
+          {recommendationsM.map((recommendation, index) => (
+            <ListItem key={index}>{recommendation}</ListItem>
+          ))}
+        </List>
+      </Flex>
+    </ModalBody>
+  </ModalContent>
+</Modal>
+</div>
   );
 }
 
 export default Chart;
-
