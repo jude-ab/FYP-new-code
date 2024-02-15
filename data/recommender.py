@@ -86,6 +86,24 @@ def get_recommendation_by_mood():
             return jsonify({"error": "Mood not specified"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/yoga/pose', methods=['GET'])
+def get_pose_by_name():
+    try:
+        pose_name = request.args.get('name')  # Get the pose name from query parameters
+        if not pose_name:
+            return jsonify({"error": "Pose name is required"}), 400
+
+        pose = db.yogaposes.find_one({"AName": pose_name})  # Replace 'yoga_poses' with your collection name
+        if not pose:
+            return jsonify({"error": "Pose not found"}), 404
+
+        # Convert the ObjectId to a string so it can be JSON serialized
+        pose['_id'] = str(pose['_id'])
+        return jsonify(pose)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
  
 @app.route('/health/recommend', methods=['POST'])
 def get_health_plan_recommendation():

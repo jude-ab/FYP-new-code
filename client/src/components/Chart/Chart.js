@@ -94,6 +94,11 @@ const LegendContainer = styled.div`
   margin-top: 10px;
 `;
 
+const Container = styled.div`
+  height: 100vh; /* Set the height of the container to 100% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+`;
+
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
@@ -436,12 +441,20 @@ const handleNextPage = () => {
   setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 };
 
- const handleMoreInfo = (poseId) => {
-  // Assume poseId is the ID of the pose you want to display in the modal
-  // Find the pose object by its ID from the yogaPoses state
-  const pose = yogaPoses.find((p) => p._id === poseId);
-  setSelectedPose(pose);
-  onPoseDetailsOpen();
+const handleMoreInfo = async (poseName) => {
+  console.log('Clicked poseName:', poseName);
+  try {
+    // Fetch pose details from the Flask backend by pose name
+    const response = await fetch(`http://localhost:5000/api/yoga/pose?name=${encodeURIComponent(poseName)}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const poseDetails = await response.json();
+    setSelectedPose(poseDetails);
+    onPoseDetailsOpen();
+  } catch (error) {
+    console.error('Pose not found for name:', poseName, error);
+  }
 };
 
   async function fetchYogaPoses() {
@@ -460,16 +473,20 @@ const handleNextPage = () => {
   
    // Fetch yoga poses when the component mounts
   useEffect(() => {
-    async function fetchData() {
-      const fetchedYogaPoses = await fetchYogaPoses();
-      setYogaPoses(fetchedYogaPoses);
-    }
+  // Fetch yoga poses when the component mounts
+  async function fetchData() {
+    const fetchedYogaPoses = await fetchYogaPoses();
+    console.log(fetchedYogaPoses); // Log to inspect the data structure
+    setYogaPoses(fetchedYogaPoses);
+  }
 
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
+
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Container>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'  }}>
       <ChartContainer>
         <Pie data={data} options={options} />
       </ChartContainer>
@@ -565,7 +582,6 @@ const handleNextPage = () => {
       <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
       <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
       <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
-      {/* Add more details as needed */}
     </ModalBody>
     <ModalFooter>
       <Button colorScheme="#0C301F" onClick={onPoseDetailsClose}>
@@ -574,8 +590,8 @@ const handleNextPage = () => {
     </ModalFooter>
   </ModalContent>
 </Modal>
-
-</div>
+      </div>
+      </Container>
   );
 }
 
