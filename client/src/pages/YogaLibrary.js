@@ -61,6 +61,7 @@ const YogaLibrary = () => {
               variant='outline'
               width={{ base: "80%", md: "auto" }} // Responsive width
               _hover={{ bg: '#ebedf0' }}
+              fontFamily="Work sans"
             >
               Beginner Poses
             </Button>
@@ -86,6 +87,7 @@ const YogaLibrary = () => {
               variant='outline'
               width={{ base: "80%", md: "auto" }} // Responsive width
               _hover={{ bg: '#ebedf0' }}
+              fontFamily="Work sans"
             >
               Intermediate Poses
             </Button>
@@ -111,6 +113,7 @@ const YogaLibrary = () => {
               variant='outline'
               width={{ base: "80%", md: "auto" }} // Responsive width
               _hover={{ bg: '#ebedf0' }}
+              fontFamily="Work sans"
             >
               Advanced Poses
             </Button>

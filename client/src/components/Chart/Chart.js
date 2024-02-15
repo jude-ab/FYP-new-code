@@ -17,7 +17,22 @@ import {
   ArcElement,
 } from 'chart.js';
 import '../style.css';
-import { List, ListItem, Flex, Box, Text, Image, Modal, ModalContent, ModalOverlay, ModalHeader, useDisclosure, ModalCloseButton, ModalBody } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Text,
+  Image,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
+  useDisclosure,
+  ModalCloseButton,
+  ModalBody,
+  SimpleGrid,
+  VStack,
+  ModalFooter,
+} from "@chakra-ui/react";
 import frustratedImg from '../../assets/images/a_frustrated.png';
 import sadImg from '../../assets/images/a_sad.png';
 import anxiousImg from '../../assets/images/a_anxiety.png';
@@ -116,7 +131,14 @@ function Chart() {
   const [recommendationsM, setRecommendationsM] = useState([]);
   const { isOpen: isMoodModalOpen, onOpen: onMoodModalOpen, onClose: onMoodModalClose } = useDisclosure();
 
-
+  const posesPerPage = 6;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginatedPoses, setPaginatedPoses] = useState([]);
+  const totalPages = Math.ceil(recommendationsM.length / posesPerPage);
+  const [selectedPose, setSelectedPose] = useState(null);
+  const { isOpen: isPoseDetailsOpen, onOpen: onPoseDetailsOpen, onClose: onPoseDetailsClose } = useDisclosure();
+  const [yogaPoses, setYogaPoses] = useState([]);
+  
   useEffect(() => {
     const fetchMoods = async () => {
       if (userInfo && userInfo.token) {
@@ -343,20 +365,20 @@ function Chart() {
     );
   });
 
- async function fetchRecommendations(moodData) {
-  try {
-    const response = await fetch("/recommend", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ moods: moodData.mood }),
-    });
-    const result = await response.json();
-    setRecommendationsM(result);
-    onMoodModalOpen(); // Open the modal to display recommendations
-  } catch (error) {
-    console.error("Error fetching recommendations:", error);
+  async function fetchRecommendations(moodData) {
+    try {
+      const response = await fetch("/recommend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ moods: moodData.mood }),
+      });
+      const result = await response.json();
+      setRecommendationsM(result); // Update the state with the received recommendations.
+      onMoodModalOpen(); // Open the modal to display recommendations.
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+    }
   }
-}
 
    async function saveUserMood(moodData) {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -394,14 +416,58 @@ function Chart() {
       console.error("No user info found, user might not be logged in");
       return;
     }
-
+  
     const moodData = { userId: userInfo._id, mood };
     fetchRecommendations(moodData);
     saveUserMood(moodData);
-    onMoodModalOpen();
   }
 
+ useEffect(() => {
+  const startIndex = (currentPage - 1) * posesPerPage;
+  const endIndex = startIndex + posesPerPage;
+  setPaginatedPoses(recommendationsM.slice(startIndex, endIndex));
+}, [currentPage, recommendationsM, posesPerPage]);
+
+const handlePrevPage = () => {
+  setCurrentPage((prev) => Math.max(prev - 1, 1));
+};
+
+const handleNextPage = () => {
+  setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+};
+
+ const handleMoreInfo = (poseId) => {
+  // Assume poseId is the ID of the pose you want to display in the modal
+  // Find the pose object by its ID from the yogaPoses state
+  const pose = yogaPoses.find((p) => p._id === poseId);
+  setSelectedPose(pose);
+  onPoseDetailsOpen();
+};
+
+  async function fetchYogaPoses() {
+  try {
+    const response = await fetch('http://localhost:4000/api/yoga/poses'); 
+    if (!response.ok) {
+      throw new Error('Failed to fetch yoga poses');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching yoga poses:', error);
+    return [];
+  }
+  }
   
+   // Fetch yoga poses when the component mounts
+  useEffect(() => {
+    async function fetchData() {
+      const fetchedYogaPoses = await fetchYogaPoses();
+      setYogaPoses(fetchedYogaPoses);
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <ChartContainer>
@@ -450,21 +516,61 @@ function Chart() {
         onClose={() => setIsModalOpen(false)}
       />
       <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose} size="4xl" isCentered>
-  <ModalOverlay />
-  <ModalContent>
-    <ModalHeader>Recommended Yoga Poses</ModalHeader>
-    <ModalCloseButton />
-    <ModalBody>
-      <Flex wrap="wrap" justify="center">
-        <List spacing={3}>
-          {recommendationsM.map((recommendation, index) => (
-            <ListItem key={index}>{recommendation}</ListItem>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontFamily="Work sans" textAlign="center">Your Recommendations</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+          <SimpleGrid columns={[1, 2]} spacing={5}>
+            {paginatedPoses.map((pose, index) => (
+            <Box key={index} p={5} shadow="md" borderWidth="1px" borderRadius="md">
+              <VStack spacing={4} align="stretch">
+                <Text fontFamily="Work sans" fontWeight="bold">{pose}</Text>
+                <Text fontFamily="Work sans" noOfLines={1}>Level: {pose.Level}</Text>
+                <Button
+                  size="sm"
+                  onClick={() => handleMoreInfo(pose)}
+                  backgroundColor="#0C301F"
+                  color="white"
+                  _hover={{ backgroundColor: "#1E4D38" }}
+                  mt="auto"
+                  fontFamily="Work sans"
+                >
+                  More Information
+                </Button>
+              </VStack>
+            </Box>
           ))}
-        </List>
+          </SimpleGrid>
+          <Flex justify="space-between" mt={4}>
+        <Button onClick={handlePrevPage} isDisabled={currentPage === 1}>
+          &lt; 
+        </Button>
+        <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
+        <Button onClick={handleNextPage} isDisabled={currentPage === totalPages}>
+          &gt;
+        </Button>
       </Flex>
     </ModalBody>
   </ModalContent>
+  </Modal>
+    <Modal isOpen={isPoseDetailsOpen} onClose={onPoseDetailsClose} size="lg" isCentered>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>{selectedPose?.AName}</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody fontFamily="Work sans">
+      <Text mb={2}>Level: {selectedPose?.Level}</Text>
+      {/* Add more details as needed */}
+    </ModalBody>
+    <ModalFooter>
+      <Button colorScheme="#0C301F" onClick={onPoseDetailsClose}>
+        Close
+      </Button>
+    </ModalFooter>
+  </ModalContent>
 </Modal>
+
 </div>
   );
 }

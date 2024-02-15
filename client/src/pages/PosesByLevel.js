@@ -60,9 +60,9 @@ const PosesByLevel = ({ match }) => {
     return <Box>Error: {error}</Box>;
   }
 
-  const goToPoseDetail = (poseId) => {
-    history.push(`/pose-detail/${poseId}`);
-  };
+  // const goToPoseDetail = (poseId) => {
+  //   history.push(`/pose-detail/${poseId}`);
+  // };
 
   const handleMoreInfo = (pose) => {
     setSelectedPose(pose);
@@ -114,10 +114,10 @@ const PosesByLevel = ({ match }) => {
                     backgroundImage={`linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9))`}
                     >
                  <VStack spacing={4} align="stretch">
-                <Text fontWeight="bold" fontSize="1xl" noOfLines={1}>
+                <Text fontFamily="Work sans" fontWeight="bold" fontSize="1xl" noOfLines={1}>
                   {pose.AName}
                 </Text>
-                <Text noOfLines={1}>Level: {pose.Level}</Text>
+                <Text fontFamily="Work sans" noOfLines={1}>Level: {pose.Level}</Text>
                 <Button
                   size="sm"
                   onClick={() => handleMoreInfo(pose)}
@@ -125,6 +125,7 @@ const PosesByLevel = ({ match }) => {
                   color="white"
                   _hover={{ backgroundColor: "#1E4D38" }}
                   mt="auto" // Push the button to the bottom of the VStack
+                  fontFamily="Work sans"
                 >
                   More Information
                 </Button>
@@ -132,7 +133,7 @@ const PosesByLevel = ({ match }) => {
               </Box>
             ))}
         </SimpleGrid>
-        <Flex align="center" justify="center" my={6}>
+        <Flex fontFamily="Work sans" align="center" justify="center" my={6}>
           <IconButton
             icon={<ChevronLeftIcon />}
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -153,20 +154,18 @@ const PosesByLevel = ({ match }) => {
         </Flex>
         {/* Modal for displaying pose details */}
         <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
+          <ModalOverlay  />
           <ModalContent>
-            <ModalHeader>{selectedPose?.AName}</ModalHeader>
+            <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>
+            <ModalBody fontFamily="Work sans">
               <Text mb={2}>Level: {selectedPose?.Level}</Text>
-              <Text mb={2}>Description: {selectedPose?.Description}</Text>
+                <Text mb={2}>Description: {selectedPose?.Description}</Text>
+                <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
+                <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
+                <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
               {/* Add more details as needed */}
             </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="#0C301F" onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
       </Box>

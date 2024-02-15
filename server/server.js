@@ -22,7 +22,7 @@ app.use(express.json()); // accept json data in the body
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // allow requests from frontend
+    origin: "http://localhost:4001", // allow requests from frontend
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // if you need to handle cookies
   })
@@ -39,6 +39,17 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/messages", messagingRoutes);
 app.use("/api/yoga", yogaRoutes);
 app.use("/api/health", healthRoutes);
+
+// Route to fetch yoga poses from MongoDB
+app.get("/api/yoga/poses", async (req, res) => {
+  try {
+    const yogaPoses = await YogaPose.find(); // Fetch all yoga poses from MongoDB
+    res.json(yogaPoses); // Send the yoga poses data to the frontend
+  } catch (error) {
+    console.error("Error fetching yoga poses:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 app.post("/api/health/recommend", async (req, res) => {
   try {
@@ -78,7 +89,7 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:4001",
   },
 });
 
