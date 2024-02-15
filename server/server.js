@@ -40,16 +40,16 @@ app.use("/api/messages", messagingRoutes);
 app.use("/api/yoga", yogaRoutes);
 app.use("/api/health", healthRoutes);
 
-// Route to fetch yoga poses from MongoDB
-app.get("/api/yoga/poses", async (req, res) => {
-  try {
-    const yogaPoses = await YogaPose.find(); // Fetch all yoga poses from MongoDB
-    res.json(yogaPoses); // Send the yoga poses data to the frontend
-  } catch (error) {
-    console.error("Error fetching yoga poses:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+// // Route to fetch yoga poses from MongoDB
+// app.get("/api/yoga/poses", async (req, res) => {
+//   try {
+//     const yogaPoses = await YogaPose.find(); // Fetch all yoga poses from MongoDB
+//     res.json(yogaPoses); // Send the yoga poses data to the frontend
+//   } catch (error) {
+//     console.error("Error fetching yoga poses:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
 
 app.post("/api/health/recommend", async (req, res) => {
   try {

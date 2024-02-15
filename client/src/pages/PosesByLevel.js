@@ -35,7 +35,7 @@ const PosesByLevel = ({ match }) => {
 
   const posesPerPage = 12; // Set the number of poses per page
 
-  const history = useHistory();
+  // const history = useHistory();
 
   useEffect(() => {
     const fetchPoses = async () => {
@@ -71,20 +71,6 @@ const PosesByLevel = ({ match }) => {
 
     return (
     <Box position="relative" width="100vw">
-      {/* <Box
-        position="absolute"
-        top={0}
-        right={0}
-        bottom={0}
-        left={0}
-        backgroundImage={`url(${backgroundImage})`}
-        backgroundSize="cover"
-        backgroundPosition="center"
-        backgroundRepeat="no-repeat"
-        // filter="blur(20px)" // Apply blur to just the background image
-        backgroundColor="rgba(255, 255, 255, 0.9)"
-        zIndex={-1}
-            /> */}
       <Box
         position="absolute"
         top={0}
@@ -159,12 +145,11 @@ const PosesByLevel = ({ match }) => {
             <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
             <ModalCloseButton />
             <ModalBody fontFamily="Work sans">
-              <Text mb={2}>Level: {selectedPose?.Level}</Text>
+                <Text mb={2}>Level: {selectedPose?.Level}</Text>
                 <Text mb={2}>Description: {selectedPose?.Description}</Text>
                 <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
                 <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
                 <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
-              {/* Add more details as needed */}
             </ModalBody>
           </ModalContent>
         </Modal>

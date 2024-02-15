@@ -561,6 +561,10 @@ const handleNextPage = () => {
     <ModalCloseButton />
     <ModalBody fontFamily="Work sans">
       <Text mb={2}>Level: {selectedPose?.Level}</Text>
+      <Text mb={2}>Description: {selectedPose?.Description}</Text>
+      <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
+      <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
+      <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
       {/* Add more details as needed */}
     </ModalBody>
     <ModalFooter>
