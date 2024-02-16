@@ -31,12 +31,12 @@ import {
   ModalBody,
   SimpleGrid,
   VStack,
-  ModalFooter,
+  Spacer,
 } from "@chakra-ui/react";
-import frustratedImg from '../../assets/images/a_frustrated.png';
-import sadImg from '../../assets/images/a_sad.png';
-import anxiousImg from '../../assets/images/a_anxiety.png';
-import happyImg from '../../assets/images/a_happy.png';
+import frustratedImg from '../../assets/images/o_frustrated.png';
+import sadImg from '../../assets/images/ou_sad.png';
+import anxiousImg from '../../assets/images/o_anxious.png';
+import happyImg from '../../assets/images/o_happy.png';
 
 ChartJS.register(
   CategoryScale,
@@ -94,11 +94,6 @@ const LegendContainer = styled.div`
   margin-top: 10px;
 `;
 
-const Container = styled.div`
-  height: 100vh; /* Set the height of the container to 100% of the viewport height */
-  overflow-y: auto; /* Enable vertical scrolling */
-`;
-
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
@@ -123,6 +118,10 @@ const CalendarContainer = styled.div`
   line-height: 1.12em;
 `;
 
+const CustomModalBody = styled(ModalBody)`
+  max-height: 400px;
+  overflow-y: auto;
+`;
 
 function Chart() {
   const [recommendation, setRecommendation] = useState(null);
@@ -143,6 +142,8 @@ function Chart() {
   const [selectedPose, setSelectedPose] = useState(null);
   const { isOpen: isPoseDetailsOpen, onOpen: onPoseDetailsOpen, onClose: onPoseDetailsClose } = useDisclosure();
   const [yogaPoses, setYogaPoses] = useState([]);
+
+  const [scrollBehavior, setScrollBehavior] = React.useState('inside')
   
   useEffect(() => {
     const fetchMoods = async () => {
@@ -199,10 +200,10 @@ function Chart() {
         label: 'Mood Distribution',
         data: Object.values(moodCountsForVisibleWeek),
         backgroundColor: [
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(255, 99, 132, 0.6)',
+          'rgba(125, 204, 35, 0.6)',
+          'rgba(52, 152, 219, 0.6)',
+          'rgba(231, 76, 60, 0.6)',
+          'rgba(243, 156, 18, 0.6)',
         ],
         borderColor: [
           'rgba(75, 192, 192, 1)',
@@ -299,10 +300,10 @@ function Chart() {
   const moodsForDate = moodsByDate[dateStr] || [];
 
   const moodColorMap = {
-    happy: 'rgba(75, 192, 192, 0.6)',
-    sad: 'rgba(153, 102, 255, 0.6)',
-    anxious: 'rgba(54, 162, 235, 0.6)',
-    frustrated: 'rgba(255, 99, 132, 0.6)'
+    happy: 'rgba(125, 204, 35, 0.6)',
+    sad: 'rgba(52, 152, 219, 0.6)',
+    anxious: 'rgba(231, 76, 60, 0.6)',
+    frustrated: 'rgba(243, 156, 18, 0.6)'
   };
 
   // Adjust the container style to align items in a row (flex-direction: row)
@@ -356,10 +357,10 @@ function Chart() {
 
   const legendItems = Object.entries(moods).map(([mood, moodEntries]) => {
     const moodColor = {
-      happy: 'rgba(75, 192, 192, 0.6)',
-      sad: 'rgba(153, 102, 255, 0.6)',
-      anxious: 'rgba(54, 162, 235, 0.6)',
-      frustrated: 'rgba(255, 99, 132, 0.6)'
+      happy: 'rgba(125, 204, 35, 1)',
+      sad: 'rgba(52, 152, 219, 1)',
+      anxious: 'rgba(231, 76, 60, 1)',
+      frustrated: 'rgba(243, 156, 18, 1)'
     }[mood];
 
     return (
@@ -441,11 +442,11 @@ const handleNextPage = () => {
   setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 };
 
-const handleMoreInfo = async (poseName) => {
-  console.log('Clicked poseName:', poseName);
+const handleMoreInfo = async (poseId) => {
+  console.log('Clicked poseId:', poseId);
   try {
-    // Fetch pose details from the Flask backend by pose name
-    const response = await fetch(`http://localhost:5000/api/yoga/pose?name=${encodeURIComponent(poseName)}`);
+    // Use the new endpoint for fetching by ID
+    const response = await fetch(`http://localhost:4000/api/yoga/poses/${poseId}`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -453,9 +454,11 @@ const handleMoreInfo = async (poseName) => {
     setSelectedPose(poseDetails);
     onPoseDetailsOpen();
   } catch (error) {
-    console.error('Pose not found for name:', poseName, error);
+    console.error('Error fetching pose details:', error);
   }
 };
+
+
 
   async function fetchYogaPoses() {
   try {
@@ -483,9 +486,7 @@ const handleMoreInfo = async (poseName) => {
   fetchData();
 }, []);
 
-
   return (
-    <Container>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'  }}>
       <ChartContainer>
         <Pie data={data} options={options} />
@@ -503,14 +504,14 @@ const handleMoreInfo = async (poseName) => {
         <Flex direction="row" wrap="wrap" justifyContent="center" width="90%">
         {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
           .map(({ src, mood }) => (
-            <Box key={mood} textAlign="center" mx="2rem" my="1rem">
+            <Box key={mood} textAlign="center" mx="1rem" my="0.5rem">
               <Image src={src} boxSize="100px" objectFit="cover" onClick={() => handleMoodClick(mood)} cursor="pointer" />
               <Text mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
             </Box>
           ))}
       </Flex>
     </Flex>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-6%', marginLeft: '37%' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-4%', marginLeft: '37%' }}>
         <NavigationButton onClick={handlePrevWeek} disabled={visibleWeek === 0}>
           &lt;
         </NavigationButton>
@@ -525,6 +526,7 @@ const handleMoreInfo = async (poseName) => {
         marginLeft='38%'
         marginTop='-0.2%'
         color='white'
+        variant='outline'
         onClick={handleRecommendationClick}>Get Health Plan Recommendation
       </Button>
       <HealthModal
@@ -535,63 +537,61 @@ const handleMoreInfo = async (poseName) => {
       <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose} size="4xl" isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontFamily="Work sans" textAlign="center">Your Recommendations</ModalHeader>
+          <ModalHeader fontFamily="Work sans" textAlign="center">Your YogaRecommendations</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          <SimpleGrid columns={[1, 2]} spacing={5}>
-            {paginatedPoses.map((pose, index) => (
-            <Box key={index} p={5} shadow="md" borderWidth="1px" borderRadius="md">
-              <VStack spacing={4} align="stretch">
-                <Text fontFamily="Work sans" fontWeight="bold">{pose}</Text>
-                <Text fontFamily="Work sans" noOfLines={1}>Level: {pose.Level}</Text>
-                <Button
-                  size="sm"
-                  onClick={() => handleMoreInfo(pose)}
-                  backgroundColor="#0C301F"
-                  color="white"
-                  _hover={{ backgroundColor: "#1E4D38" }}
-                  mt="auto"
-                  fontFamily="Work sans"
-                >
-                  More Information
-                </Button>
-              </VStack>
-            </Box>
-          ))}
-          </SimpleGrid>
+         <SimpleGrid columns={[1, 2]} spacing={5}>
+          {paginatedPoses.map((poseName, index) => {
+            const pose = yogaPoses.find(p => p.AName === poseName); // Find the pose object by name
+            if (!pose) return null; // Add a check to ensure pose is defined
+            return (
+              <Box key={index} p={5} shadow="md" borderWidth="1px" borderRadius="md" position="relative" rounded="md" height="100%">
+                <VStack spacing={4} align="stretch" height="100%">
+                  <Text fontFamily="Work sans" fontWeight="bold">{pose?.AName}</Text>
+                  <Text fontFamily="Work sans" noOfLines={1}>Level: {pose?.Level}</Text>
+                  <Spacer /> {/* This pushes the button to the bottom */}
+                  <Button
+                    size="sm"
+                    onClick={() => handleMoreInfo(pose?._id)}
+                    backgroundColor="#0C301F"
+                    color="white"
+                    _hover={{ backgroundColor: "#1E4D38" }}
+                    fontFamily="Work sans"
+                  >
+                    More Information
+                  </Button>
+                </VStack>
+              </Box>
+            );
+          })}
+        </SimpleGrid>
           <Flex justify="space-between" mt={4}>
-        <Button onClick={handlePrevPage} isDisabled={currentPage === 1}>
+        <Button bg="transparent" onClick={handlePrevPage} isDisabled={currentPage === 1}>
           &lt; 
         </Button>
         <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
-        <Button onClick={handleNextPage} isDisabled={currentPage === totalPages}>
+        <Button bg="transparent" onClick={handleNextPage} isDisabled={currentPage === totalPages}>
           &gt;
         </Button>
-      </Flex>
+      </Flex> 
     </ModalBody>
   </ModalContent>
   </Modal>
-    <Modal isOpen={isPoseDetailsOpen} onClose={onPoseDetailsClose} size="lg" isCentered>
+  <Modal isOpen={isPoseDetailsOpen} onClose={onPoseDetailsClose} size="lg" isCentered scrollBehavior={scrollBehavior}>
   <ModalOverlay />
   <ModalContent>
-    <ModalHeader>{selectedPose?.AName}</ModalHeader>
+    <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
     <ModalCloseButton />
-    <ModalBody fontFamily="Work sans">
-      <Text mb={2}>Level: {selectedPose?.Level}</Text>
-      <Text mb={2}>Description: {selectedPose?.Description}</Text>
-      <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
-      <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
-      <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
-    </ModalBody>
-    <ModalFooter>
-      <Button colorScheme="#0C301F" onClick={onPoseDetailsClose}>
-        Close
-      </Button>
-    </ModalFooter>
+    <CustomModalBody fontFamily="Work sans">
+    <Text mb={2}>Level: {selectedPose?.Level}</Text>
+    <Text mb={2}>Description: {selectedPose?.Description}</Text>
+    <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
+    <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
+    <Text mb={2}>Awareness: {selectedPose?.Awareness}</Text>
+    </CustomModalBody>
   </ModalContent>
 </Modal>
-      </div>
-      </Container>
+</div>
   );
 }
 
