@@ -15,6 +15,7 @@ import {
   Spacer,
   Button,
   useDisclosure,
+  HStack
 } from "@chakra-ui/react";
 import frustratedImg from '../../assets/images/o_frustrated.png';
 import sadImg from '../../assets/images/ou_sad.png';
@@ -45,6 +46,11 @@ const LogMood = () => {
 
   const [scrollBehavior, setScrollBehavior] = React.useState('inside')
     
+  const [todaysMoods, setTodaysMoods] = useState([]);
+
+  const storedUserInfo = localStorage.getItem("userInfo");
+  const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
+    
   async function fetchRecommendations(moodData) {
     try {
       const response = await fetch("/recommend", {
@@ -60,7 +66,7 @@ const LogMood = () => {
     }
   }
     
-    async function saveUserMood(moodData) {
+  async function saveUserMood(moodData) {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   if (!userInfo || !userInfo.token) {
     console.error("No user token found, user might not be logged in");
@@ -83,11 +89,14 @@ const LogMood = () => {
     } else {
       const data = await response.json();
       console.log('Mood saved:', data);
+      // After successfully saving the mood, fetch today's moods again to update the table
+      fetchTodaysMoods();
     }
   } catch (error) {
     console.error("error saving user mood:", error);
   }
-   }
+}
+
   
   function handleMoodClick(mood) {
     // Retrieve user data from local storage
@@ -158,9 +167,68 @@ const handleNextPage = () => {
   setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 };
     
+const fetchTodaysMoods = async () => {
+  const today = new Date().toISOString().split('T')[0];
+  const response = await fetch(`/api/user/${userInfo._id}/moods?date=${today}`, {
+    headers: {
+      "Authorization": `Bearer ${userInfo.token}`,
+    },
+  });
+
+  if (response.ok) {
+    const moodsFromApi = await response.json();
+    console.log('Moods from API:', moodsFromApi); // Check what's coming from the API
+
+    const todaysMoodsFromApi = moodsFromApi.filter(mood => {
+      const moodDate = new Date(mood.date).toISOString().split('T')[0];
+      return moodDate === today;
+    });
+
+    console.log('Today\'s moods:', todaysMoodsFromApi); // Check the filtered moods
+    setTodaysMoods(todaysMoodsFromApi);
+  } else {
+    console.error('Failed to fetch today\'s moods');
+  }
+};
+    
+    useEffect(() => {
+  fetchTodaysMoods();
+}, []); // Empty dependency array means this effect runs only once after the initial render
+
+    
+const deleteMood = async (moodId) => {
+  console.log(`Deleting mood with ID: ${moodId}`); 
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (!userInfo || !userInfo.token) {
+    console.error("No user token found, user might not be logged in");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/moods/${moodId}`, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": `Bearer ${userInfo.token}`, // Include the token in the authorization header
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete mood');
+    }
+
+    // Remove the mood from the state
+    setTodaysMoods(currentMoods => currentMoods.filter(mood => mood._id !== moodId));
+  } catch (error) {
+    console.error('Error deleting mood:', error);
+    // Add additional error handling here if needed
+  }
+};
+
+
+
     return (
-    <Box height="100vh" overflowY="auto">
-    <Box
+     <Box height="100vh" overflowY="auto">
+      <Box
         position="absolute"
         top={0}
         right={0}
@@ -170,22 +238,46 @@ const handleNextPage = () => {
         backgroundSize="cover"
         backgroundPosition="center"
         backgroundRepeat="no-repeat"
-        filter="blur(3px)" // Apply blur to just the background image
+        filter="blur(3px)"
         zIndex={-1}
-    />
-    <SidePopUp />
-     <Flex direction="column" alignItems="center" width="100%" justifyContent="center" marginRight="57%" marginTop="1%" fontFamily="Work sans" fontWeight="bold">
-        <Text fontSize="xl" my="4">How are you feeling today?</Text>
-        <Flex direction="row" wrap="wrap" justifyContent="center" width="90%">
-        {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
-          .map(({ src, mood }) => (
-            <Box key={mood} textAlign="center" mx="1rem" my="0.5rem">
-              <Image src={src} boxSize="100px" objectFit="cover" onClick={() => handleMoodClick(mood)} cursor="pointer" />
-              <Text mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
-            </Box>
-          ))}
-      </Flex>
-    </Flex>
+      />
+      <Flex marginTop="4%"justifyContent="center" alignItems="center" flexDirection="column">
+        <SidePopUp />
+        <Text fontSize="3xl" my="4" fontFamily="Work sans" fontWeight="bold" textAlign="center">
+          How are you feeling today?
+        </Text>
+        <Flex
+            direction="row" // Stack children vertically
+            align="center" // Center children horizontally
+            justify="center" // Center children vertically
+            height="100vh" // Full viewport height
+            width="100vw" // Full viewport width
+            position="relative" // For absolutely positioned children
+            marginTop="-19%"        
+        >
+          {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
+            .map(({ src, mood }) => (
+              <Box key={mood} textAlign="center" mx="1rem" my="0.5rem">
+                <Image src={src} boxSize="100px" objectFit="cover" onClick={() => handleMoodClick(mood)} cursor="pointer" />
+                <Text mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
+              </Box>
+            ))}
+        </Flex>
+        </Flex>
+        <Box width="50%" padding={4} boxShadow="lg" bg="white" borderRadius="20px" marginLeft="25%" marginBottom="3%" marginTop="-18%">
+        <VStack>
+            {todaysMoods.length > 0 ? (
+            todaysMoods.map((mood) => (
+                <HStack key={mood._id} width="full" justifyContent="space-between">
+                <Text>{mood.mood}</Text>
+                <Button onClick={() => deleteMood(mood._id)}>Delete</Button>
+                </HStack>
+            ))
+            ) : (
+            <Text>No moods logged for today.</Text>
+            )}
+        </VStack>
+        </Box>
       <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose} size="4xl" isCentered>
         <ModalOverlay />
         <ModalContent>

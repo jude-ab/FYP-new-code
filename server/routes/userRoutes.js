@@ -47,6 +47,27 @@ router.get('/:userId/moods', protect, async (req, res) => {
   }
 });
 
+// Endpoint to delete a mood by its ID
+router.delete('/moods/:moodId', protect, async (req, res) => {
+  try {
+    const { moodId } = req.params;
+    const { userId } = req.user; // Get userId from authenticated user
+
+    // Update the user document to remove the mood
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      $pull: { moods: { _id: moodId } } // Remove the mood with the given ID
+    }, { new: true });
+
+    if (!updatedUser) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser.moods);
+  } catch (error) {
+    console.error('Error deleting mood:', error);
+    res.status(500).send({ message: error.message });
+  }
+});
 
 // Fetch user profile information
 router.get('/profile', protect, async (req, res) => {

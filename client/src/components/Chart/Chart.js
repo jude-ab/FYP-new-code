@@ -259,7 +259,7 @@ function Chart() {
   <div style={{ position: 'relative', height: '100vh',  overflowY:"auto"}}>
     {/* Background image */}
     <Box
-      position="absolute"
+      position="fixed"
       top={0}
       right={0}
       bottom={0}
@@ -276,7 +276,7 @@ function Chart() {
     <SidePopUp />
 
     {/* Text for current mood stats */}
-    <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="60%" marginTop="4.3%">
+    <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="60%" marginTop="5.3%">
       Your Current Mood Stats for the: 
     </Text>
 
@@ -296,7 +296,7 @@ function Chart() {
     </Box>
 
     {/* Navigation buttons */}
-    <div style={{ position: 'absolute', top: '76.5%', left: '70%', transform: 'translateX(-50%)' }}>
+    <div style={{ position: 'absolute', top: '78%', left: '70%', transform: 'translateX(-50%)' }}>
       <Button background="transparent" onClick={handlePrevWeek} disabled={visibleWeek === 0}>
         &lt;
       </Button>
