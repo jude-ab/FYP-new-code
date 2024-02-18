@@ -58,7 +58,7 @@ const SidePopUp = () => {
 
   const HealthNav = () => { 
     onClose();
-    history.push("/health");
+    history.push("/logHealth");
   };
 
   return (
@@ -143,7 +143,7 @@ const SidePopUp = () => {
             fontFamily="Work sans"
             fontSize="xl"
           >
-            Health
+            Log Health
           </Text>
               </>
             )}

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import HealthModal from './HealthModal.js';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { Button } from '@chakra-ui/react';
+import { Button, Box } from '@chakra-ui/react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,25 +18,11 @@ import {
 } from 'chart.js';
 import '../style.css';
 import {
-  Flex,
-  Box,
-  Text,
-  Image,
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  ModalHeader,
   useDisclosure,
-  ModalCloseButton,
-  ModalBody,
-  SimpleGrid,
-  VStack,
-  Spacer,
+  Text,
 } from "@chakra-ui/react";
-import frustratedImg from '../../assets/images/o_frustrated.png';
-import sadImg from '../../assets/images/ou_sad.png';
-import anxiousImg from '../../assets/images/o_anxious.png';
-import happyImg from '../../assets/images/o_happy.png';
+import yogaimage from '../../assets/images/white.png';
+import SidePopUp from "../../components/Mcomponents/SidePopUp";
 
 ChartJS.register(
   CategoryScale,
@@ -49,80 +35,6 @@ ChartJS.register(
   ArcElement
 );
 
-const ChartContainer = styled.div`
-  // background-color: rgba(255, 255, 255, 0.9);
-  background-color: white;
-  border: 1px solid #e5e5e5;
-  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  border-radius: 20px;
-  max-width: 700px;
-  width: 100%;
-  height: 500px;
-  max-height: 70%;
-  margin: 20px auto;
-  margin-top: 5.5%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 100px;
-
-  @media screen and (max-width: 768px) {
-    padding: 10px;
-    margin-top: 13%;
-  }
-`;
-
-const NavigationButton = styled.button`
-  padding: 5px 10px;
-  margin: 5px;
-  cursor: pointer;
-
-  @media screen and (max-width: 768px) {
-    font-size: 0.8em;
-    padding: 3px 8px;
-    margin: 3px;
-  }
-`;
-
-const LegendContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: -800px;
-  margin-top: 10px;
-`;
-
-const LegendItem = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-`;
-
-const LegendColor = styled.div`
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  margin-right: 5px;
-`;
-
-const CalendarContainer = styled.div`
-  margin-right: 800px;
-  margin-top: -515px;
-  background-color: white;
-  color: rgb(41, 38, 38);
-  border-radius: 20px;
-  box-shadow: 0 10px 22px rgba(112, 78, 3, 0.2);
-  fontFamily: 'Work sans';
-  line-height: 1.12em;
-`;
-
-const CustomModalBody = styled(ModalBody)`
-  max-height: 400px;
-  overflow-y: auto;
-`;
-
 function Chart() {
   const [recommendation, setRecommendation] = useState(null);
   const [visibleWeek, setVisibleWeek] = useState(0);
@@ -132,18 +44,6 @@ function Chart() {
   const [moodsByDate, setMoodsByDate] = useState({});
   const [tooltipContent, setTooltipContent] = useState({ date: null, moods: [], position: { x: 0, y: 0 } });
   const [moods, setMoods] = useState({ happy: [], sad: [], anxious: [], frustrated: [] });
-  const [recommendationsM, setRecommendationsM] = useState([]);
-  const { isOpen: isMoodModalOpen, onOpen: onMoodModalOpen, onClose: onMoodModalClose } = useDisclosure();
-
-  const posesPerPage = 6;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [paginatedPoses, setPaginatedPoses] = useState([]);
-  const totalPages = Math.ceil(recommendationsM.length / posesPerPage);
-  const [selectedPose, setSelectedPose] = useState(null);
-  const { isOpen: isPoseDetailsOpen, onOpen: onPoseDetailsOpen, onClose: onPoseDetailsClose } = useDisclosure();
-  const [yogaPoses, setYogaPoses] = useState([]);
-
-  const [scrollBehavior, setScrollBehavior] = React.useState('inside')
   
   useEffect(() => {
     const fetchMoods = async () => {
@@ -355,244 +255,115 @@ function Chart() {
   );
 };
 
-  const legendItems = Object.entries(moods).map(([mood, moodEntries]) => {
-    const moodColor = {
-      happy: 'rgba(125, 204, 35, 1)',
-      sad: 'rgba(52, 152, 219, 1)',
-      anxious: 'rgba(231, 76, 60, 1)',
-      frustrated: 'rgba(243, 156, 18, 1)'
-    }[mood];
-
-    return (
-      <LegendItem key={mood}>
-        <LegendColor style={{ backgroundColor: moodColor }}></LegendColor>
-        <span style={{ color: moodColor }}>{mood}: {moodEntries.length}</span>
-      </LegendItem>
-    );
-  });
-
-  async function fetchRecommendations(moodData) {
-    try {
-      const response = await fetch("/recommend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ moods: moodData.mood }),
-      });
-      const result = await response.json();
-      setRecommendationsM(result); // Update the state with the received recommendations.
-      onMoodModalOpen(); // Open the modal to display recommendations.
-    } catch (error) {
-      console.error("Error fetching recommendations:", error);
-    }
-  }
-
-   async function saveUserMood(moodData) {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  if (!userInfo || !userInfo.token) {
-    console.error("No user token found, user might not be logged in");
-    return;
-  }
-
-  const token = userInfo.token;
-
-  try {
-    const response = await fetch("/api/user/moods", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // Include the token in the authorization header
-      },
-      body: JSON.stringify(moodData),
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    } else {
-      const data = await response.json();
-      console.log('Mood saved:', data);
-    }
-  } catch (error) {
-    console.error("error saving user mood:", error);
-  }
-   }
-  
-  function handleMoodClick(mood) {
-    // Retrieve user data from local storage
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (!userInfo) {
-      console.error("No user info found, user might not be logged in");
-      return;
-    }
-  
-    const moodData = { userId: userInfo._id, mood };
-    fetchRecommendations(moodData);
-    saveUserMood(moodData);
-  }
-
- useEffect(() => {
-  const startIndex = (currentPage - 1) * posesPerPage;
-  const endIndex = startIndex + posesPerPage;
-  setPaginatedPoses(recommendationsM.slice(startIndex, endIndex));
-}, [currentPage, recommendationsM, posesPerPage]);
-
-const handlePrevPage = () => {
-  setCurrentPage((prev) => Math.max(prev - 1, 1));
-};
-
-const handleNextPage = () => {
-  setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-};
-
-const handleMoreInfo = async (poseId) => {
-  console.log('Clicked poseId:', poseId);
-  try {
-    // Use the new endpoint for fetching by ID
-    const response = await fetch(`http://localhost:4000/api/yoga/poses/${poseId}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const poseDetails = await response.json();
-    setSelectedPose(poseDetails);
-    onPoseDetailsOpen();
-  } catch (error) {
-    console.error('Error fetching pose details:', error);
-  }
-};
-
-
-
-  async function fetchYogaPoses() {
-  try {
-    const response = await fetch('http://localhost:4000/api/yoga/poses'); 
-    if (!response.ok) {
-      throw new Error('Failed to fetch yoga poses');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching yoga poses:', error);
-    return [];
-  }
-  }
-  
-   // Fetch yoga poses when the component mounts
-  useEffect(() => {
-  // Fetch yoga poses when the component mounts
-  async function fetchData() {
-    const fetchedYogaPoses = await fetchYogaPoses();
-    console.log(fetchedYogaPoses); // Log to inspect the data structure
-    setYogaPoses(fetchedYogaPoses);
-  }
-
-  fetchData();
-}, []);
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'  }}>
-      <ChartContainer>
-        <Pie data={data} options={options} />
-      </ChartContainer>
-      <CalendarContainer>
-        <Calendar
-          tileContent={({ date }) => renderDayCell({ date })}
-        />
-      </CalendarContainer>
-      <LegendContainer>
-        {legendItems}
-      </LegendContainer>
-        <Flex direction="column" alignItems="center" width="100%" justifyContent="center" marginRight="57%" marginTop="1%" fontFamily="Work sans" fontWeight="bold">
-        <Text fontSize="xl" my="4">How are you feeling today?</Text>
-        <Flex direction="row" wrap="wrap" justifyContent="center" width="90%">
-        {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
-          .map(({ src, mood }) => (
-            <Box key={mood} textAlign="center" mx="1rem" my="0.5rem">
-              <Image src={src} boxSize="100px" objectFit="cover" onClick={() => handleMoodClick(mood)} cursor="pointer" />
-              <Text mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
-            </Box>
-          ))}
-      </Flex>
-    </Flex>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-4%', marginLeft: '37%' }}>
-        <NavigationButton onClick={handlePrevWeek} disabled={visibleWeek === 0}>
-          &lt;
-        </NavigationButton>
-        <span style={{ margin: '0 0px' }}>Week {visibleWeek + 1}</span>
-        <NavigationButton onClick={handleNextWeek} disabled={visibleWeek === totalWeeks - 1}>
-          &gt;
-        </NavigationButton>
-      </div>
-      <Button
-        _hover={{ bg: "#1E4D38" }}
-        backgroundColor="#0C301F"
-        marginLeft='38%'
-        marginTop='-0.2%'
-        color='white'
-        variant='outline'
-        onClick={handleRecommendationClick}>Get Health Plan Recommendation
+  <div style={{ position: 'relative', height: '100vh',  overflowY:"auto"}}>
+    {/* Background image */}
+    <Box
+      position="absolute"
+      top={0}
+      right={0}
+      bottom={0}
+      left={0}
+      backgroundImage={`url(${yogaimage})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+      filter="blur(3px)" // Apply blur to just the background image
+      zIndex={-1}
+    />
+    
+    {/* SidePopUp component */}
+    <SidePopUp />
+
+    {/* Text for current mood stats */}
+    <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="60%" marginTop="4.3%">
+      Your Current Mood Stats for the: 
+    </Text>
+
+    {/* Pie chart */}
+    <Box
+      marginLeft="47%"
+      width="45%"
+      backgroundColor="white"
+      border="1px solid #e5e5e5"
+      boxShadow="0 0 0.625rem rgba(0, 0, 0, 0.1)"
+      borderRadius="20px"
+      padding="1%"
+      height="60%"
+      marginTop="1%" // Adjusted margin to accommodate the buttons
+    >
+      <Pie data={data} options={options} />
+    </Box>
+
+    {/* Navigation buttons */}
+    <div style={{ position: 'absolute', top: '76.5%', left: '70%', transform: 'translateX(-50%)' }}>
+      <Button background="transparent" onClick={handlePrevWeek} disabled={visibleWeek === 0}>
+        &lt;
       </Button>
-      <HealthModal
-        recommendation={recommendation}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      <span style={{ margin: '0 20px' }}>Week {visibleWeek + 1}</span>
+      <Button background="transparent" onClick={handleNextWeek} disabled={visibleWeek === totalWeeks - 1}>
+        &gt;
+      </Button>
+    </div>
+
+    {/* Get Health Plan Recommendation button */}
+    <Button
+      _hover={{ bg: "#1E4D38" }}
+      backgroundColor="#0C301F"
+      marginLeft='60%'
+      marginTop='3%' 
+      color='white'
+      variant='outline'
+      onClick={handleRecommendationClick}
+    >
+      Get Health Plan Recommendation
+    </Button>
+
+    {/* Calendar */}
+    <Box> 
+      <Calendar
+        tileContent={({ date }) => renderDayCell({ date })}
+        className="calendar-position"
       />
-      <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose} size="4xl" isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader fontFamily="Work sans" textAlign="center">Your YogaRecommendations</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-         <SimpleGrid columns={[1, 2]} spacing={5}>
-          {paginatedPoses.map((poseName, index) => {
-            const pose = yogaPoses.find(p => p.AName === poseName); // Find the pose object by name
-            if (!pose) return null; // Add a check to ensure pose is defined
-            return (
-              <Box key={index} p={5} shadow="md" borderWidth="1px" borderRadius="md" position="relative" rounded="md" height="100%">
-                <VStack spacing={4} align="stretch" height="100%">
-                  <Text fontFamily="Work sans" fontWeight="bold">{pose?.AName}</Text>
-                  <Text fontFamily="Work sans" noOfLines={1}>Level: {pose?.Level}</Text>
-                  <Spacer /> {/* This pushes the button to the bottom */}
-                  <Button
-                    size="sm"
-                    onClick={() => handleMoreInfo(pose?._id)}
-                    backgroundColor="#0C301F"
-                    color="white"
-                    _hover={{ backgroundColor: "#1E4D38" }}
-                    fontFamily="Work sans"
-                  >
-                    More Information
-                  </Button>
-                </VStack>
-              </Box>
-            );
-          })}
-        </SimpleGrid>
-          <Flex justify="space-between" mt={4}>
-        <Button bg="transparent" onClick={handlePrevPage} isDisabled={currentPage === 1}>
-          &lt; 
-        </Button>
-        <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
-        <Button bg="transparent" onClick={handleNextPage} isDisabled={currentPage === totalPages}>
-          &gt;
-        </Button>
-      </Flex> 
-    </ModalBody>
-  </ModalContent>
-  </Modal>
-  <Modal isOpen={isPoseDetailsOpen} onClose={onPoseDetailsClose} size="lg" isCentered scrollBehavior={scrollBehavior}>
-  <ModalOverlay />
-  <ModalContent>
-    <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
-    <ModalCloseButton />
-    <CustomModalBody fontFamily="Work sans">
-    <Text mb={2}>Level: {selectedPose?.Level}</Text>
-    <Text mb={2}>Description: {selectedPose?.Description}</Text>
-    <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
-    <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
-    <Text mb={2}>Awareness: {selectedPose?.Awareness}</Text>
-    </CustomModalBody>
-  </ModalContent>
-</Modal>
-</div>
-  );
+    </Box>
+
+    {/* Text explaining health plan */}
+    <div 
+      style={{
+        marginLeft: "5%",
+        width: "40%", // Adjusted width
+        background: "rgba(255, 255, 255, 0.85)",
+        padding: "30px",
+        paddingTop: "5px",
+        borderRadius: "20px",
+        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+        marginTop: "-11.3%", // Adjusted margin to accommodate the buttons and calendar
+        marginBottom: "3%",
+      }}
+    >
+      <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="5%">
+        A thoughtfully designed health plan is essential to preserving happiness and general wellbeing.
+        It includes a number of components that all play a major role in promoting mental and emotional stability, including food, exercise, supplements, and—most importantly—yoga.
+        A nutrient-dense, well-balanced diet not only powers the body but also nourishes the intellect, promoting energy and clarity.
+        Supplements help maintain healthy brain function, fill up nutritional shortages, and improve mood control.
+        Frequent exercise releases neurotransmitters called endorphins, which reduce stress and increase feelings of pleasure and happiness.
+        But yoga distinguishes itself as a comprehensive approach that combines breathing exercises, meditation, and physical postures to develop awareness, lower cortisol levels, and encourage relaxation.
+        Its capacity to connect mind, body, and spirit is what gives it its transformational power.
+        It has significant positive effects on mental health, such as lowered stress levels, happier moods, and increased emotional fortitude.
+        People can proactively cultivate their mental and emotional well-being and live a more vibrant and fulfilling life by adopting these comprehensive health plan pillars.
+        Find out here what health plan is recommended for you!
+      </Text>
+    </div>
+
+    {/* HealthModal component */}
+    <HealthModal
+      recommendation={recommendation}
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+    />
+  </div>
+);
+
 }
 
 export default Chart;

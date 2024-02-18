@@ -53,12 +53,18 @@ html, body {
   scrollbar-width: none;  /* Firefox */
 }
 
+.calendar-position {
+  position: absolute;
+  margin-top: -33.5%; /* Adjust as needed */
+  margin-left: 9%; /* Adjust as needed */
+}
+
 .react-calendar {
   max-width: 100%;
   background: "transparent";
   font-family: Work Sans;
   border-radius: 20px;
-  width: 450px;
+  width: 450px; 
 }
 .react-calendar--doubleView {
   width: 700px;
