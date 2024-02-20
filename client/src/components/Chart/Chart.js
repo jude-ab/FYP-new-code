@@ -44,7 +44,38 @@ function Chart() {
   const [moodsByDate, setMoodsByDate] = useState({});
   const [tooltipContent, setTooltipContent] = useState({ date: null, moods: [], position: { x: 0, y: 0 } });
   const [moods, setMoods] = useState({ happy: [], sad: [], anxious: [], frustrated: [] });
-  
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [displayDate, setDisplayDate] = useState('');
+
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // JavaScript months are 0-indexed
+  const [allMoodEntries, setAllMoodEntries] = useState([]);
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from(new Array(10), (val, index) => currentYear - index); // Last 10 years
+
+// Inside your component
+const [chartData, setChartData] = useState({
+  labels: ['Happy', 'Sad', 'Anxious', 'Frustrated'],
+  datasets: [{
+    label: 'Mood Distribution',
+    data: [],
+    backgroundColor: [
+      'rgba(125, 204, 35, 0.6)',
+      'rgba(52, 152, 219, 0.6)',
+      'rgba(231, 76, 60, 0.6)',
+      'rgba(243, 156, 18, 0.6)',
+    ],
+    borderColor: [
+      'rgba(75, 192, 192, 1)',
+      'rgba(153, 102, 255, 1)',
+      'rgba(54, 162, 235, 1)',
+      'rgba(255, 99, 132, 1)',
+    ],
+    borderWidth: 1,
+  }],
+});
+
   useEffect(() => {
     const fetchMoods = async () => {
       if (userInfo && userInfo.token) {
@@ -253,7 +284,63 @@ function Chart() {
       )}
     </div>
   );
+  };
+
+  const updateChartData = (dateStr) => {
+  // Assuming `moods` contains all mood entries
+  const filteredMoods = Object.keys(moods).reduce((acc, mood) => {
+    // Filter entries for the selected date
+    const count = moods[mood].filter(entry => new Date(entry.date).toISOString().split('T')[0] === dateStr).length;
+    if (count > 0) acc.push(count);
+    else acc.push(0); // Push 0 if no entries for a mood
+    console.log(chartData); // Check the new chart data before setting the state
+    return acc;
+  }, []);
+       
+    console.log(filteredMoods); // Check filtered moods count
+
+  // Now update the chart data with these filtered moods
+  setChartData(prevData => ({
+    ...prevData,
+    datasets: [{
+      ...prevData.datasets[0],
+      data: filteredMoods,
+    }],
+  }));
 };
+
+  const handleDayClick = (value) => {
+  const dateStr = value.toISOString().split('T')[0]; // Get the date as YYYY-MM-DD
+  setSelectedDate(dateStr);
+  setDisplayDate(value.toLocaleDateString()); // Format date for display
+  updateChartData(dateStr); // Function to update chart data based on the selected date
+};
+
+  // Function to update chart data based on month and year
+// Function to update chart data for the selected month
+const updateChartDataForMonth = () => {
+  const filteredMoods = allMoodEntries.filter(mood => {
+    const moodDate = new Date(mood.date);
+    return moodDate.getFullYear() === selectedYear && moodDate.getMonth() + 1 === selectedMonth;
+  });
+
+  const moodCounts = filteredMoods.reduce((acc, mood) => {
+    const moodType = mood.mood;
+    acc[moodType] = (acc[moodType] || 0) + 1;
+    return acc;
+  }, {});
+
+  const newChartData = {
+    ...chartData,
+    datasets: [{
+      ...chartData.datasets[0],
+      data: Object.keys(moodCounts).map(mood => moodCounts[mood]),
+    }],
+  };
+
+  setChartData(newChartData);
+};
+
 
   return (
   <div style={{ position: 'relative', height: '100vh',  overflowY:"auto"}}>
@@ -277,9 +364,16 @@ function Chart() {
 
     {/* Text for current mood stats */}
     <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="60%" marginTop="5.3%">
-      Your Current Mood Stats for the: 
-    </Text>
-
+      Your Current Mood Stats for the: {displayDate}
+      </Text>
+      
+      <select value={selectedYear} onChange={(e) => setSelectedYear(parseInt(e.target.value))}>
+  {years.map(year => (
+    <option key={year} value={year}>{year}</option>
+  ))}
+</select>
+  <button onClick={updateChartDataForMonth}>Update Chart</button>
+      
     {/* Pie chart */}
     <Box
       marginLeft="47%"
@@ -292,11 +386,13 @@ function Chart() {
       height="60%"
       marginTop="1%" // Adjusted margin to accommodate the buttons
     >
-      <Pie data={data} options={options} />
-    </Box>
+      <Pie data={chartData} options={options} />
+      </Box>
+      
+
 
     {/* Navigation buttons */}
-    <div style={{ position: 'absolute', top: '78%', left: '70%', transform: 'translateX(-50%)' }}>
+    {/* <div style={{ position: 'absolute', top: '78%', left: '70%', transform: 'translateX(-50%)' }}>
       <Button background="transparent" onClick={handlePrevWeek} disabled={visibleWeek === 0}>
         &lt;
       </Button>
@@ -304,7 +400,8 @@ function Chart() {
       <Button background="transparent" onClick={handleNextWeek} disabled={visibleWeek === totalWeeks - 1}>
         &gt;
       </Button>
-    </div>
+    </div> */}
+      
 
     {/* Get Health Plan Recommendation button */}
     <Button
@@ -322,6 +419,7 @@ function Chart() {
     {/* Calendar */}
     <Box> 
       <Calendar
+        onClickDay={(value) => handleDayClick(value)}  
         tileContent={({ date }) => renderDayCell({ date })}
         className="calendar-position"
       />

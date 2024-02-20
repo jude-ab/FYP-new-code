@@ -18,6 +18,7 @@ const protect = asynchHandler(async (req, res, next) => {
       next(); // move on to next middleware
     } catch (error) {
       console.error(error);
+      console.log("User ID from protect middleware:", req.user._id);
       res.status(401);
       throw new Error("Not authorized, token failed");
     }

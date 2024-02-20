@@ -205,7 +205,7 @@ const deleteMood = async (moodId) => {
   }
 
   try {
-    const response = await fetch(`/api/moods/${moodId}`, {
+    const response = await fetch(`/api/user/moods/${moodId}`, {
       method: 'DELETE',
       headers: {
         "Authorization": `Bearer ${userInfo.token}`, // Include the token in the authorization header
@@ -213,14 +213,17 @@ const deleteMood = async (moodId) => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to delete mood');
+      const errorData = await response.json();
+      console.error('Failed to delete mood:', errorData.message);
+      alert(`Error deleting mood: ${errorData.message}`); // Display error message to the user
+      return;
     }
 
-    // Remove the mood from the state
+    // Remove the mood from the state if deletion was successful
     setTodaysMoods(currentMoods => currentMoods.filter(mood => mood._id !== moodId));
   } catch (error) {
     console.error('Error deleting mood:', error);
-    // Add additional error handling here if needed
+    alert('Error deleting mood. Please try again.'); // Fallback error message
   }
 };
 
@@ -253,7 +256,7 @@ const deleteMood = async (moodId) => {
             height="100vh" // Full viewport height
             width="100vw" // Full viewport width
             position="relative" // For absolutely positioned children
-            marginTop="-19%"        
+            marginTop="-17%"        
         >
           {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
             .map(({ src, mood }) => (
@@ -264,7 +267,7 @@ const deleteMood = async (moodId) => {
             ))}
         </Flex>
         </Flex>
-        <Box width="50%" padding={4} boxShadow="lg" bg="white" borderRadius="20px" marginLeft="25%" marginBottom="3%" marginTop="-18%">
+        <Box background="rgba(255, 255, 255, 0.7)" width="50%" padding={4} boxShadow="lg" borderRadius="15px" marginLeft="25%" marginBottom="3%" marginTop="-15%">
         <VStack>
             {todaysMoods.length > 0 ? (
             todaysMoods.map((mood) => (
