@@ -53,28 +53,29 @@ function Chart() {
 
   const currentYear = new Date().getFullYear();
   const years = Array.from(new Array(10), (val, index) => currentYear - index); // Last 10 years
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-// Inside your component
-const [chartData, setChartData] = useState({
-  labels: ['Happy', 'Sad', 'Anxious', 'Frustrated'],
-  datasets: [{
-    label: 'Mood Distribution',
-    data: [],
-    backgroundColor: [
-      'rgba(125, 204, 35, 0.6)',
-      'rgba(52, 152, 219, 0.6)',
-      'rgba(231, 76, 60, 0.6)',
-      'rgba(243, 156, 18, 0.6)',
-    ],
-    borderColor: [
-      'rgba(75, 192, 192, 1)',
-      'rgba(153, 102, 255, 1)',
-      'rgba(54, 162, 235, 1)',
-      'rgba(255, 99, 132, 1)',
-    ],
-    borderWidth: 1,
-  }],
-});
+  const [chartData, setChartData] = useState({
+    labels: ['Happy', 'Sad', 'Anxious', 'Frustrated'],
+    datasets: [{
+      label: 'Mood Distribution',
+      data: [],
+      backgroundColor: [
+        'rgba(125, 204, 35, 0.6)',
+        'rgba(52, 152, 219, 0.6)',
+        'rgba(231, 76, 60, 0.6)',
+        'rgba(243, 156, 18, 0.6)',
+      ],
+      borderColor: [
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)',
+      ],
+      borderWidth: 1,
+    }],
+  });
+  
 
   useEffect(() => {
     const fetchMoods = async () => {
@@ -172,13 +173,13 @@ const [chartData, setChartData] = useState({
     },
   };
 
-  const handlePrevWeek = () => {
-    setVisibleWeek((prevWeek) => (prevWeek > 0 ? prevWeek - 1 : 0));
-  };
+  // const handlePrevWeek = () => {
+  //   setVisibleWeek((prevWeek) => (prevWeek > 0 ? prevWeek - 1 : 0));
+  // };
 
-  const handleNextWeek = () => {
-    setVisibleWeek((prevWeek) => (prevWeek < totalWeeks - 1 ? prevWeek + 1 : totalWeeks - 1));
-  };
+  // const handleNextWeek = () => {
+  //   setVisibleWeek((prevWeek) => (prevWeek < totalWeeks - 1 ? prevWeek + 1 : totalWeeks - 1));
+  // };
 
  const handleRecommendationClick = async () => {
     try {
@@ -316,25 +317,24 @@ const [chartData, setChartData] = useState({
   updateChartData(dateStr); // Function to update chart data based on the selected date
 };
 
-  // Function to update chart data based on month and year
-// Function to update chart data for the selected month
+// Function to update chart data based on month and year
 const updateChartDataForMonth = () => {
-  const filteredMoods = allMoodEntries.filter(mood => {
-    const moodDate = new Date(mood.date);
-    return moodDate.getFullYear() === selectedYear && moodDate.getMonth() + 1 === selectedMonth;
+  // Create a new dataset array for the chart
+  const newData = Object.keys(moods).map(moodCategory => {
+    // Filter entries for each mood category based on selectedYear and selectedMonth
+    const filteredEntries = moods[moodCategory].filter(entry => {
+      const entryDate = new Date(entry.date);
+      return entryDate.getFullYear() === selectedYear && entryDate.getMonth() + 1 === selectedMonth;
+    });
+    return filteredEntries.length; // Return the count of filtered entries for this category
   });
 
-  const moodCounts = filteredMoods.reduce((acc, mood) => {
-    const moodType = mood.mood;
-    acc[moodType] = (acc[moodType] || 0) + 1;
-    return acc;
-  }, {});
-
+  // Update the chart data state
   const newChartData = {
-    ...chartData,
+    ...chartData, // Spread existing chartData to maintain other settings
     datasets: [{
-      ...chartData.datasets[0],
-      data: Object.keys(moodCounts).map(mood => moodCounts[mood]),
+      ...chartData.datasets[0], // Maintain dataset properties like backgroundColor
+      data: newData, // Set new data
     }],
   };
 
@@ -342,10 +342,11 @@ const updateChartDataForMonth = () => {
 };
 
 
+
   return (
   <div style={{ position: 'relative', height: '100vh',  overflowY:"auto"}}>
     {/* Background image */}
-    <Box
+    <Box 
       position="fixed"
       top={0}
       right={0}
@@ -363,16 +364,9 @@ const updateChartDataForMonth = () => {
     <SidePopUp />
 
     {/* Text for current mood stats */}
-    <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="60%" marginTop="5.3%">
+    <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="55%" marginTop="5.3%">
       Your Current Mood Stats for the: {displayDate}
-      </Text>
-      
-      <select value={selectedYear} onChange={(e) => setSelectedYear(parseInt(e.target.value))}>
-  {years.map(year => (
-    <option key={year} value={year}>{year}</option>
-  ))}
-</select>
-  <button onClick={updateChartDataForMonth}>Update Chart</button>
+    </Text>
       
     {/* Pie chart */}
     <Box
@@ -386,8 +380,45 @@ const updateChartDataForMonth = () => {
       height="60%"
       marginTop="1%" // Adjusted margin to accommodate the buttons
     >
-      <Pie data={chartData} options={options} />
+     <Pie data={chartData} options={options} />
       </Box>
+
+      <div style={{ display: 'flex', alignItems: 'center', marginLeft: '65%', marginTop: '1%', marginBottom: '1%' }}>
+      <select
+        value={selectedYear}
+        onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+        style={{ width: '18%', padding: '1px', marginLeft: '-20%', marginRight:"1%" }} // Adjusted width and added margin-right for spacing
+      > 
+        {years.map(year => (
+          <option key={year} value={year}>{year}</option>
+        ))}
+      </select>
+      <select
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+          style={{ width: '18%', padding: '1px' }}
+        >
+          {monthNames.map((name, index) => (
+            <option key={index} value={index + 1}>{name}</option> // Display month names, store 1-based month number
+          ))}
+        </select>  
+      <button
+        onClick={updateChartDataForMonth}    
+        style={{
+          width: '30%', // Corrected padding syntax
+          backgroundColor: 'transparent', // For a 'ghost' button look
+          color: 'black',
+          border: '1px solid black', // Add a border to simulate Chakra UI's 'ghost' variant
+          cursor: 'pointer', // Change cursor to pointer on hover
+          borderRadius: '10px',
+          marginLeft: '2%', // Adjusted margin-right for spacing
+        }}
+      >
+        Update Chart
+      </button>
+      </div>
+
+    {/* <button onClick={updateChartDataForMonth}>Update Chart</button> */}
       
 
 
@@ -407,8 +438,8 @@ const updateChartDataForMonth = () => {
     <Button
       _hover={{ bg: "#1E4D38" }}
       backgroundColor="#0C301F"
-      marginLeft='60%'
-      marginTop='3%' 
+      marginLeft='60.5%'
+      marginTop='1%' 
       color='white'
       variant='outline'
       onClick={handleRecommendationClick}
@@ -418,7 +449,7 @@ const updateChartDataForMonth = () => {
 
     {/* Calendar */}
     <Box> 
-      <Calendar
+     <Calendar
         onClickDay={(value) => handleDayClick(value)}  
         tileContent={({ date }) => renderDayCell({ date })}
         className="calendar-position"

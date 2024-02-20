@@ -109,6 +109,7 @@ def get_pose_by_name():
 def get_health_plan_recommendation():
     try:
         data = request.json
+        print("Received data:", data)
         user_id = data.get('userId')
         week_number = data.get('weekNumber')
         print(f"Received user_id: {user_id}, week_number: {week_number}")
