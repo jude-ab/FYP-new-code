@@ -55,11 +55,30 @@ function Chart() {
   const years = Array.from(new Array(10), (val, index) => currentYear - index); // Last 10 years
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+ const getDefaultChartData = () => {
+    // Get today's date in the format YYYY-MM-DD
+    const todayDate = new Date().toISOString().split('T')[0];
+
+    // Check if there are mood entries for today
+    if (moodsByDate[todayDate]) {
+      // Calculate the percentage of each mood for today
+      const totalMoodsToday = moodsByDate[todayDate].length;
+      const defaultData = Object.keys(moods).map(mood => {
+        const moodCount = moodsByDate[todayDate].filter(entry => entry === mood).length;
+        return Math.round((moodCount / totalMoodsToday) * 100);
+      });
+      return defaultData;
+    } else {
+      // If there are no mood entries for today, return default values (0 for all moods)
+      return [0, 0, 0, 0];
+    }
+  };
+
   const [chartData, setChartData] = useState({
     labels: ['Happy', 'Sad', 'Anxious', 'Frustrated'],
     datasets: [{
       label: 'Mood Distribution',
-      data: [],
+      data: getDefaultChartData(),
       backgroundColor: [
         'rgba(125, 204, 35, 0.6)',
         'rgba(52, 152, 219, 0.6)',
@@ -79,41 +98,48 @@ function Chart() {
 
   useEffect(() => {
     const fetchMoods = async () => {
-      if (userInfo && userInfo.token) {
-        try {
-          const response = await fetch(`/api/user/${userInfo._id}/moods`, {
-            headers: {
-              Authorization: `Bearer ${userInfo.token}`,
-            },
-          });
-          const moodEntries = await response.json();
-
-          const processedMoodsForPieChart = moodEntries.reduce((acc, entry) => {
-            const mood = entry.mood;
-            if (!acc[mood]) {
-              acc[mood] = [];
-            }
-            acc[mood].push(entry);
-            return acc;
-          }, { happy: [], sad: [], anxious: [], frustrated: [] });
-
-          const processedMoodsForCalendar = moodEntries.reduce((acc, entry) => {
-            const mood = entry.mood;
-            const dateStr = new Date(entry.date).toDateString();
-            if (!acc[dateStr]) {
-              acc[dateStr] = [];
-            }
-            acc[dateStr].push(mood);
-            return acc;
-          }, {});
-
-          setMoods(processedMoodsForPieChart);
-          setMoodsByDate(processedMoodsForCalendar);
-        } catch (error) {
-          console.error('Failed to fetch moods:', error);
-        }
+  if (userInfo && userInfo.token) {
+    try {
+      const response = await fetch(`/api/user/${userInfo._id}/moods`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch mood entries');
       }
-    };
+      const moodEntries = await response.json();
+      console.log('Fetched mood entries:', moodEntries); // Log fetched mood entries
+      const processedMoodsForPieChart = moodEntries.reduce((acc, entry) => {
+        const mood = entry.mood;
+        if (!acc[mood]) {
+          acc[mood] = [];
+        }
+        acc[mood].push(entry);
+        return acc;
+      }, { happy: [], sad: [], anxious: [], frustrated: [] });
+
+      const processedMoodsForCalendar = moodEntries.reduce((acc, entry) => {
+        const mood = entry.mood;
+        const dateStr = new Date(entry.date).toDateString();
+        if (!acc[dateStr]) {
+          acc[dateStr] = [];
+        }
+        acc[dateStr].push(mood);
+        return acc;
+      }, {});
+
+      console.log('Processed moods for pie chart:', processedMoodsForPieChart); // Log processed moods for pie chart
+      console.log('Processed moods for calendar:', processedMoodsForCalendar); // Log processed moods for calendar
+
+      setMoods(processedMoodsForPieChart);
+      setMoodsByDate(processedMoodsForCalendar);
+    } catch (error) {
+      console.error('Error fetching moods:', error); // Log any errors that occur
+    }
+  }
+};
+
 
     fetchMoods();
   }, [userInfo]);

@@ -98,18 +98,27 @@ const LogMood = () => {
 }
 
   
-  function handleMoodClick(mood) {
-    // Retrieve user data from local storage
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (!userInfo) {
-      console.error("No user info found, user might not be logged in");
-      return;
-    }
-  
-    const moodData = { userId: userInfo._id, mood };
-    fetchRecommendations(moodData);
-    saveUserMood(moodData);
+function handleMoodClick(mood) {
+  // Retrieve user data from local storage
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (!userInfo) {
+    console.error("No user info found, user might not be logged in");
+    return;
   }
+
+  const moodData = { userId: userInfo._id, mood };
+
+  // Save the mood
+  saveUserMood(moodData);
+}
+
+function handleGetRecommendations(mood) {
+  // Fetch recommendations based on the mood
+  const moodData = { mood };
+  fetchRecommendations(moodData);
+}
+
+
 
  useEffect(() => {
   const startIndex = (currentPage - 1) * posesPerPage;
@@ -249,6 +258,12 @@ const deleteMood = async (moodId) => {
         <Text fontSize="3xl" my="4" fontFamily="Work sans" fontWeight="bold" textAlign="center">
           How are you feeling today?
         </Text>
+         <Text fontSize="xl"  fontFamily="Work sans" fontWeight="bold" textAlign="center">
+          Based on how you're currently feeling, we will keep track of your mood and recommend yoga poses tailored just for you! 
+        </Text>          
+        <Text fontSize="xl"  fontFamily="Work sans" fontWeight="bold" textAlign="center">
+            Check Mood Stats to see how you've been feeling over time, and to get health plan recommendations.
+        </Text>        
         <Flex
             direction="row" // Stack children vertically
             align="center" // Center children horizontally
@@ -256,15 +271,27 @@ const deleteMood = async (moodId) => {
             height="100vh" // Full viewport height
             width="100vw" // Full viewport width
             position="relative" // For absolutely positioned children
-            marginTop="-17%"        
+            marginTop="-17%"
+            marginLeft="9%"        
         >
-          {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
-            .map(({ src, mood }) => (
-              <Box key={mood} textAlign="center" mx="1rem" my="0.5rem">
-                <Image src={src} boxSize="100px" objectFit="cover" onClick={() => handleMoodClick(mood)} cursor="pointer" />
-                <Text mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
-              </Box>
-            ))}
+         {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
+    .map(({ src, mood }) => (
+      <Box key={mood} textAlign="center" mx="1rem" my="0.5rem">
+        <Image src={src} boxSize="100px" objectFit="cover" cursor="pointer" onClick={() => handleMoodClick(mood)} />
+        <Text fontFamily="Work sans" mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
+         <Button
+            fontFamily="Work sans"
+            borderRadius="13px"
+            onClick={() => handleGetRecommendations(mood)} 
+            marginLeft="-45%"
+            marginTop="-20%"
+        >
+            Get Recommendations
+        </Button>   
+        </Box>
+        
+        ))}
+                
         </Flex>
         </Flex>
         <Box background="rgba(255, 255, 255, 0.7)" width="50%" padding={4} boxShadow="lg" borderRadius="15px" marginLeft="25%" marginBottom="3%" marginTop="-15%">
