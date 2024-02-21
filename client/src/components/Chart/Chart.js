@@ -49,7 +49,8 @@ function Chart() {
 
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // JavaScript months are 0-indexed
-  const [allMoodEntries, setAllMoodEntries] = useState([]);
+
+  const [isPieChartVisible, setIsPieChartVisible] = useState(false);
 
   const currentYear = new Date().getFullYear();
   const years = Array.from(new Array(10), (val, index) => currentYear - index); // Last 10 years
@@ -341,6 +342,9 @@ function Chart() {
   setSelectedDate(dateStr);
   setDisplayDate(value.toLocaleDateString()); // Format date for display
   updateChartData(dateStr); // Function to update chart data based on the selected date
+  
+  // Set the visibility of the pie chart to true when a day is clicked
+  setIsPieChartVisible(true);
 };
 
 // Function to update chart data based on month and year
@@ -392,7 +396,9 @@ const updateChartDataForMonth = () => {
     {/* Text for current mood stats */}
     <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="58%" marginTop="5.3%">
       Your Current Mood Stats for: {displayDate}
-    </Text>
+      </Text>
+      
+   
       
     {/* Pie chart */}
     <Box
@@ -407,14 +413,16 @@ const updateChartDataForMonth = () => {
       marginTop="1%" // Adjusted margin to accommodate the buttons
     > 
         <Pie data={chartData} options={options} />
+        {!isPieChartVisible && (
         <Text
           fontFamily="Work sans"
           fontSize="lg"
           textAlign="center" 
           marginTop="-35%"
         >
-        Click on a day/month to view your stats
-      </Text>
+          Click on a day/month to view your stats
+        </Text>
+      )}
     </Box>
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: '65%', marginTop: '1%', marginBottom: '1%' }}>
       <select
