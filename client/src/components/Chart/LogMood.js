@@ -15,7 +15,8 @@ import {
   Spacer,
   Button,
   useDisclosure,
-  HStack
+  HStack,
+  IconButton
 } from "@chakra-ui/react";
 import frustratedImg from '../../assets/images/o_frustrated.png';
 import sadImg from '../../assets/images/ou_sad.png';
@@ -25,6 +26,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import backgroundImage from '../../assets/images/yoga1.png';
 import SidePopUp from "../Mcomponents/SidePopUp";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const CustomModalBody = styled(ModalBody)`
   max-height: 400px;
@@ -300,7 +302,12 @@ const deleteMood = async (moodId) => {
             todaysMoods.map((mood) => (
                 <HStack key={mood._id} width="full" justifyContent="space-between">
                 <Text>{mood.mood}</Text>
-                <Button onClick={() => deleteMood(mood._id)}>Delete</Button>
+                <IconButton
+                    aria-label="Delete Mood"
+                    icon={<DeleteIcon />}
+                    onClick={() => deleteMood(mood._id)}   
+                    background="transparent"    
+                />
                 </HStack>
             ))
             ) : (
