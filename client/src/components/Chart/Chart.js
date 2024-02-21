@@ -390,8 +390,8 @@ const updateChartDataForMonth = () => {
     <SidePopUp />
 
     {/* Text for current mood stats */}
-    <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="55%" marginTop="5.3%">
-      Your Current Mood Stats for the: {displayDate}
+    <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="58%" marginTop="5.3%">
+      Your Current Mood Stats for: {displayDate}
     </Text>
       
     {/* Pie chart */}
@@ -405,10 +405,17 @@ const updateChartDataForMonth = () => {
       padding="1%"
       height="60%"
       marginTop="1%" // Adjusted margin to accommodate the buttons
-    >
-     <Pie data={chartData} options={options} />
-      </Box>
-
+    > 
+        <Pie data={chartData} options={options} />
+        <Text
+          fontFamily="Work sans"
+          fontSize="lg"
+          textAlign="center" 
+          marginTop="-35%"
+        >
+        Click on a day/month to view your stats
+      </Text>
+    </Box>
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: '65%', marginTop: '1%', marginBottom: '1%' }}>
       <select
         value={selectedYear}
