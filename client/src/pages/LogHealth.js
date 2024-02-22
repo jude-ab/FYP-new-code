@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Button, Image, Center } from '@chakra-ui/react';
+import { Box, Button, Image, Center, VStack } from '@chakra-ui/react';
 import SidePopUp from "../components/Mcomponents/SidePopUp";
-import moodimage from '../assets/images/mood.png';
-import statimage from '../assets/images/statscartoon.png';
+import moodimage from '../assets/images/mh4.png';
+import statimage from '../assets/images/s9.png';
 import logimage from '../assets/images/yogastat.png';
 import { useHistory } from "react-router-dom";
 
@@ -26,41 +26,71 @@ const LogHealth = () => {
         zIndex={-1}
       />
       <SidePopUp />
-      <Center>
-        <Box
-          width="34.2%"
-          textAlign="center"
-          p={3} // Adjusted padding
-          borderRadius="4%"
-          borderWidth="1%"
-          borderColor="white"
-          background="rgba(255, 255, 255, 0.9)"
-          mt="10%" // Adjusted margin-top
-          shadow="md"
-          marginRight="5%"        
+      <VStack marginTop="7%" marginLeft="3%" >
+       <Box
+        width="60%"
+        textAlign="center"
+        borderRadius="20px"
+        borderWidth="1%"
+        borderColor="white"
+        background="rgba(255, 255, 255, 0.95)"
+        shadow="md"
+        marginRight="5%"
+        display="flex"
+        flexDirection="row" // Align items horizontally
+        alignItems="center" // Center items vertically
+        maxHeight="250px"
         >
-          <Image src={moodimage} borderRadius="md" mb={1} objectFit="cover" />
-          <Button mt={3} onClick={() => history.push('/logMood')}>
+        <Image borderRadius="20px" maxHeight="230px" src={moodimage} m={2} width="70%" />
+        <Button
+            colorScheme="#0C301F"
+            variant='ghost'
+            width={{ base: "300px", md: "350px" }} // Responsive width
+            _hover={{ bg: '#ebedf0' }}
+            fontFamily="Work sans"
+            ml={3} // Add left margin to separate the image and the button
+            fontSize="15px" 
+            height={{ base: "400px", md: "200px" }}
+            marginLeft="3%" 
+            onClick={() => history.push('/logMood')}    
+        >
             Log Mood
-          </Button>
+        </Button>
         </Box>
-         <Box
-          width="35%"
-          textAlign="center"
-          p={3} // Adjusted padding
-          borderRadius="4%"
-          borderWidth="1%"
-          borderColor="white"
-          background="rgba(255, 255, 255, 0.9)"
-          mt="10%" // Adjusted margin-top 
-          shadow="md"        
+        <Box
+        width="60%"
+        textAlign="center"
+        borderRadius="20px"
+        borderWidth="1%"
+        borderColor="white"
+        background="rgba(255, 255, 255, 0.95)"
+        shadow="md"
+        display="flex"
+        flexDirection="row" // Align items horizontally
+        alignItems="center" // Center items vertically
+        maxHeight="250px"
+        marginRight="5%"
+        mt="2.5%" // Add top margin to separate the two boxes
         >
-          <Image src={statimage} borderRadius="md" mb={4} objectFit="cover" />
-          <Button  mt={1} onClick={() => history.push('/moodStats')}>
+        <Image borderRadius="20px" maxHeight="230px" src={statimage} m={2} width="100%"/>
+        <Center>        
+        <Button
+            onClick={() => history.push('/moodStats')}
+            colorScheme="#0C301F"
+            variant='ghost'
+            width={{ base: "300px", md: "350px" }} // Responsive width
+            _hover={{ bg: '#ebedf0' }}
+            fontFamily="Work sans"
+            ml={3} // Add left margin to separate the image and the button
+            fontSize="15px" 
+            height={{ base: "400px", md: "200px" }}
+            marginLeft="3%"          
+        >
             Mood Stats
-          </Button>
+        </Button>
+        </Center>
         </Box>
-      </Center>
+      </VStack>
     </Box>
   );
 };

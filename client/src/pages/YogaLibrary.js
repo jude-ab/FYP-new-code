@@ -45,7 +45,7 @@ const YogaLibrary = () => {
             width="45%" // Adjust the width as necessary
             textAlign="center"
             p={5}
-            borderRadius="sm"
+            borderRadius="md"
             borderWidth="1%"
             borderColor="white"
             backgroundColor="white"

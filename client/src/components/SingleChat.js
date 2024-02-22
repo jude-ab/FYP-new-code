@@ -172,7 +172,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       ) : (
         <Box>
           <Text marginTop="20%" textAlign="center" fontSize={{ base: "xl", md: "2xl" }} pb={3} fontFamily="Work sans">
-            Click on a user to start chatting with!
+            Start chatting with your friends!
           </Text>
         </Box>
       )}
