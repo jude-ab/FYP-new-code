@@ -30,6 +30,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [searchResults, setSearchResults] = useState([""]);
   const [loading, setLoading] = useState(false);
   const [loadingR, setLoadingR] = useState(false);
+  const [userDetails, setUserDetails] = useState(null); // This will hold the user details including the profile picture
 
   const toast = useToast();
 
@@ -38,7 +39,8 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const handleSearch = async (query) => {
     setSearch(query);
     if (!query) {
-      // setSearchResults([]);
+      setSearchResults([]);
+      setUserDetails(null);
       return;
     }
 
@@ -52,6 +54,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       };
 
       const { data } = await axios.get(`/api/user?search=${search}`, config);
+       setUserDetails(null);
       console.log(data);
       setLoading(false);
       setSearchResults(data);
@@ -215,13 +218,19 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
   return (
     <>
-      <IconButton background = "transparent" icon={<EditIcon boxSize="45%" marginLeft="15%" marginBottom="13%"/>} d={{ base: "flex" }} incon={<ViewIcon />} onClick={onOpen}  />
-
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <EditIcon
+        boxSize="2.3%"
+        position="relative"
+        right="-870px" // Adjust this value to move the icon to the right
+        marginTop="-4%"
+        display={{ base: "flex" }}
+        onClick={onOpen}
+      />
+      <Modal fontFamily="Work sans" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
-            fontSize="35px"
+            fontSize="23px"
             fontFamily="Work sans"
             d="flex"
             justifyContent="center"
@@ -242,6 +251,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
             </Box>
             <FormControl d="flex">
               <Input
+                fontFamily="Work sans" 
                 placeholder="Name"
                 mb={3}
                 value={groupChatN}
@@ -250,6 +260,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
             </FormControl>
             <FormControl>
               <Input
+                fontFamily="Work sans"
                 placeholder="Add User"
                 mb={1}
                 onChange={(e) => handleSearch(e.target.value)}
@@ -261,6 +272,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
             ) : (
               searchResults?.map((user) => (
                 <UserList
+                  fontFamily="Work sans"
                   key={user._id}
                   user={user}
                   handleFunction={() => handleAddUser(user)}

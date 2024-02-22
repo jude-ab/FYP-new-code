@@ -6,10 +6,10 @@ const UserList = ({ user, handleFunction }) => {
     <Box
       onClick={handleFunction}
       cursor="pointer"
-      bg="#E8E8E8"
+      bg="transparent"
       _hover={{
         bg: "#D8D8D8",
-        color: "whitw",
+        color: "white",
       }}
       w="100%"
       d="flex"
@@ -20,7 +20,7 @@ const UserList = ({ user, handleFunction }) => {
       mb={2}
       borderRadius="lg"
     >
-      <Avatar mr={2} size="sm" name={user.name} src={user.pfp} />
+      <Avatar mr={2} size="sm" name={user.name} src={user.profilePic} />
       <Box>
         <Text fontSize="xs">{user.username}</Text>
       </Box>

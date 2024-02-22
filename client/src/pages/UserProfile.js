@@ -15,6 +15,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import SidePopUp from "../components/Mcomponents/SidePopUp";
 import { ChatState } from "../Providers/ChatP";
+import logimage from '../assets/images/cshape.png';
 
 function UserProfile() {
   const [userProfile, setUserProfile] = useState(null);
@@ -121,9 +122,23 @@ function UserProfile() {
   }
 
   return (
-    <Box position="relative" width="100vw">
+    <Box position="relative" width="100vw" height="100vh" overflowY="auto">
+      <Box
+        position="absolute"
+        top={0}
+        right={0}
+        bottom={0}
+        left={0}
+        backgroundImage={`url(${logimage})`}
+        backgroundSize="cover"
+        backgroundPosition="center"
+        backgroundRepeat="no-repeat"
+        filter="blur(3px)" // Apply blur to just the background image
+        zIndex={-1}
+        transform="scaleX(-1)"
+      />
       <SidePopUp />
-      <Flex align="center" justifyContent="center" pt={10}>
+      <Flex align="center" justifyContent="center" pt={10} marginTop="2%">
         <VStack spacing={5} width="full" maxW="500px">
           <Avatar size="2xl" name={userProfile ? userProfile.username : user ? user.username : ''} src={userProfile ? userProfile.pfp : user ? user.pfp : ''} />
           <FormControl id="username">
@@ -133,6 +148,7 @@ function UserProfile() {
               value={editFields.username}
               onChange={handleChange}
               isReadOnly={!editMode}
+              bg="white"
             />
           </FormControl>
           <FormControl id="email">
@@ -142,6 +158,7 @@ function UserProfile() {
               value={editFields.email}
               onChange={handleChange}
               isReadOnly={!editMode}
+              bg="white"
             />
           </FormControl>
           <FormControl id="dob">
@@ -152,6 +169,7 @@ function UserProfile() {
               value={editFields.dob}
               onChange={handleChange}
               isReadOnly={!editMode}
+              bg="white"
             />
           </FormControl>
           <FormControl id="about">
@@ -161,6 +179,7 @@ function UserProfile() {
               value={editFields.about}
               onChange={handleChange}
               isReadOnly={!editMode}
+              bg="white"
             />
           </FormControl>
           <Button

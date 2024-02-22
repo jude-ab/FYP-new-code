@@ -10,6 +10,7 @@ import { getSenderName, getFullSender } from "../utils/ChatLogic";
 import UpdateGroupchat from "./Mcomponents/UpdateGroupchat";
 import ScrollChat from "./ScrollChat";
 import "../App.css";
+import Profile from "./Mcomponents/Profile";
 
 const END_POINT = `http://localhost:4000`;
 var socket, selectedChatC;
@@ -124,12 +125,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     <>
       {selectedChat ? (
         <>
-          <Text color="black" fontSize={{ base: "xl", md: "130%" }} pb={3} px={2} w="100%" fontFamily="Work sans" d="flex" justifyContent={{ base: "space-between" }} alignItems="center">
+          <Text color="black" fontSize={{ base: "xl", md: "120%" }} pb={3} px={2} w="100%" fontFamily="Work sans" d="flex" justifyContent={{ base: "space-between" }} alignItems="center">
             <IconButton d={{ base: "flex", md: "none" }} icon={<ArrowBackIcon />} onClick={() => setSelectedChat("")} marginTop="-0.3%" marginRight="2%" background="transparent" color="black" />
             {messages && (!selectedChat.isGroupChat ? (
               <>
                 {getSenderName(user, selectedChat.users)}
-                {/* <Profile user={getFullSender(user, selectedChat.users)} /> */}
+                <Profile user={getFullSender(user, selectedChat.users)} />
               </>
             ) : (
               <>
@@ -170,9 +171,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         </>
       ) : (
         <Box>
-          {/* <Text fontSize={{ base: "xl", md: "2xl" }} pb={3} fontFamily="Work sans">
-            Click on a user to start chatting
-          </Text> */}
+          <Text marginTop="20%" textAlign="center" fontSize={{ base: "xl", md: "2xl" }} pb={3} fontFamily="Work sans">
+            Click on a user to start chatting with!
+          </Text>
         </Box>
       )}
     </>

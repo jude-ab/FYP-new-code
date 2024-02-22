@@ -12,26 +12,31 @@ import {
   IconButton,
   Text,
   Image,
+  Flex,
 } from "@chakra-ui/react";
 
 const Profile = ({ user, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  console.log(user); // Add this to check if the user prop is passed correctly
 
   return (
     <>
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
-        <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
+        <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} background="transparent" marginLeft="3%" marginTop="-0.2%"/>
       )}
       <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
         <ModalContent h="410px">
           <ModalHeader
-            fontSize="40px"
+            fontSize="25px"
             fontFamily="Work sans"
             d="flex"
             justifyContent="center"
+            textAlign="center"
+            marginTop="5%"
           >
             {user.username}
           </ModalHeader>
@@ -42,22 +47,23 @@ const Profile = ({ user, children }) => {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Image
-              borderRadius="full"
-              boxSize="150px"
-              src={user.pfp}
-              alt={user.username}
-            />
+            <Flex justify="center" align="center">
+              <Image
+                borderRadius="full"
+                boxSize="150px"
+                src={user.profilePic}
+                alt={user.username}
+              />
+            </Flex>
             <Text
-              fontSize={{ base: "28px", md: "30px" }}
+              fontSize={{ base: "20px", md: "25px" }}
               fontFamily="Work sans"
+              textAlign="center"
+              marginTop="9%"
             >
               Email: {user.email}
             </Text>
           </ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

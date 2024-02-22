@@ -11,15 +11,17 @@ const UserBadge = ({ user, handleFunction }) => {
       width="fit-content"
       m={1}
       mb={2}
-      variant="solid"
+      variant='outline'
       fontSize={12}
-      backgroundColor="teal"
-      color="white"
+      colorScheme="#0C301F"
+      color="black"
       cursor="pointer"
+      flexDirection="row"
+      d="flex"
       onClick={handleFunction}
     >
       {user.username}
-      <CloseIcon />
+      <CloseIcon marginLeft="2%" boxSize="2.5%"/>
     </Box>
   );
 };

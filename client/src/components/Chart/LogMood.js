@@ -18,13 +18,13 @@ import {
   HStack,
   IconButton
 } from "@chakra-ui/react";
-import frustratedImg from '../../assets/images/o_frustrated.png';
-import sadImg from '../../assets/images/ou_sad.png';
-import anxiousImg from '../../assets/images/o_anxious.png';
-import happyImg from '../../assets/images/o_happy.png';
+import frustratedImg from '../../assets/images/lightning.png';
+import sadImg from '../../assets/images/rain (4).png';
+import anxiousImg from '../../assets/images/hurricane.png';
+import happyImg from '../../assets/images/sun (2).png';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import backgroundImage from '../../assets/images/yoga1.png';
+import backgroundImage from '../../assets/images/moodpose.png';
 import SidePopUp from "../Mcomponents/SidePopUp";
 import { DeleteIcon } from "@chakra-ui/icons";
 
@@ -238,8 +238,6 @@ const deleteMood = async (moodId) => {
   }
 };
 
-
-
     return (
      <Box height="100vh" overflowY="auto">
       <Box
@@ -260,11 +258,14 @@ const deleteMood = async (moodId) => {
         <Text fontSize="3xl" my="4" fontFamily="Work sans" fontWeight="bold" textAlign="center">
           How are you feeling today?
         </Text>
-         <Text fontSize="xl"  fontFamily="Work sans" fontWeight="bold" textAlign="center">
-          Based on how you're currently feeling, we will keep track of your mood and recommend yoga poses tailored just for you! 
-        </Text>          
+         <Text fontSize="xl" fontFamily="Work sans" fontWeight="bold" textAlign="center">
+            Based on how you're currently feeling, we will keep track of your mood and recommend yoga poses tailored just for you!
+            </Text>
+            <Text fontSize="xl" fontFamily="Work sans" fontWeight="bold" textAlign="center">
+            Just click on the mood you're feeling right now.
+        </Text>            
         <Text fontSize="xl"  fontFamily="Work sans" fontWeight="bold" textAlign="center">
-            Check Mood Stats to see how you've been feeling over time, and to get health plan recommendations.
+            Check Mood Stats to see how you've been feeling over time and to get health plan recommendations.
         </Text>        
         <Flex
             direction="row" // Stack children vertically
@@ -287,6 +288,9 @@ const deleteMood = async (moodId) => {
             onClick={() => handleGetRecommendations(mood)} 
             marginLeft="-45%"
             marginTop="-20%"
+             _hover={{ bg: "#1E4D38" }}
+            backgroundColor="#0C301F"
+            color='white'    
         >
             Get Recommendations
         </Button>   

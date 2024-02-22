@@ -148,7 +148,7 @@ const GroupChatM = ({ children }) => {
             Create Group Chat
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody d="flex" flexDir="column" alignItems="center">
+          <ModalBody fontFamily="Work sans" d="flex" flexDir="column" alignItems="center">
             <FormControl>
               <Input
                 placeholder="Name"
@@ -165,7 +165,7 @@ const GroupChatM = ({ children }) => {
                 fontFamily="Work sans"
               />
             </FormControl>
-            <Box w="100%" d="flex" flexWrap="wrap" justifyContent="center">
+            <Box fontFamily="Work sans" w="100%" d="flex" flexWrap="wrap" justifyContent="center">
               {selectedUsers.map((user) => (
                 <UserBadge
                   key={user._id}

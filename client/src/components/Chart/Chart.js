@@ -374,7 +374,7 @@ const updateChartDataForMonth = () => {
 
 
   return (
-  <div style={{ position: 'relative', height: '100vh',  overflowY:"auto"}}>
+  <div style={{ fontFamily:"Work sans" ,position: 'relative', height: '100vh',  overflowY:"auto"}}>
     {/* Background image */}
     <Box 
       position="fixed"
@@ -411,6 +411,7 @@ const updateChartDataForMonth = () => {
       padding="1%"
       height="60%"
       marginTop="1%" // Adjusted margin to accommodate the buttons
+      fontFamily="Work sans"  
     > 
         <Pie data={chartData} options={options} />
         {!isPieChartVisible && (
@@ -428,7 +429,7 @@ const updateChartDataForMonth = () => {
       <select
         value={selectedYear}
         onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-        style={{ width: '18%', padding: '1px', marginLeft: '-20%', marginRight:"1%" }} // Adjusted width and added margin-right for spacing
+        style={{ width: '18%', padding: '1px', marginLeft: '-20%', marginRight:"1%", borderRadius:"5px", fontFamily:"Work sans"}} // Adjusted width and added margin-right for spacing
       > 
         {years.map(year => (
           <option key={year} value={year}>{year}</option>
@@ -437,32 +438,33 @@ const updateChartDataForMonth = () => {
       <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-          style={{ width: '18%', padding: '1px' }}
+          style={{ width: '18%', padding: '1px' , borderRadius:"5px", fontFamily:"Work sans"}}
         >
           {monthNames.map((name, index) => (
             <option key={index} value={index + 1}>{name}</option> // Display month names, store 1-based month number
           ))}
         </select>  
-      <button
-        onClick={updateChartDataForMonth}    
-        style={{
-          width: '30%', // Corrected padding syntax
-          backgroundColor: 'transparent', // For a 'ghost' button look
-          color: 'black',
-          border: '1px solid black', // Add a border to simulate Chakra UI's 'ghost' variant
+      <Button
+          onClick={updateChartDataForMonth}   
+          colorScheme='#0C301F'
+          variant='outline'    
+          fontFamily="Work sans"
+          fontSize="90%"
+          // size="sm"
+          height="25px"
+           style={{
+          width: '25%', // Corrected padding syntax
           cursor: 'pointer', // Change cursor to pointer on hover
           borderRadius: '10px',
           marginLeft: '2%', // Adjusted margin-right for spacing
         }}
       >
         Update Chart
-      </button>
+      </Button>
       </div>
 
     {/* <button onClick={updateChartDataForMonth}>Update Chart</button> */}
       
-
-
     {/* Navigation buttons */}
     {/* <div style={{ position: 'absolute', top: '78%', left: '70%', transform: 'translateX(-50%)' }}>
       <Button background="transparent" onClick={handlePrevWeek} disabled={visibleWeek === 0}>
@@ -474,7 +476,6 @@ const updateChartDataForMonth = () => {
       </Button>
     </div> */}
       
-
     {/* Get Health Plan Recommendation button */}
     <Button
       _hover={{ bg: "#1E4D38" }}
@@ -484,6 +485,7 @@ const updateChartDataForMonth = () => {
       color='white'
       variant='outline'
       onClick={handleRecommendationClick}
+      fontFamily="Work sans"
     >
       Get Health Plan Recommendation
     </Button>
@@ -521,7 +523,7 @@ const updateChartDataForMonth = () => {
         Its capacity to connect mind, body, and spirit is what gives it its transformational power.
         It has significant positive effects on mental health, such as lowered stress levels, happier moods, and increased emotional fortitude.
         People can proactively cultivate their mental and emotional well-being and live a more vibrant and fulfilling life by adopting these comprehensive health plan pillars.
-        Find out here what health plan is recommended for you!
+        Find out here what health plan is recommended for you now based on your current mood stats!
       </Text>
     </div>
 
