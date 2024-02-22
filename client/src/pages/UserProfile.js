@@ -84,8 +84,15 @@ function UserProfile() {
       },
     };
 
-    try {
-      const { data } = await axios.put('/api/user/profile', editFields, config);
+   try {
+      // Include the profile picture URL in the payload if it's been changed
+      const payload = { ...editFields };
+      if (editFields.profilePic) {
+        payload.profilePic = editFields.profilePic;
+      }
+
+      // Send the PUT request to the backend with the user's updated information
+      const { data } = await axios.put('/api/user/profile', payload, config);
       setUserProfile(data);
       toast({
         title: "Profile Updated",
@@ -120,11 +127,42 @@ function UserProfile() {
   if (!userProfile && !user) {
     return <Box>Loading...</Box>;
   }
+  
+  const handleProfilePicChange = (e) => {
+  if (e.target.files && e.target.files[0]) {
+    const imageFile = e.target.files[0];
+    uploadProfilePicture(imageFile);
+  }
+};
 
+  const uploadProfilePicture = (imageFile) => {
+  const formData = new FormData();
+  formData.append('file', imageFile);
+  formData.append('upload_preset', 'chat-app'); // Replace with your preset
+  formData.append('cloud_name', 'ddoxolplz'); // Replace with your cloud name
+
+  axios.post('https://api.cloudinary.com/v1_1/ddoxolplz/image/upload', formData)
+    .then((response) => {
+      const imageUrl = response.data.url;
+      setEditFields(prevFields => ({ ...prevFields, profilePic: imageUrl }));
+    })
+    .catch((error) => {
+      console.error('Error uploading image:', error);
+      toast({
+        title: "Error uploading image",
+        description: "Unable to upload image. Please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    });
+};
+
+  
   return (
     <Box position="relative" width="100vw" height="100vh" overflowY="auto">
       <Box
-        position="absolute"
+        position="fixed"
         top={0}
         right={0}
         bottom={0}
@@ -140,7 +178,24 @@ function UserProfile() {
       <SidePopUp />
       <Flex align="center" justifyContent="center" pt={10} marginTop="2%">
         <VStack spacing={5} width="full" maxW="500px">
-          <Avatar size="2xl" name={userProfile ? userProfile.username : user ? user.username : ''} src={userProfile ? userProfile.pfp : user ? user.pfp : ''} />
+          <Avatar
+            size="2xl"
+            name={userProfile ? userProfile.username : user ? user.username : ''}
+            src={editMode ? editFields.profilePic : (userProfile ? userProfile.profilePic : user ? user.profilePic : '')}
+          />
+          {editMode && (
+          <FormControl id="profilePic">
+            <FormLabel textAlign="center"> Edit Profile Picture</FormLabel>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePicChange}
+              bg="transparent"
+              width="49%"  
+              marginLeft="23%"  
+            />
+          </FormControl>
+        )}
           <FormControl id="username">
             <FormLabel>Name</FormLabel>
             <Input

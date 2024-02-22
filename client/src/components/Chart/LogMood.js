@@ -23,15 +23,10 @@ import sadImg from '../../assets/images/rain (4).png';
 import anxiousImg from '../../assets/images/hurricane.png';
 import happyImg from '../../assets/images/sun (2).png';
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import backgroundImage from '../../assets/images/moodpose.png';
 import SidePopUp from "../Mcomponents/SidePopUp";
 import { DeleteIcon } from "@chakra-ui/icons";
-
-const CustomModalBody = styled(ModalBody)`
-  max-height: 400px;
-  overflow-y: auto;
-`;
+import PoseDetailsModal from './PoseDetailsModal';
 
 const LogMood = () => {
 
@@ -45,8 +40,6 @@ const LogMood = () => {
   const [selectedPose, setSelectedPose] = useState(null);
   const { isOpen: isPoseDetailsOpen, onOpen: onPoseDetailsOpen, onClose: onPoseDetailsClose } = useDisclosure();
   const [yogaPoses, setYogaPoses] = useState([]);
-
-  const [scrollBehavior, setScrollBehavior] = React.useState('inside')
     
   const [todaysMoods, setTodaysMoods] = useState([]);
 
@@ -131,19 +124,19 @@ function handleGetRecommendations(mood) {
 const handleMoreInfo = async (poseId) => {
   console.log('Clicked poseId:', poseId);
   try {
-    // Use the new endpoint for fetching by ID
     const response = await fetch(`http://localhost:4000/api/yoga/poses/${poseId}`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
     const poseDetails = await response.json();
+    console.log('Pose details:', poseDetails); // Ensure this logs expected details
     setSelectedPose(poseDetails);
-    onPoseDetailsOpen();
+    onPoseDetailsOpen(); // Ensure this is being called
   } catch (error) {
     console.error('Error fetching pose details:', error);
   }
 };
-    
+
      async function fetchYogaPoses() {
   try {
     const response = await fetch('http://localhost:4000/api/yoga/poses'); 
@@ -241,7 +234,7 @@ const deleteMood = async (moodId) => {
     return (
      <Box height="100vh" overflowY="auto">
       <Box
-        position="absolute"
+        position="fixed"
         top={0}
         right={0}
         bottom={0}
@@ -319,12 +312,12 @@ const deleteMood = async (moodId) => {
             )}
         </VStack>
         </Box>
-      <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose} size="4xl" isCentered>
+      <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose} >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent maxW="3xl">
           <ModalHeader fontFamily="Work sans" textAlign="center">Your Yoga Recommendations</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody >
          <SimpleGrid columns={[1, 2]} spacing={5}>
           {paginatedPoses.map((poseName, index) => {
             const pose = yogaPoses.find(p => p.AName === poseName); // Find the pose object by name
@@ -362,20 +355,11 @@ const deleteMood = async (moodId) => {
     </ModalBody>
   </ModalContent>
   </Modal>
-  <Modal isOpen={isPoseDetailsOpen} onClose={onPoseDetailsClose} size="lg" isCentered scrollBehavior={scrollBehavior}>
-  <ModalOverlay />
-  <ModalContent>
-    <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
-    <ModalCloseButton />
-    <CustomModalBody fontFamily="Work sans">
-    <Text mb={2}>Level: {selectedPose?.Level}</Text>
-    <Text mb={2}>Description: {selectedPose?.Description}</Text>
-    <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
-    <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
-    <Text mb={2}>Awareness: {selectedPose?.Awareness}</Text>
-    </CustomModalBody>
-  </ModalContent>
-</Modal> 
+  <PoseDetailsModal
+  isOpen={isPoseDetailsOpen}
+  onClose={onPoseDetailsClose}
+  pose={selectedPose}
+/>    
 </Box>
   );
 }

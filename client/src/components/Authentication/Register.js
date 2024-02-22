@@ -56,7 +56,7 @@ const Register = () => {
       });
       return;
     }
-    console.log(username, password, email, pfp);
+    console.log(username, password, email,pfp);
 
     // Check if the email is valid or not
     try {
@@ -67,7 +67,7 @@ const Register = () => {
       };
       const { data } = await axios.post(
         "/api/user",
-        { username, password, email, pfp },
+        { username, password, email, profilePic:pfp },
         config
       );
       console.log(data);
@@ -131,6 +131,7 @@ const Register = () => {
       })
         .then((res) => res.json())
         .then((data) => {
+          console.log("Cloudinary response:", data);
           setPfp(data.url.toString());
           setLoading(false); // set loading to false once the image is uploaded
         })

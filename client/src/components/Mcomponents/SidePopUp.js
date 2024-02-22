@@ -200,7 +200,7 @@ const SidePopUp = () => {
                 size="sm"
                 cursor="pointer"
                 name={user.name}
-                src={user.pfp}
+                src={user.profilePic}
                 marginTop="4px"
                 marginRight="50px"
               />

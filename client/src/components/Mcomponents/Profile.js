@@ -20,16 +20,16 @@ const Profile = ({ user, children }) => {
 
   console.log(user); // Add this to check if the user prop is passed correctly
 
-  return (
+ return (
     <>
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
         <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} background="transparent" marginLeft="3%" marginTop="-0.2%"/>
       )}
-      <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
+      <Modal height="50%" onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
-        <ModalContent h="410px">
+        <ModalContent maxH="600px" overflowY="auto">
           <ModalHeader
             fontSize="25px"
             fontFamily="Work sans"
@@ -56,13 +56,35 @@ const Profile = ({ user, children }) => {
               />
             </Flex>
             <Text
-              fontSize={{ base: "20px", md: "25px" }}
+              fontSize={{ base: "20px", md: "18px" }}
               fontFamily="Work sans"
               textAlign="center"
-              marginTop="9%"
+              marginTop="5%"
             >
               Email: {user.email}
             </Text>
+           {/* Conditional rendering for about section */}
+           {user.dob && (
+            <Text
+              fontSize={{ base: "20px", md: "18px" }}
+              fontFamily="Work sans"
+              textAlign="center"
+              marginTop="5%"
+            >
+              Date of Birth: {new Date(user.dob).toLocaleDateString()}
+            </Text>
+          )}
+            {user.about && (
+              <Text
+                fontSize={{ base: "20px", md: "18px" }}
+                fontFamily="Work sans"
+                textAlign="center"
+                marginTop="5%"
+                marginBottom="3%"
+              >
+               About: {user.about}
+              </Text>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>

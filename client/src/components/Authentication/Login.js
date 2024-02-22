@@ -63,7 +63,7 @@ const Login = () => {
       setUser(data);
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      history.push("/chats");
+      history.push("/yogaLibrary");
     } catch (error) {
       toast({
         title: "Error",

@@ -52,7 +52,7 @@ function HealthPlanModal({ recommendation, isOpen, onClose }) {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>Aspect</Th>
+                <Th>To Do</Th>
                 <Th>Detail</Th>
               </Tr>
             </Thead>
