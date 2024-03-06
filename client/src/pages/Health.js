@@ -1,6 +1,6 @@
 import React from 'react';
 import SidePopUp from "../components/Mcomponents/SidePopUp";
-import { Box } from '@chakra-ui/react';
+import { Box,  Flex } from '@chakra-ui/react';
 import Chart from "../components/Chart/Chart.js";
 import yogaimage from '../assets/images/white.png';
 
@@ -22,16 +22,22 @@ const Health = () => {
         backgroundSize="cover"
         backgroundPosition="center"
         backgroundRepeat="no-repeat"
-        filter="blur(3px)" // Apply blur to just the background image
+        filter="blur(3px)"
         zIndex={-1}
       />
       <SidePopUp />
-      <div className="stats-con" >
-        <div className="chart-con" >
-          {/* Pass the userId to the Chart component */}
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        height="100%"
+        padding="4"
+      >
+        {/* Adjust Flex properties as needed based on your layout */}
+        <Box width={{ base: "90%", md: "50%", lg: "40%" }} height="auto">
           <Chart userId={userId} />
-        </div>
-      </div>
+        </Box>
+      </Flex>
       </Box>
   );
 };
