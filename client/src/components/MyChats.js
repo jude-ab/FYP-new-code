@@ -137,17 +137,17 @@ const MyChats = ({ fetchAgain }) => {
 
   return (
     <Box
-      d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
-      flexDir="column"
-      w={{ base: "100%", md: "30%" }}
+      display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+      flexDirection="column"
+      width={{ base: "100%", md: "30%" }}
       alignItems="center"
-      p={3}
+      padding={3}
       bg="rgba(255, 255, 255, 0.9)"
       borderRadius="lg"
       borderWidth="1px"
-      h="88vh"
-      marginTop="5%"
-      marginLeft="2%"
+      height={{ base: "auto", md: "88vh" }} // Adjust height responsively
+      marginTop={{ base: "1rem", md: "5%" }}
+      marginLeft={{ base: "0", md: "2%" }}
     >
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay bg="transparent" />
@@ -206,69 +206,53 @@ const MyChats = ({ fetchAgain }) => {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-      <Box
-        pb={3}
-        px={3}
-        fontSize={{ base: "xl", md: "2xl" }}
-        fontFamily="monospace"
-        d="flex"
-        w={{ base: "100%", md: "50%" }}
-        justifyContent="space-between"
+       <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
         alignItems="center"
+        marginBottom="4" // Add some space between this section and the list below
       >
-        <Tooltip label="Search for friends to chat with!" hasArrow placement="bottom">
-          <Button
-            marginTop="5%"
-            marginLeft="1%"
-            width="150%"
-            height="31px"
-            variant="outline"
-            onClick={onOpen}
-          >
-            <SearchIcon boxSize="40%" marginLeft="-95%" />
-            <Text
-              d={{ base: "none", md: "flex" }}
-              px="2"
-              fontSize="90%"
-              fontFamily="Work sans"
-              marginLeft="-18%"
-            >
+          <Tooltip label="Search for friends to chat with!" hasArrow placement="bottom-end">
+            <Button onClick={onOpen} variant="outline" width="full" justifyContent="start">
+            <SearchIcon w={3} h={5} marginRight="2" />
+            <Text fontSize={{ base: "sm", md: "15px" }} fontFamily="Work sans">
               Search
             </Text>
           </Button>
         </Tooltip>
         <Text
-          d={{ base: "none", md: "flex" }}
-          px="2"
-          fontSize="30px"
+          fontSize={{ base: "25px", md: "28px" }}
           fontFamily="Work sans"
-          marginLeft="-4%"
-          marginTop="7%"
+          textAlign="center"
+          marginTop="2" // Ensures space between the search bar and "Inbox" text
+          marginLeft="-79%"
         >
           Inbox
         </Text>
         <GroupChatM>
           <Button
-            d="flex"
-            fontSize={{ base: "md", md: "sm" }}
-            rightIcon={<AddIcon marginLeft="50%" boxSize="5%" />}
-            marginLeft="190%"
-            marginTop="-111.5%"
-            background="transparent"
-          >
+          d="flex"
+          alignItems="center"
+          fontSize={{ base: "sm", md: "sm" }}
+          rightIcon={<AddIcon />}
+          variant="ghost"
+          marginTop="-145%" // Adjusted for visual consistency
+          marginLeft="330%"  
+        >
             {/* Create New Group Chat */}
           </Button>
         </GroupChatM>
       </Box>
       <Box
-        d="flex"
-        flexDir="column"
-        w="100%"
-        overflowY="hidden"
+        display="flex"
+        flexDirection="column"
+        width="100%"
+        overflowY="scroll" // Ensure scrollability
         bg="#f5f5f5"
         borderRadius="lg"
-        p={3}
-        marginTop="-10.5%"
+        padding={1}
+        marginTop="0rem" // Adjust marginTop for consistency
         background="transparent"
       >
         {chats ? (

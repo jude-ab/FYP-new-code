@@ -19,24 +19,25 @@ const Chat = () => {
         h="100vh"
         p="0"
         m="0"
-        overflow="hidden" // Ensure that the outer Box doesn't allow content to overflow
+        overflow="hidden"
       >
         <Box
           backgroundImage={`url(${backgroundImage})`}
           backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
-          filter="blur(3px)" // Apply blur to just the background image
+          filter="blur(3px)"
           w="100%"
           h="100%"
           position="fixed"
-          zIndex="-1" // Ensure the background image stays behind the content
+          zIndex="-1"
         />
         <Box
-          d="flex"
+          display={{ base: "block", md: "flex" }} // Use Chakra UI's responsive styles directly
           justifyContent="space-between"
           h="100%"
-          overflowY="auto" // Enable vertical scrolling for the inner Box
+          overflowY="auto"
+          pt={{ base: "60px", md: "0px" }} // Add top padding on smaller screens
         >
           {user && <MyChats fetchAgain={fetchAgain} />}
           {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}

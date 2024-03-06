@@ -126,7 +126,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       {selectedChat ? (
         <>
           <Text color="black" fontSize={{ base: "xl", md: "120%" }} pb={3} px={2} w="100%" fontFamily="Work sans" d="flex" justifyContent={{ base: "space-between" }} alignItems="center">
-            <IconButton d={{ base: "flex", md: "none" }} icon={<ArrowBackIcon />} onClick={() => setSelectedChat("")} marginTop="-0.3%" marginRight="2%" background="transparent" color="black" />
+            <IconButton d={{ base: "flex", md: "none" }} icon={<ArrowBackIcon />} onClick={() => setSelectedChat(null)} marginTop="-0.3%" marginRight="2%" background="transparent" color="black" />
             {messages && (!selectedChat.isGroupChat ? (
               <>
                 {getSenderName(user, selectedChat.users)}

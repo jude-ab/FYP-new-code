@@ -24,8 +24,8 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       backgroundPosition="center"
       backgroundRepeat="no-repeat"
       zIndex={-1}
-      marginLeft="32.5%"
-      marginTop="-41.5%"
+      marginRight="2%"
+      marginTop="5%"
       height="88%"
     >
       <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />

@@ -67,7 +67,7 @@ const SidePopUp = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        bg="transparent" 
+        bg="transparent"
         w="100%"
         p="5px 10px"
         boxShadow="sm"
@@ -76,14 +76,14 @@ const SidePopUp = () => {
         position="fixed"
         left="0"
         right="0"
-        width="100vw"
       >
         <Tooltip label="Menu" hasArrow placement="bottom-end">
-          <Button
+           <Button
             variant="ghost"
             onClick={onOpen}
             color="black"
-            marginRight="84%"
+            // Use responsive styles for marginRight
+            marginRight={{ base: "0", md: "5%", lg: "84%" }}
           >
             <i className="fa-solid fa-bars"></i>
           </Button>
@@ -168,9 +168,9 @@ const SidePopUp = () => {
         </Text>
 
         {user ? (
-          <Box display="flex">
+            <Box display="flex" alignItems="center" justifyContent="flex-end" width={{ base: "50%", md: "auto" }}>
             <Menu>
-              <MenuButton p={1}>
+              <MenuButton p={1} mr={{ base: "2", md: "4" }}>
                 <NotificationBadge count={notif.length} effect={Effect.SCALE} />
                 <BellIcon fontSize="2xl" m={1} color="black"  />
               </MenuButton>
@@ -195,14 +195,15 @@ const SidePopUp = () => {
               </MenuList>
             </Menu>
             <Menu>
-              <MenuButton
+             <MenuButton
                 as={Avatar}
                 size="sm"
                 cursor="pointer"
                 name={user.name}
                 src={user.profilePic}
-                marginTop="4px"
-                marginRight="50px"
+                // Adjust margins responsively
+                mt="4px"
+                mr={{ base: "2", md: "4", lg: "50px" }}
               />
               <MenuList>
                 <MenuItem onClick={profileNav}>My Profile</MenuItem>
