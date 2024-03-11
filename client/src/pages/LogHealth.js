@@ -10,7 +10,7 @@ const LogHealth = () => {
   const history = useHistory();
 
   return (
-    <Box position="relative" width="100vw" height="100vh" overflowY="auto">
+     <Box position="relative" width="100vw" height="100vh" overflowY="auto">
       <Box
         position="absolute"
         top={0}
@@ -26,11 +26,15 @@ const LogHealth = () => {
       />
       <SidePopUp />
       <VStack
-        marginTop={{ base: "15%", md: "15%" }} // Adjust based on the size of the SidePopUp
-        justifyContent="center" // Center items vertically (useful if the content is shorter than 100vh)
-        spacing={4} alignItems="flex-start">
+        marginTop={{ base: "15%", md: "9%" }}
+        justifyContent="center"
+        spacing={10}
+        alignItems="flex-start"
+        marginLeft={{ base: "10%", md: "20%" }}
+      >
         <Flex
-          width={{ base: "90%", md: "60%" }}
+          width={{ base: "90%", md: "77%" }}
+          minHeight="200px" // Example minimum height
           direction={{ base: "column", md: "row" }}
           textAlign="center"
           borderRadius="20px"
@@ -39,26 +43,32 @@ const LogHealth = () => {
           background="rgba(255, 255, 255, 0.95)"
           shadow="md"
           alignItems="center"
-          maxHeight="250px"
           p={3}
         >
-          <Image borderRadius="20px" maxHeight="230px" src={moodimage} width={{ base: "70%", md: "50%" }} />
+          <Image
+            borderRadius="20px"
+            src={moodimage}
+            width={{ base: "100%", md: "70%" }} // Adjust width as needed
+            maxHeight="150px" // Keep the maxHeight to limit the height
+            objectFit="contain" // Ensure the image aspect ratio is maintained
+            m={3}
+          />
           <Button
             onClick={() => history.push('/logMood')}
-            colorScheme="teal"
             variant='ghost'
-            size="md"
             flexGrow={1}
             _hover={{ bg: '#ebedf0' }}
             fontFamily="Work sans"
             fontSize={{ base: "md", md: "lg" }}
+            marginRight="11%"
           >
             Log Mood
           </Button>
         </Flex>
         
         <Flex
-          width={{ base: "90%", md: "60%" }}
+          width={{ base: "90%", md: "77%" }}
+          minHeight="200px" // Example minimum height
           direction={{ base: "column", md: "row" }}
           textAlign="center"
           borderRadius="20px"
@@ -67,18 +77,23 @@ const LogHealth = () => {
           background="rgba(255, 255, 255, 0.95)"
           shadow="md"
           alignItems="center"
-          maxHeight="250px"
           p={3}
         >
-          <Image borderRadius="20px" maxHeight="230px" src={statimage} width={{ base: "70%", md: "50%" }} />
+         <Image
+            borderRadius="20px"
+            src={statimage}
+            width={{ base: "100%", md: "70%" }} // Adjust width as needed
+            maxHeight="150px" // Keep the maxHeight to limit the height
+            objectFit="contain" // Ensure the image aspect ratio is maintained
+            m={3}
+          />
           <Button
             onClick={() => history.push('/moodStats')}
-            colorScheme="teal"
             variant='ghost'
-            size="md"
             flexGrow={1}
             _hover={{ bg: '#ebedf0' }}
             fontFamily="Work sans"
+            marginRight="11%"
             fontSize={{ base: "md", md: "lg" }}
           >
             Mood Stats
@@ -88,5 +103,6 @@ const LogHealth = () => {
     </Box>
   );
 };
+
 
 export default LogHealth;
