@@ -150,7 +150,6 @@ const PosesByLevel = ({ match }) => {
               <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
               <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
               <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
-              {/* Make sure the path to the image is correct */}
               {selectedPose?.ImagePath && (
                   <img src={`http://localhost:4001/${selectedPose.ImagePath}`} alt={selectedPose.AName} style={{ width: '100%', marginTop: '10px' }} />
               )}
