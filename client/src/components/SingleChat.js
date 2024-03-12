@@ -126,7 +126,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       {selectedChat ? (
         <>
           <Text color="black" fontSize={{ base: "xl", md: "120%" }} pb={3} px={2} w="100%" fontFamily="Work sans" d="flex" justifyContent={{ base: "space-between" }} alignItems="center">
-            <IconButton d={{ base: "flex", md: "none" }} icon={<ArrowBackIcon />} onClick={() => setSelectedChat(null)} marginTop="-0.3%" marginRight="2%" background="transparent" color="black" />
+            <IconButton
+              d={{ base: "flex", md: "none" }}
+              icon={<ArrowBackIcon />} onClick={() => setSelectedChat(null)}
+              marginTop="-0.3%" marginRight="2%"
+              background="transparent"
+              color="black" />
             {messages && (!selectedChat.isGroupChat ? (
               <>
                 {getSenderName(user, selectedChat.users)}
@@ -160,9 +165,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   />
                 )}
                 <InputGroup width="100%">
-                  <Input marginTop="-2%" variant="filled" bg="#F0F0F0" placeholder="Enter a message..." value={newMessage} onChange={typingHandler} />
+                  <Input
+                    marginTop={{ base: "-7%", md: "-2%" }}
+                    variant="filled"
+                    bg="#F0F0F0"
+                    placeholder="Enter a message..."
+                    value={newMessage}
+                    onChange={typingHandler}
+                  />
                   <InputRightElement>
-                    <IconButton icon={<ChevronRightIcon />} marginTop="-80%" onClick={sendMessage} mr={5} background="#A3B3A7" width={{ base: "10%", md: "3%" }} height="60%" />
+                    <IconButton
+                      icon={<ChevronRightIcon />}
+                      marginTop={{ base: "-100%", md: "-80%" }}
+                      onClick={sendMessage}
+                      mr={5} background="#A3B3A7"
+                      width={{ base: "10%", md: "3%" }}
+                      height="60%" />
                   </InputRightElement>
                 </InputGroup>
               </Box>

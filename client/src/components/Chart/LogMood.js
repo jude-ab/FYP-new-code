@@ -23,7 +23,7 @@ import sadImg from '../../assets/images/rain (4).png';
 import anxiousImg from '../../assets/images/hurricane.png';
 import happyImg from '../../assets/images/sun (2).png';
 import { useState, useEffect } from 'react';
-import backgroundImage from '../../assets/images/moodpose.png';
+import backgroundImage from '../../assets/images/log.png';
 import SidePopUp from "../Mcomponents/SidePopUp";
 import { DeleteIcon } from "@chakra-ui/icons";
 import PoseDetailsModal from './PoseDetailsModal';
@@ -232,136 +232,154 @@ const deleteMood = async (moodId) => {
 };
 
     return (
-     <Box height="100vh" overflowY="auto">
-      <Box
-        position="fixed"
-        top={0}
-        right={0}
-        bottom={0}
-        left={0}
-        backgroundImage={`url(${backgroundImage})`}
-        backgroundSize="cover"
-        backgroundPosition="center"
-        backgroundRepeat="no-repeat"
-        filter="blur(3px)"
-        zIndex={-1}
-      />
-      <Flex marginTop="4%"justifyContent="center" alignItems="center" flexDirection="column">
-        <SidePopUp />
-        <Text fontSize="3xl" my="4" fontFamily="Work sans" fontWeight="bold" textAlign="center">
-          How are you feeling today?
-        </Text>
-         <Text fontSize="xl" fontFamily="Work sans" fontWeight="bold" textAlign="center">
-            Based on how you're currently feeling, we will keep track of your mood and recommend yoga poses tailored just for you!
-            </Text>
-            <Text fontSize="xl" fontFamily="Work sans" fontWeight="bold" textAlign="center">
-            Just click on the mood you're feeling right now.
-        </Text>            
-        <Text fontSize="xl"  fontFamily="Work sans" fontWeight="bold" textAlign="center">
-            Check Mood Stats to see how you've been feeling over time and to get health plan recommendations.
-        </Text>        
-        <Flex
-            direction="row" // Stack children vertically
-            align="center" // Center children horizontally
-            justify="center" // Center children vertically
-            height="100vh" // Full viewport height
-            width="100vw" // Full viewport width
-            position="relative" // For absolutely positioned children
-            marginTop="-17%"
-            marginLeft="9%"        
-        >
-         {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
+  <Box position="relative" width="100vw" height="100vh" overflowY="auto">
+    <Box
+      position="fixed"
+      top="0"
+      left="0"
+      right="0"
+      bottom="0"
+      backgroundImage={`url(${backgroundImage})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+      filter="blur(3px)"
+      zIndex="-1"
+    />
+    <SidePopUp />
+    <VStack spacing="15px" paddingTop="100px" alignItems="center" marginLeft={{base: "2%", md: "2%" }} marginTop="-2%">
+      <Text fontFamily="Work sans" fontSize="2xl" fontWeight="bold" textAlign="center" paddingX="2">
+        How are you feeling today?
+      </Text>
+      <Text fontSize="xl" fontFamily="Work sans" color="black" textAlign="center">
+        Based on how you're currently feeling, we will keep track of your mood and recommend yoga poses tailored just for you!
+      </Text>
+      <Text fontSize="xl" fontFamily="Work sans" color="black" textAlign="center">
+        Just click on the mood you're feeling right now.
+      </Text>
+      <Text fontSize="xl" fontFamily="Work sans" color="black" textAlign="center">
+        Check Mood Stats to see how you've been feeling over time and to get health plan recommendations.
+      </Text>
+      <Flex
+  wrap="wrap" // Allow items to wrap in smaller screens
+  justify="center" // Center items horizontally
+  align="center" // Center items vertically
+  marginTop="4%"
+  fontWeight="bold"
+>
+  {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
     .map(({ src, mood }) => (
-      <Box key={mood} textAlign="center" mx="1rem" my="0.5rem">
-        <Image src={src} boxSize="100px" objectFit="cover" cursor="pointer" onClick={() => handleMoodClick(mood)} />
-        <Text fontFamily="Work sans" mt="1rem">{mood.charAt(0).toUpperCase() + mood.slice(1)}</Text>
-         <Button
-            fontFamily="Work sans"
-            borderRadius="13px"
-            onClick={() => handleGetRecommendations(mood)} 
-            marginLeft="-45%"
-            marginTop="-20%"
-             _hover={{ bg: "#1E4D38" }}
-            backgroundColor="#0C301F"
-            color='white'    
+      <Flex
+        key={mood}
+        direction="column" // Stack items vertically
+        align="center" // Center items horizontally
+        m="2" // Margin for spacing between items
+        textAlign="center"
+      >
+        <Image
+          src={src}
+          boxSize={["70px", "90px", "100px"]} // Responsive sizes
+          objectFit="cover"
+          cursor="pointer"
+          onClick={() => handleMoodClick(mood)}
+        />
+        <Text
+          fontFamily="Work sans"
+          mt="1rem"
+          fontSize={["sm", "md"]} // Responsive font size
         >
-            Get Recommendations
-        </Button>   
-        </Box>
-        
-        ))}
-                
-        </Flex>
-        </Flex>
-        <Box background="rgba(255, 255, 255, 0.7)" width="50%" padding={4} boxShadow="lg" borderRadius="15px" marginLeft="25%" marginBottom="3%" marginTop="-15%">
-        <VStack>
-            {todaysMoods.length > 0 ? (
-            todaysMoods.map((mood) => (
-                <HStack key={mood._id} width="full" justifyContent="space-between">
-                <Text>{mood.mood}</Text>
-                <IconButton
-                    aria-label="Delete Mood"
-                    icon={<DeleteIcon />}
-                    onClick={() => deleteMood(mood._id)}   
-                    background="transparent"    
-                />
-                </HStack>
-            ))
-            ) : (
-            <Text>No moods logged for today.</Text>
-            )}
-        </VStack>
-        </Box>
-      <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose} >
-        <ModalOverlay />
-        <ModalContent maxW="3xl">
-          <ModalHeader fontFamily="Work sans" textAlign="center">Your Yoga Recommendations</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody >
-         <SimpleGrid columns={[1, 2]} spacing={5}>
-          {paginatedPoses.map((poseName, index) => {
-            const pose = yogaPoses.find(p => p.AName === poseName); // Find the pose object by name
-            if (!pose) return null; // Add a check to ensure pose is defined
-            return (
-              <Box key={index} p={5} shadow="md" borderWidth="1px" borderRadius="md" position="relative" rounded="md" height="100%">
-                <VStack spacing={4} align="stretch" height="100%">
-                  <Text fontFamily="Work sans" fontWeight="bold">{pose?.AName}</Text>
-                  <Text fontFamily="Work sans" noOfLines={1}>Level: {pose?.Level}</Text>
-                  <Spacer /> {/* This pushes the button to the bottom */}
-                  <Button
-                    size="sm"
-                    onClick={() => handleMoreInfo(pose?._id)}
-                    backgroundColor="#0C301F"
-                    color="white"
-                    _hover={{ backgroundColor: "#1E4D38" }}
-                    fontFamily="Work sans"
-                  >
-                    More Information
-                  </Button>
-                </VStack>
-              </Box>
-            );
-          })}
-        </SimpleGrid>
+          {mood.charAt(0).toUpperCase() + mood.slice(1)}
+        </Text>
+        <Button
+          fontFamily="Work sans"
+          borderRadius="13px"
+          onClick={() => handleGetRecommendations(mood)}
+          size="sm" // Smaller button size for all screens, adjust as needed
+          mt="2"
+          _hover={{ bg: "#1E4D38" }}
+          backgroundColor="#0C301F"
+          color='white'
+          width="full" // Button width to match the flex container width
+        >
+          Get Recommendations
+        </Button>
+      </Flex>
+    ))}
+</Flex>
+
+    </VStack>
+    <Box background="rgba(255, 255, 255, 0.7)" width="60%" padding={4} boxShadow="lg" borderRadius="15px"  marginLeft={{base: "20%", md: "20%" }} marginBottom="3%" marginTop="3%">
+      <VStack>
+        {todaysMoods.length > 0 ? (
+          todaysMoods.map((mood) => (
+            <HStack key={mood._id} width="full" justifyContent="space-between">
+              <Text>{mood.mood}</Text>
+              <IconButton
+                aria-label="Delete Mood"
+                icon={<DeleteIcon />}
+                onClick={() => deleteMood(mood._id)}
+                background="transparent"
+              />
+            </HStack>
+          ))
+        ) : (
+          <Text>No moods logged for today.</Text>
+        )}
+      </VStack>
+    </Box>
+    <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose}>
+      <ModalOverlay />
+      <ModalContent maxW="3xl">
+        <ModalHeader fontFamily="Work sans" textAlign="center">Your Yoga Recommendations</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <SimpleGrid columns={[1, 2]} spacing={5}>
+            {paginatedPoses.map((poseName, index) => {
+              const pose = yogaPoses.find(p => p.AName === poseName);
+              if (!pose) return null;
+              return (
+                <Box key={index} p={5} shadow="md" borderWidth="1px" borderRadius="md" position="relative" rounded="md" height="100%">
+                  <VStack spacing={4} align="stretch" height="100%">
+                    <Text fontFamily="Work sans" fontWeight="bold">{pose?.AName}</Text>
+                    <Text fontFamily="Work sans" noOfLines={1}>Level: {pose?.Level}</Text>
+                    <Spacer />
+                    <Button
+                      size="sm"
+                      onClick={() => handleMoreInfo(pose?._id)}
+                      backgroundColor="#0C301F"
+                      color="white"
+                      _hover={{ backgroundColor: "#1E4D38" }}
+                      fontFamily="Work sans"
+                    >
+                      More Information
+                    </Button>
+                  </VStack>
+                </Box>
+              );
+            })}
+          </SimpleGrid>
           <Flex justify="space-between" mt={4}>
-        <Button bg="transparent" onClick={handlePrevPage} isDisabled={currentPage === 1}>
-          &lt; 
-        </Button>
-        <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
-        <Button bg="transparent" onClick={handleNextPage} isDisabled={currentPage === totalPages}>
-          &gt;
-        </Button>
-      </Flex> 
-    </ModalBody>
-  </ModalContent>
-  </Modal>
-  <PoseDetailsModal
-  isOpen={isPoseDetailsOpen}
-  onClose={onPoseDetailsClose}
-  pose={selectedPose}
-/>    
-</Box>
-  );
+            <Button bg="transparent" onClick={handlePrevPage} isDisabled={currentPage === 1}>
+              &lt;
+            </Button>
+            <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
+            <Button bg="transparent" onClick={handleNextPage} isDisabled={currentPage === totalPages}>
+              &gt;
+            </Button>
+          </Flex>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+    <PoseDetailsModal
+      isOpen={isPoseDetailsOpen}
+      onClose={onPoseDetailsClose}
+      pose={selectedPose}
+    />
+  </Box>
+);
+
+
+
 }
 
 export default LogMood

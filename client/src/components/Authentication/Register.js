@@ -154,14 +154,14 @@ const Register = () => {
   };
 
   return (
-    <VStack spacing="5px">
+    <VStack spacing="5px" marginLeft={{ base: "-60%", md: "0" }}>
       <FormControl id="firstName" isRequired marginLeft="74%" marginTop="0%">
         <FormLabel fontSize="sm" fontFamily="Work sans">Name</FormLabel>
         <Input
           placeholder="Username"
           onChange={(e) => setUsername(e.target.value)}
           bg="#f8f8ff"
-          width='90%'
+          width={{ base: "65%", md: "90%" }}
           size="sm"
           borderRadius="md" // Set rounded corners
         />
@@ -172,12 +172,14 @@ const Register = () => {
           placeholder="Email Address"
           onChange={(e) => setEmail(e.target.value)}
           bg="#f8f8ff"
-          width='90%'
+          width={{ base: "65%", md: "90%" }}
           size="sm"
           borderRadius="lg" // Set rounded corners
         />
       </FormControl>
-      <FormControl id="userPassword" isRequired width="90%" marginLeft="64%">
+      <FormControl id="userPassword" isRequired width={{ base: "65%", md: "90%" }}
+        marginLeft={{ base: "39%", md: "64%" }}
+      >
       <FormLabel fontSize="sm" fontFamily="Work sans">Password</FormLabel>
       <InputGroup>
         <Input
@@ -202,7 +204,8 @@ const Register = () => {
         </InputRightElement>
       </InputGroup>
     </FormControl>
-      <FormControl id="userPassword" isRequired width="90%" marginLeft="64%">
+      <FormControl id="userPassword" isRequired width={{ base: "65%", md: "90%" }}
+        marginLeft={{ base: "39%", md: "64%" }}>
         <FormLabel fontSize="sm" fontFamily="Work sans">Confirm Password</FormLabel>
         <InputGroup>
         <Input
@@ -227,7 +230,8 @@ const Register = () => {
         </InputRightElement>
       </InputGroup>
       </FormControl>
-      <FormControl id="userPfp" marginLeft="74%">
+      <FormControl id="userPfp" width={{ base: "72%", md: "100%" }}
+        marginLeft={{ base: "46%", md: "74%" }}>
         <FormLabel fontSize="sm" fontFamily="Work sans">Profile Picture</FormLabel>
         <Input
           type="file"
@@ -249,7 +253,7 @@ const Register = () => {
         _hover={{ bg: "#1E4D38" }}
         onClick={submitHandler}
         isLoading={loading}
-        marginLeft="63%"
+        marginLeft={{ base: "38.5%", md: "63%" }}
         fontSize="sm"
         fontFamily="Work sans"
       >

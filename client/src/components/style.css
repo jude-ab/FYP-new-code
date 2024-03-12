@@ -53,19 +53,46 @@ html, body {
   scrollbar-width: none;  /* Firefox */
 }
 
+/* Responsive calendar positioning */
 .calendar-position {
-  position: absolute;
-  margin-top: -35.5%; /* Adjust as needed */
-  margin-left: 9%; /* Adjust as needed */
+  position: relative; /* Changed from absolute for better responsiveness */
+  margin-top: 2vh; /* Adjusted for responsiveness */
+  margin-left: 2%; /* Adjusted for responsiveness */
 }
 
 .react-calendar {
-  max-width: 100%;
-  background: "transparent";
-  font-family: Work Sans;
+  background-color: white;
+  font-family: 'Work Sans', sans-serif;
   border-radius: 20px;
-  width: 500px; 
+  margin-left: 4%;
+  max-width: 40%; /* Allow calendar to use up to 95% of container width */
+  width: auto; /* Use auto width for flexibility */
+  /* Remove margin-top: -35%; which could interfere with responsiveness */
 }
+
+/* Responsive modifications */
+/* Responsive modifications */
+@media (max-width: 768px) {
+  .react-calendar {
+    width: 100%; /* Use full width on smaller screens */
+    max-width: 100%; /* Ensure it doesn't exceed the container width */
+    margin-left: 0; /* Adjust as needed to align properly */
+    /* Adjust height indirectly through padding or by controlling inner elements */
+    margin-bottom: -60%; /* Example to control height indirectly */
+  }
+}
+
+@media (max-width: 480px) {
+  .react-calendar {
+    /* Further adjustments for even smaller screens */
+    padding: 5px; /* Example to control height indirectly */
+  }
+}
+
+
+
+  /* Adjust font sizes, margins, etc., for smaller screens */
+
 .react-calendar--doubleView {
   width: 700px;
 }

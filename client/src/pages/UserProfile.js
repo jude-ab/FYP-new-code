@@ -176,7 +176,9 @@ function UserProfile() {
         transform="scaleX(-1)"
       />
       <SidePopUp />
-      <Flex align="center" justifyContent="center" pt={10} marginTop="2%">
+      <Flex align="center" justifyContent="center" pt={10}
+        marginTop={{ base: "20%", md: "2%" }} // Adjust marginTop as necessary
+      >
         <VStack spacing={5} width="full" maxW="500px">
           <Avatar
             size="2xl"

@@ -169,17 +169,31 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   };
 
   const handleRemoveUser = async (userC) => {
-    if (selectedChat.groupAdmin._id === user._id && userC._id !== user._id) {
-      toast({
-        title: "Error",
-        description: "You are not the admin of this group",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-      });
-      return;
-    }
+    if (selectedChat.groupAdmin._id !== user._id) {
+    toast({
+      title: "Error",
+      description: "You are not the admin of this group",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+    });
+    return;
+  }
+
+  // If the admin is trying to remove themselves, handle differently.
+  if (userC._id === user._id) {
+    toast({
+      title: "Error",
+      description: "Admin cannot remove themselves this way.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+    });
+    // You might want to call a different function to handle admin leaving the group
+    return;
+  }
 
     try {
       setLoading(true);
@@ -216,16 +230,35 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
     setGroupChatN("");
   };
 
+  const onOpenDebug = () => {
+  console.log("onOpen function called"); // Add this line for debugging
+  onOpen();
+};
+
   return (
     <>
-      <EditIcon
+      <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
+
+      {/* <EditIcon
+        boxSize={{ base: "4%", md: "3%" }}
+        position="absolute" // Use absolute positioning for better control
+        right={{ base: "10px", md: "30px" }} // Adjust the right position based on your layout
+        top={{ base: "95px", md: "83px" }} // Adjust the top position based on your layout
+        onClick={onOpen}
+        cursor="pointer"
+        zIndex="docked" // This ensures it's above most elements but below modal overlays
+      /> */}
+{/* 
+       <EditIcon
         boxSize="2.3%"
-        position="relative"
-        right="-870px" // Adjust this value to move the icon to the right
-        marginTop="-4%"
+        position="absolute"
+        right="35px" // Adjust this value to move the icon to the right
+        marginTop="-3%"
         display={{ base: "flex" }}
         onClick={onOpen}
-      />
+        zIndex="docked" // This ensures it's above most elements but below modal overlays
+
+      /> */}
       <Modal fontFamily="Work sans" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
@@ -245,6 +278,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 <UserBadge
                   key={user._id}
                   user={user}
+                  admin={selectedChat.groupAdmin}
                   handleFunction={() => handleRemoveUser(user)}
                 />
               ))}
@@ -272,8 +306,8 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
             ) : (
               searchResults?.map((user) => (
                 <UserList
-                  fontFamily="Work sans"
                   key={user._id}
+                  fontFamily="Work sans"
                   user={user}
                   handleFunction={() => handleAddUser(user)}
                 />
@@ -285,7 +319,10 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 colorScheme="teal"
                 ml={1}
                 isLoading={loadingR}
-                onClick={handleRename}
+                onClick={() => {
+                  handleRename(); // or your desired operation
+                  onClose(); // This will close the modal
+                }}
                 fontFamily="Work sans"
                 backgroundColor="#0C301F"
                 _hover={{ bg: "#1E4D38" }}

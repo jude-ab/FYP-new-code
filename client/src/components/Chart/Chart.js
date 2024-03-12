@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import HealthModal from './HealthModal.js';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { Button, Box } from '@chakra-ui/react';
+import { Button, Box, Flex } from '@chakra-ui/react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -393,44 +393,72 @@ const updateChartDataForMonth = () => {
     {/* SidePopUp component */}
     <SidePopUp />
 
-    {/* Text for current mood stats */}
-    <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%" marginLeft="58%" marginTop="5.3%">
-      Your Current Mood Stats for: {displayDate}
-      </Text>
-      
    
+       {/* Calendar */}
+      <Box marginTop={{ base: "20%", md: "7.5%" }} // Adjusted margin for mobile    
+      > 
+     <Calendar
+        onClickDay={(value) => handleDayClick(value)}  
+        tileContent={({ date }) => renderDayCell({ date })}
+        className="calendar-position"
+      />
+    </Box>
+   
+       <Box>
+         {/* Text for current mood stats */}
+      <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%"
+        marginLeft={{ base: "18%", md: "58%" }} // Adjusted marginLeft for mobile
+        marginTop={{ base: "65%", md: "-24%" }} // Adjusted marginTop for mobile
+      >
+      Your Current Mood Stats for: {displayDate}
+        </Text>
+      </Box>
       
     {/* Pie chart */}
-    <Box
-      marginLeft="47%"
-      width="45%"
-      backgroundColor="white"
-      border="1px solid #e5e5e5"
-      boxShadow="0 0 0.625rem rgba(0, 0, 0, 0.1)"
-      borderRadius="20px"
-      padding="1%"
-      height="60%"
-      marginTop="1%" // Adjusted margin to accommodate the buttons
-      fontFamily="Work sans"  
-    > 
-        <Pie data={chartData} options={options} />
+      <Box
+        marginLeft={{ base: "1%", md: "47%" }} // Adjusted marginLeft for mobile
+        backgroundColor="white"
+        border="1px solid #e5e5e5"
+        boxShadow="0 0 0.625rem rgba(0, 0, 0, 0.1)"
+        borderRadius="20px"
+        padding="1%"
+        height={{ base: "35%", md: "60%" }}
+        marginTop={{ base: "8%", md: "1%" }}  
+        fontFamily="Work sans"  
+        marginRight={{ base: "0", md: "2%" }} // Adjusted marginRight for mobile
+        
+        > 
+          <Pie data={chartData} options={options} />
+          
         {!isPieChartVisible && (
         <Text
           fontFamily="Work sans"
           fontSize="lg"
           textAlign="center" 
-          marginTop="-35%"
+          marginTop={{ base: "-40%", md: "-30%" }} // Adjusted marginTop for mobile
+          marginLeft={{ base: "0", md: "1%" }} // Adjusted marginLeft for mobile
+
         >
           Click on a day/month to view your stats
         </Text>
-      )}
-    </Box>
-      <div style={{ display: 'flex', alignItems: 'center', marginLeft: '65%', marginTop: '1%', marginBottom: '1%' }}>
+        )}
+        </Box>
+    
+      <Box display='flex' alignItems='center' marginBottom='1%'
+        marginTop={{ base: "10%", md: "1.5%" }}
+        width={{ base: "230%", md: "20%" }}
+        marginLeft={{ base: "36%", md: "67%" }} // Adjusted marginLeft for mobile
+      > 
+        <Flex direction={{ base: "column", md: "row" }} align="center" justify="center" borderRadius="10px">
       <select
         value={selectedYear}
         onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-        style={{ width: '18%', padding: '1px', marginLeft: '-20%', marginRight:"1%", borderRadius:"5px", fontFamily:"Work sans"}} // Adjusted width and added margin-right for spacing
-      > 
+        width={{ base: "100%", md: "45%" }} // Adjusted width for responsiveness
+        padding="2" // Added padding to improve visual appearance
+        margin={{ base: "20%", md: "0 1%" }} // Adjusted margin for responsiveness
+        fontFamily="Work sans"
+        borderRadius="5px"
+      >
         {years.map(year => (
           <option key={year} value={year}>{year}</option>
         ))}
@@ -438,80 +466,67 @@ const updateChartDataForMonth = () => {
       <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-          style={{ width: '18%', padding: '1px' , borderRadius:"5px", fontFamily:"Work sans"}}
-        >
+          width={{ base: "100%", md: "45%" }} // Adjusted width for responsiveness
+          padding="2" // Added padding to improve visual appearance
+          margin={{ base: "20%", md: "0 1%" }} // Adjusted margin for responsiveness
+          borderRadius="5px"
+          fontFamily="Work sans"
+          marginBottom={{ base: "20%", md: "0" }} // Adjusted marginBottom for mobile  
+          marginTop={{ base: "20%", md: "0" }} // Adjusted marginTop for mobile
+          marginLeft="5%"
+          >
           {monthNames.map((name, index) => (
             <option key={index} value={index + 1}>{name}</option> // Display month names, store 1-based month number
           ))}
-        </select>  
+          </select>  
+          </Flex>
+          </Box>
       <Button
-          onClick={updateChartDataForMonth}   
-          colorScheme='#0C301F'
-          variant='outline'    
-          fontFamily="Work sans"
-          fontSize="90%"
-          // size="sm"
-          height="25px"
-           style={{
-          width: '25%', // Corrected padding syntax
-          cursor: 'pointer', // Change cursor to pointer on hover
-          borderRadius: '10px',
-          marginLeft: '2%', // Adjusted margin-right for spacing
-        }}
+        onClick={updateChartDataForMonth}
+        backgroundColor="#0C301F"
+        color='white' // Text color
+        fontFamily="Work sans"
+        fontSize={{ base: '90%', md: '90%' }} // Responsive font size
+        height={{ base: '40px', md: '30px' }} // Responsive height
+        width={{ base: '35%', md: '11%' }} // Responsive width
+        _hover={{ bg: '#1E4D38' }} // Adjust hover background color
+        borderRadius='5px'
+        ml={{ base: '32%', md: '67%' }} // Responsive marginLeft, shorthand for marginLeft
+        cursor='pointer'
+        mt={{ base: '5%', md: '0.1%' }} // Adjust marginTop for mobile
       >
         Update Chart
       </Button>
-      </div>
-
-    {/* <button onClick={updateChartDataForMonth}>Update Chart</button> */}
-      
-    {/* Navigation buttons */}
-    {/* <div style={{ position: 'absolute', top: '78%', left: '70%', transform: 'translateX(-50%)' }}>
-      <Button background="transparent" onClick={handlePrevWeek} disabled={visibleWeek === 0}>
-        &lt;
-      </Button>
-      <span style={{ margin: '0 20px' }}>Week {visibleWeek + 1}</span>
-      <Button background="transparent" onClick={handleNextWeek} disabled={visibleWeek === totalWeeks - 1}>
-        &gt;
-      </Button>
-    </div> */}
-      
-    {/* Get Health Plan Recommendation button */}
+          
+      {/* Get Health Plan Recommendation button */}
+    <Box>
     <Button
       _hover={{ bg: "#1E4D38" }}
       backgroundColor="#0C301F"
       marginLeft='60.5%'
-      marginTop='1%' 
+      marginTop={{ base: "200%", md: "1%" }}
       color='white'
-      variant='outline'
       onClick={handleRecommendationClick}
       fontFamily="Work sans"
+      width={{ base: "60%", md: "20%" }} // Adjusted width
+      fontSize={{ base: '80%', md: '90%' }} // Responsive font size
+      ml={{ base: '20%', md: '62.5%' }} // Responsive marginLeft, shorthand for marginLeft
     >
       Get Health Plan Recommendation
-    </Button>
-
-    {/* Calendar */}
-    <Box> 
-     <Calendar
-        onClickDay={(value) => handleDayClick(value)}  
-        tileContent={({ date }) => renderDayCell({ date })}
-        className="calendar-position"
-      />
+      </Button>
     </Box>
 
     {/* Text explaining health plan */}
-    <div 
-      style={{
-        marginLeft: "5%",
-        width: "40%", // Adjusted width
-        background: "rgba(255, 255, 255, 0.85)",
-        padding: "30px",
-        paddingTop: "5px",
-        borderRadius: "20px",
-        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-        marginTop: "-11.3%", // Adjusted margin to accommodate the buttons and calendar
-        marginBottom: "3%",
-      }}
+    <Box
+        marginLeft={{ base: "5%", md: "4%" }}
+        width={{ base: "90%", md: "40%" }} // Adjusted width for mobile
+        background= "rgba(255, 255, 255, 0.85)"
+        padding= "30px"
+        paddingTop= "5px"
+        borderRadius= "20px"
+        boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)"
+        marginTop={{ base: "-200%", md: "-19%" }} // Adjusted margin for mobile    
+        marginBottom={{ base: "1%", md: "1%" }} // Adjusted marginBottom for mobile
     >
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="5%">
         A thoughtfully designed health plan is essential to preserving happiness and general wellbeing.
@@ -525,7 +540,7 @@ const updateChartDataForMonth = () => {
         People can proactively cultivate their mental and emotional well-being and live a more vibrant and fulfilling life by adopting these comprehensive health plan pillars.
         Find out here what health plan is recommended for you now based on your current mood stats!
       </Text>
-    </div>
+    </Box>
 
     {/* HealthModal component */}
     <HealthModal

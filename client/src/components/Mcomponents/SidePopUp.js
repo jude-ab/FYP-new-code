@@ -163,6 +163,7 @@ const SidePopUp = () => {
           fontSize="2xl"
           color="black"
           fontFamily="Work sans"
+          marginLeft={{ base: "23%", md: "0" }}
         >
           YogaHub
         </Text>

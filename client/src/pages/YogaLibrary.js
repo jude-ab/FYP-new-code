@@ -18,10 +18,9 @@ const YogaLibrary = () => {
   };
 
   return (
-    <Box height="100vh" overflowY="auto">
-      <Box position="relative" width="100vw">
+     <Box position="relative" width="100vw" height="100vh" overflowY="auto">
         <Box
-          position="absolute"
+          position="fixed"
           top={0}
           right={0}
           bottom={0}
@@ -38,7 +37,7 @@ const YogaLibrary = () => {
           spacing={8} // Adjust the space between boxes
           align="center"
           justify="center"
-          mt="10"
+          mt={{ base: "28%", md: "5%" }} // Adjust marginTop as necessary
         >
           {/* Box for Beginner level */}
           <Box
@@ -59,9 +58,10 @@ const YogaLibrary = () => {
               colorScheme="#0C301F"
               marginTop={{ base: "-11%", md: "-8%" }} // Responsive marginTop
               variant='outline'
-              width={{ base: "80%", md: "auto" }} // Responsive width
+              width={{ base: "auto", md: "auto" }} // Responsive width
               _hover={{ bg: '#ebedf0' }}
               fontFamily="Work sans"
+              marginLeft={{ base: "-5%", md: "0" }}
             >
               Beginner Poses
             </Button>
@@ -75,7 +75,7 @@ const YogaLibrary = () => {
             borderWidth="1px"
             borderColor="white"
             backgroundColor="white"
-            marginTop="-2.4%"
+            marginTop={{ base: "-9%", md: "-2.4%" }} // Responsive marginTop
             marginRight="-45%"
           >
             <Image src={intermediateImage} borderRadius="md" mb={4} objectFit="cover" />
@@ -85,9 +85,10 @@ const YogaLibrary = () => {
               colorScheme="#0C301F"
               marginTop={{ base: "-3%", md: "-5%" }} // Responsive marginTop
               variant='outline'
-              width={{ base: "80%", md: "auto" }} // Responsive width
+              width={{ base: "120%", md: "auto" }} // Responsive width
               _hover={{ bg: '#ebedf0' }}
               fontFamily="Work sans"
+              marginLeft={{ base: "-10%", md: "0" }}
             >
               Intermediate Poses
             </Button>
@@ -101,7 +102,7 @@ const YogaLibrary = () => {
             borderWidth="1px"
             borderColor="white"
             backgroundColor="white"
-            marginTop="-2.4%"
+            marginTop={{ base: "-9%", md: "-2.4%" }} // Responsive marginTop
             marginLeft="-44.5%"
           >
             <Image src={advancedImage} borderRadius="md" mb={4} objectFit="cover" />
@@ -111,16 +112,16 @@ const YogaLibrary = () => {
               colorScheme="#0C301F"
               marginTop={{ base: "-3%", md: "-5%" }} // Responsive marginTop
               variant='outline'
-              width={{ base: "80%", md: "auto" }} // Responsive width
+              width={{ base: "auto", md: "auto" }} // Responsive width
               _hover={{ bg: '#ebedf0' }}
               fontFamily="Work sans"
+              marginLeft={{ base: "-7%", md: "0" }}
             >
               Advanced Poses
             </Button>
           </Box>
         </VStack>
       </Box>
-    </Box>
   );
 };
 

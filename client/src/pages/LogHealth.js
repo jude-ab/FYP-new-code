@@ -26,7 +26,7 @@ const LogHealth = () => {
       />
       <SidePopUp />
       <VStack
-        marginTop={{ base: "15%", md: "9%" }}
+        marginTop={{ base: "45%", md: "12%" }}
         justifyContent="center"
         spacing={10}
         alignItems="flex-start"
@@ -60,12 +60,12 @@ const LogHealth = () => {
             _hover={{ bg: '#ebedf0' }}
             fontFamily="Work sans"
             fontSize={{ base: "md", md: "lg" }}
-            marginRight="11%"
+            marginRight={{ base: "2%", md: "11%" }}
           >
             Log Mood
           </Button>
         </Flex>
-        
+
         <Flex
           width={{ base: "90%", md: "77%" }}
           minHeight="200px" // Example minimum height
@@ -93,7 +93,7 @@ const LogHealth = () => {
             flexGrow={1}
             _hover={{ bg: '#ebedf0' }}
             fontFamily="Work sans"
-            marginRight="11%"
+            marginRight={{ base: "2%", md: "11%" }}
             fontSize={{ base: "md", md: "lg" }}
           >
             Mood Stats

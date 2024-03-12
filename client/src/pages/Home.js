@@ -71,8 +71,9 @@ const Home = () => {
         width={{ base: 'full', md: '100%' }} // Adjust the width as needed
         maxWidth="2xl" // You can set a maximum width as needed
         zIndex="10"
-         marginLeft={{ md: '80%' }} // Adjust the margin to move the container to the right
-         m={{ base: 4, md: 8 }}
+        marginLeft={{ base: "-10%", md: '80%' }} // Adjust the margin to move the container to the right
+        m={{ base: 4, md: 8 }}
+        marginTop={{ base: '20%', md: '0' }} // Adjust the margin based on screen size
       >
         {/* Display "Create New Account" for the Sign up tab */}
         <Text
@@ -80,7 +81,7 @@ const Home = () => {
           fontFamily="Work sans"
           color="black"
           mb={4}
-          marginLeft="19%"
+           marginLeft={{ base: "1%", md: '19%' }}
           width="100%"
           font="bold"
           marginTop={tabIndex === 0 ? "30%" : "15%"} // Change marginTop conditionally
@@ -88,7 +89,7 @@ const Home = () => {
             {tabIndex === 0 ? 'Welcome to YogaHub' : 'Create New Account'}
         </Text>
         <Tabs onChange={handleTabsChange} isFitted width="85%">
-          <TabList mb={4} color="black" marginLeft="28%" colorScheme="white" width="100%" marginBottom="3%">
+          <TabList marginLeft={{ base: "1%", md: '28%' }} mb={4} color="black" colorScheme="white" width="100%" marginBottom="3%">
             <Tab _selected={{ color: "#0C301F", borderColor: "#0C301F" }}>Login</Tab>
             <Tab _selected={{ color: "#0C301F", borderColor: "#0C301F" }}>Sign up</Tab>
           </TabList>

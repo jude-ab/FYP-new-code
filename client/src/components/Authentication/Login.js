@@ -80,14 +80,18 @@ const Login = () => {
 
   return (
     <ChakraProvider>
-      <VStack spacing="5px">
+      <VStack
+        spacing="5px"
+        marginTop={{ base: "10%", md: "0" }}
+        marginLeft={{ base: "-60%", md: "0" }}
+      >
         <FormControl id="firstName" isRequired  marginLeft="70%">
           <FormLabel fontSize="sm" fontFamily="Work sans">Name</FormLabel>
           <Input
             placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
             bg="white"
-            width='90%'
+            width={{ base: "70%", md: "90%" }}
             size="sm"
             borderRadius="lg" // Set rounded corners
           />
@@ -100,7 +104,7 @@ const Login = () => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               bg="white"
-              width='90%'
+              width={{ base: "70%", md: "90%" }}
               borderRadius="lg" // Set rounded corners
             />
             <InputRightElement width="3.5rem">
@@ -124,8 +128,8 @@ const Login = () => {
           _hover={{ bg: "#1E4D38" }}
           onClick={submitHandler}
           isLoading={loading}
-          width='40%'
-          marginLeft="63%"
+          width={{ base: "50%", md: "40%" }}
+          marginLeft={{ base: "39%", md: "63%" }}
           fontSize="sm"
           fontFamily="Work sans"
           height={8}
