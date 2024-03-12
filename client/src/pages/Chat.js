@@ -29,11 +29,11 @@ const Chat = () => {
           filter="blur(3px)"
           w="100%"
           h="100%"
-          position="fixed"
+          position="fixed" // Use absolute positioning for the background
           zIndex="-1"
         />
         <Box
-          display={{ base: "block", md: "flex" }} // Use Chakra UI's responsive styles directly
+          d={{ base: "block", md: "flex" }} // Use Chakra UI's responsive styles directly
           justifyContent="space-between"
           h="100%"
           overflowY="auto"

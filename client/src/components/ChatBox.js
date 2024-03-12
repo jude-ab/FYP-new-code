@@ -7,26 +7,23 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   const { selectedChat } = ChatState();
 
   return (
-    <Box
+     <Box
       d={{ base: selectedChat ? "flex" : "none", md: "flex" }}
       alignItems="center"
       flexDir="column"
       bg="white"
       p={3}
-      w={{ base: "100%", md: "65%" }} // This sets the width to 50% on medium screens and up
+      w={{ base: "100%", md: "65%" }} // Set the width to 100% on smaller screens and 65% on medium screens and up
       borderRadius="lg"
       borderWidth="1px"
-      // background="rgba(12, 48, 31, 0.95)"
-      background="rgba(255, 255, 255, 0.9)"
-      // background="#A3B3A7"
-      // background="rgba(163, 179, 167, 0.85)" // 50% transparent
+      background="rgba(255, 255, 255, 0.9)" // Adjust background color and transparency as needed
+      zIndex={-1}
+      marginTop={{ base: "5%", md: "-41.5%" }} // Adjust margin top for smaller screens
+      height={{ base: "100%", md: "88%" }} // Set the height to 100% on smaller screens and 88% on medium screens and up
+      marginLeft={{ base: "0", md: "33%" }} // Add left margin on medium screens and up
       backgroundSize="cover"
       backgroundPosition="center"
       backgroundRepeat="no-repeat"
-      zIndex={-1}
-      marginRight="2%"
-      marginTop="5%"
-      height="88%"
     >
       <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
     </Box>

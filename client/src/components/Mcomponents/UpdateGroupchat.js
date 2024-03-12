@@ -237,28 +237,15 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
   return (
     <>
-      <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
-
-      {/* <EditIcon
+      <EditIcon
         boxSize={{ base: "4%", md: "3%" }}
         position="absolute" // Use absolute positioning for better control
         right={{ base: "10px", md: "30px" }} // Adjust the right position based on your layout
-        top={{ base: "95px", md: "83px" }} // Adjust the top position based on your layout
+        top={{ base: "90px", md: "83px" }} // Adjust the top position based on your layout
         onClick={onOpen}
         cursor="pointer"
         zIndex="docked" // This ensures it's above most elements but below modal overlays
-      /> */}
-{/* 
-       <EditIcon
-        boxSize="2.3%"
-        position="absolute"
-        right="35px" // Adjust this value to move the icon to the right
-        marginTop="-3%"
-        display={{ base: "flex" }}
-        onClick={onOpen}
-        zIndex="docked" // This ensures it's above most elements but below modal overlays
-
-      /> */}
+      />
       <Modal fontFamily="Work sans" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
