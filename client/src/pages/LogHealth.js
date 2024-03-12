@@ -26,7 +26,7 @@ const LogHealth = () => {
       />
       <SidePopUp />
       <VStack
-        marginTop={{ base: "45%", md: "12%" }}
+        marginTop={{ base: "45%", md: "9.5%" }}
         justifyContent="center"
         spacing={10}
         alignItems="flex-start"

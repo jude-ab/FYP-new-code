@@ -20,6 +20,13 @@ connectDB();
 
 app.use(express.json()); // accept json data in the body
 
+app.use('/yoga_images', express.static('yoga_images'));
+app.use('/yoga_images', (req, res, next) => {
+  console.log('Served static file', req.path);
+  next();
+});
+
+
 app.use(
   cors({
     origin: "http://localhost:4001", // allow requests from frontend

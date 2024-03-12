@@ -41,7 +41,7 @@ const PosesByLevel = ({ match }) => {
     const fetchPoses = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/yoga/poses?level=${(level)}`
+          `http://localhost:4001/api/yoga/poses?level=${(level)}`
         );
         console.log("API response:", response.data);
         setPoses(response.data);
@@ -145,12 +145,16 @@ const PosesByLevel = ({ match }) => {
             <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
             <ModalCloseButton />
             <ModalBody fontFamily="Work sans">
-                <Text mb={2}>Level: {selectedPose?.Level}</Text>
-                <Text mb={2}>Description: {selectedPose?.Description}</Text>
-                <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
-                <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
-                <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
-            </ModalBody>
+              <Text mb={2}>Level: {selectedPose?.Level}</Text>
+              <Text mb={2}>Description: {selectedPose?.Description}</Text>
+              <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
+              <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
+              <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
+              {/* Make sure the path to the image is correct */}
+              {selectedPose?.ImagePath && (
+                  <img src={`http://localhost:4001/${selectedPose.ImagePath}`} alt={selectedPose.AName} style={{ width: '100%', marginTop: '10px' }} />
+              )}
+          </ModalBody>
           </ModalContent>
         </Modal>
       </Box>
