@@ -78,10 +78,6 @@ router.delete('/moods/:moodId', protect, async (req, res) => {
   }
 });
 
-
-
-
-
 // Fetch user profile information
 router.get('/profile', protect, async (req, res) => {
   try {

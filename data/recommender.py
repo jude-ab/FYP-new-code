@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 import pytz
 import pickle
 import logging
+import uuid
 
 # Download necessary NLTK resources
 nltk.download('punkt')
@@ -49,8 +50,18 @@ stop_words = set(stopwords.words('english'))
 kmeans_model = load_pickle('kmeans_model.pkl')
 onehot_encoder = load_pickle('onehot_encoder.pkl')
 mood_to_cluster_mapping = load_pickle('mood_to_cluster_mapping.pkl')
+
+df = pd.read_csv('healthplans_with_clusters.csv')
+
+# Generate a unique ID for each row and create a new '_id' column
+df['_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
+
+# Save the DataFrame back to CSV
+df.to_csv('healthplans_with_clusters_with_id.csv', index=False)
+
 # Load health plan data with clusters
-health_plans = pd.read_csv('healthplans_with_clusters.csv')
+health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
+print(health_plans.head())
 
 def lemmatize_and_remove_stopwords(text):
     tokens = word_tokenize(text.lower())
@@ -138,12 +149,19 @@ def get_health_plan_recommendation():
         recommended_plan = recommend_health_plan(most_common_mood, health_plans, mood_to_cluster_mapping)
         if "error" in recommended_plan:
             return jsonify(recommended_plan), 400
-        return jsonify(recommended_plan)
+        
+        # Convert the plan's ObjectId to string if it's not already in string format
+        health_plan_id = str(recommended_plan.get('_id'))
+        if not health_plan_id:
+            return jsonify({"error": "Health plan ID not found"}), 404
+
+        return jsonify({"healthPlanId": health_plan_id, "recommendedPlan": recommended_plan})
+        
 
     except Exception as e:
-        print(f"Error: {e}")
+        logging.exception("An error occurred during recommendation")
         return jsonify({"error": str(e)}), 500
-
+    
 def get_most_common_mood_for_user(user_id, start, end):
     logging.basicConfig(level=logging.DEBUG)
     
@@ -175,7 +193,14 @@ def recommend_health_plan(mood, health_plans_df, mood_to_cluster_mapping):
     if plans_in_cluster.empty:
         return {"error": "No health plans available for this cluster."}
 
-    return plans_in_cluster.sort_values(by='Exercise Type').iloc[0].to_dict()
+     # Convert ObjectId to string and return the health plan.
+    health_plan = plans_in_cluster.sort_values(by='Exercise Type').iloc[0].to_dict()
+    # Check and convert _id to string
+    if '_id' in health_plan:
+        health_plan['_id'] = str(health_plan['_id'])
+    else:
+        return {"error": "Health plan ID not found in the selected plan."}
+    return health_plan
    
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

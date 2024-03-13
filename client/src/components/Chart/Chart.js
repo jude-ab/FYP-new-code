@@ -20,10 +20,12 @@ import '../style.css';
 import {
   useDisclosure,
   Text,
+  useToast
 } from "@chakra-ui/react";
 import yogaimage from '../../assets/images/white.png';
 import SidePopUp from "../../components/Mcomponents/SidePopUp";
-
+import FeedbackModal from './FeedbackModal.js';
+import axios from 'axios';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -55,6 +57,9 @@ function Chart() {
   const currentYear = new Date().getFullYear();
   const years = Array.from(new Array(10), (val, index) => currentYear - index); // Last 10 years
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const toast = useToast();
 
  const getDefaultChartData = () => {
     // Get today's date in the format YYYY-MM-DD
@@ -200,13 +205,18 @@ function Chart() {
     },
   };
 
-  // const handlePrevWeek = () => {
-  //   setVisibleWeek((prevWeek) => (prevWeek > 0 ? prevWeek - 1 : 0));
-  // };
+//   useEffect(() => {
+//     console.log("Received recommendation in modal:", recommendation);
+//     if (recommendation && recommendation._id) {
+//         setIsFeedbackModalOpen(true);
+//     }
+  // }, [recommendation]);
+  
+  useEffect(() => {
+  console.log("Updated recommendation:", recommendation);
+  console.log("Does details exist now?", !!recommendation?.details);
+}, [recommendation]);
 
-  // const handleNextWeek = () => {
-  //   setVisibleWeek((prevWeek) => (prevWeek < totalWeeks - 1 ? prevWeek + 1 : totalWeeks - 1));
-  // };
 
  const handleRecommendationClick = async () => {
     try {
@@ -219,17 +229,24 @@ function Chart() {
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`Network response was not ok: ${response.status}`);
         }
 
         const data = await response.json();
-        setRecommendation(data);
+        console.log("Received recommendation with _id:", data); // Verify the structure
+       setRecommendation({
+        details: data.recommendedPlan,
+        healthPlanId: data.healthPlanId
+       });
+       console.log("Recommendation after fetching:", {
+          details: data.recommendedPlan,
+          healthPlanId: data.healthPlanId,
+        });
         setIsModalOpen(true);
     } catch (error) {
         console.error('Error fetching recommendation:', error);
     }
 };
-
 
   const handleMouseEnter = (event, dateStr, moodsForDate) => {
     const position = { x: event.clientX, y: event.clientY + window.scrollY }; // Adjust for scrolling
@@ -370,8 +387,63 @@ const updateChartDataForMonth = () => {
 
   setChartData(newChartData);
 };
+  
+  // Update the handleFeedback function in your Chart component
+  const handleFeedback = async (feedbackType) => {
+  // Retrieve the healthPlanId from the recommendation state.
+   const healthPlanId = recommendation ? recommendation.healthPlanId : null;
+  // Check if healthPlanId is provided, and exit if not.
+  if (!healthPlanId) {
+    toast({
+      title: 'Error',
+      description: 'Health plan ID is not available.',
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    });
+    return;
+  }
 
+  try {
+    // Log the submission attempt.
+    console.log("Submitting feedback for:", userInfo._id, healthPlanId);
 
+    // Make the POST request to your backend.
+    const response = await axios.post('/api/health/feedback', {
+      userId: userInfo._id,
+      healthPlanId, // Use the healthPlanId retrieved from state.
+      feedback: feedbackType
+    });
+
+    // If the response is successful, show a success toast.
+    if (response.status === 201) {
+      toast({
+        title: `You ${feedbackType === 'like' ? 'liked' : 'disliked'} this plan.`,
+        status: feedbackType === 'like' ? 'success' : 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  } catch (error) {
+    // Log the error and show an error toast.
+    console.error('Error submitting feedback:', error.response ? error.response.data : error);
+    toast({
+      title: 'An error occurred.',
+      description: "Unable to submit feedback.",
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    });
+  }
+};
+
+  const handleOpenFeedbackModal = () => {
+    setIsFeedbackModalOpen(true);
+  };
+
+  const handleCloseFeedbackModal = () => {
+    setIsFeedbackModalOpen(false);
+  };
 
   return (
   <div style={{ fontFamily:"Work sans" ,position: 'relative', height: '100vh',  overflowY:"auto"}}>
@@ -543,10 +615,22 @@ const updateChartDataForMonth = () => {
     </Box>
 
     {/* HealthModal component */}
-    <HealthModal
-      recommendation={recommendation}
-      isOpen={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
+
+{recommendation && (
+  <HealthModal
+    recommendation={recommendation}
+    isOpen={isModalOpen}
+    onClose={() => setIsModalOpen(false)}
+    onOpenFeedback={handleOpenFeedbackModal}
+  />
+)}
+
+      {/* FeedbackModal component */}
+    <FeedbackModal
+      isOpen={isFeedbackModalOpen}
+      onClose={handleCloseFeedbackModal}
+      onFeedback={handleFeedback}
+      healthPlanId={recommendation?._id} // Use optional chaining here to prevent errors if recommendation is null.
     />
   </div>
 );
