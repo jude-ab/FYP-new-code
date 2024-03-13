@@ -418,7 +418,7 @@ const updateChartDataForMonth = () => {
     // If the response is successful, show a success toast.
     if (response.status === 201) {
       toast({
-        title: `You ${feedbackType === 'like' ? 'liked' : 'disliked'} this plan.`,
+        title: `You ${feedbackType === 'like' ? 'liked' : 'disliked'} this plan. Thank you for your feedback! This will help us improve our recommendations.`,
         status: feedbackType === 'like' ? 'success' : 'error',
         duration: 5000,
         isClosable: true,
