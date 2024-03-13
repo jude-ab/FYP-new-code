@@ -218,7 +218,7 @@ function Chart() {
 }, [recommendation]);
 
 
- const handleRecommendationClick = async () => {
+  const handleRecommendationClick = async () => {
     try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const userId = userInfo?._id;
@@ -245,7 +245,15 @@ function Chart() {
         setIsModalOpen(true);
     } catch (error) {
         console.error('Error fetching recommendation:', error);
-    }
+    toast({
+      title: "No moods logged to give recommendation!",
+      description: "Log your mood to get a health plan recommendation.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position:"top",
+    });
+  }
 };
 
   const handleMouseEnter = (event, dateStr, moodsForDate) => {
@@ -422,6 +430,7 @@ const updateChartDataForMonth = () => {
         status: feedbackType === 'like' ? 'success' : 'error',
         duration: 5000,
         isClosable: true,
+        position:"top",
       });
     }
   } catch (error) {
