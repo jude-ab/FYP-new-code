@@ -1,41 +1,54 @@
 from flask import Flask, request, jsonify
-import pickle
-from flask_cors import CORS
-import pandas as pd  # Import pandas
+import pandas as pd
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from pymongo import MongoClient
-from bson.objectid import ObjectId
+from pymongo import MongoClient, UpdateOne, DESCENDING
+from bson import ObjectId
 from datetime import datetime, timedelta
 import pytz
 import pickle
-import logging
 import uuid
+import logging
+from flask_cors import CORS
+from bson.errors import InvalidId
+from bson import ObjectId
 
-# Download necessary NLTK resources
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('stopwords')
-
+# Initialize Flask app and CORS
 app = Flask(__name__)
 CORS(app)
 
-# Connect to MongoDB
+# Configure MongoDB connection
 client = MongoClient('mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mongodb.net/yogahub')
 db = client.yogahub
 users_collection = db.users
+feedback_collection = db.feedbacks
+healthplans_collection = db.healthplans
 
-# Load data and models using pickle
+# Initialize NLP resources
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('stopwords')
+lemmatizer = WordNetLemmatizer()
+stop_words = set(stopwords.words('english'))
+
+# Load serialized models and data
 with open('yoga_pose.pkl', 'rb') as file:
-    new_df = pickle.load(file)
-
+    yoga_pose = pickle.load(file)
 with open('similarity.pkl', 'rb') as file:
     similarity = pickle.load(file)
-
 with open('yoga_mood.pkl', 'rb') as file:
     yoga_mood = pickle.load(file)
+with open('kmeans_model.pkl', 'rb') as file:
+    kmeans_model = pickle.load(file)
+with open('onehot_encoder.pkl', 'rb') as file:
+    onehot_encoder = pickle.load(file)
+with open('mood_to_cluster_mapping.pkl', 'rb') as file:
+    mood_to_cluster_mapping = pickle.load(file)
+
+# Load health plan data with clusters
+health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
 
 # Load serialized models and encoders
 def load_pickle(file_name):
@@ -114,72 +127,118 @@ def get_pose_by_name():
         return jsonify(pose)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+# Function to convert MongoDB data to a pandas DataFrame
+def mongodb_to_dataframe_with_score_init(collection):
+    documents = list(collection.find())
+    dataframe = pd.DataFrame(documents)
+    
+    # Initialize score column if it doesn't exist
+    if 'score' not in dataframe.columns:
+        dataframe['score'] = 0
+    
+    return dataframe
 
- 
-@app.route('/health/recommend', methods=['POST'])
-def get_health_plan_recommendation():
-    try:
-        data = request.json
-        print("Received data:", data)
-        user_id = data.get('userId')
-        week_number = data.get('weekNumber')
-        print(f"Received user_id: {user_id}, week_number: {week_number}")
+# def refine_recommendations(user_id):
+#     feedbacks = list(feedback_collection.find({"userId": ObjectId(user_id)}))
+#     bulk_operations = []
 
-        # Before fetching user data
-        print("Fetching user data...")
-        # Before calculating the most common mood
-        print("Calculating most common mood...")
-        # Before recommending health plan
-        print("Recommending health plan...")
+#     for feedback in feedbacks:
+#         score_modifier = 1 if feedback['feedback'] == 'like' else -1
+#         health_plan_id = feedback['healthPlanId']
 
-        if user_id is None or week_number is None:
-            print("Missing user_id or week_number")  # Debug print
-            return jsonify({"error": "User ID or week number not specified"}), 400
+#         # Check if health plan ID is a valid ObjectId or a string (UUID in your case)
+#         try:
+#             # If it's already a valid ObjectId string, it will pass
+#             ObjectId(health_plan_id)
+#             is_valid_id = True
+#         except InvalidId:
+#             # It's not a valid ObjectId, so it must be a UUID string
+#             is_valid_id = False
 
-        # Calculate the start and end date for the given week number
-        current_week_start = datetime.now(pytz.utc) - timedelta(days=datetime.now(pytz.utc).weekday() + week_number * 7)
-        current_week_end = current_week_start + timedelta(days=7)
+#         if is_valid_id:
+#             # ObjectId format is correct, proceed with the update
+#             if healthplans_collection.find_one({'_id': ObjectId(health_plan_id)}):
+#                 bulk_operations.append(
+#                     UpdateOne(
+#                         {'_id': ObjectId(health_plan_id)},
+#                         {'$inc': {'score': score_modifier}}
+#                     )
+#                 )
+#         else:
+#             # Health plan ID is not a valid ObjectId, handle it as a UUID string
+#             # If your MongoDB collection uses UUIDs as strings, you can query directly with the string
+#             if healthplans_collection.find_one({'_id': health_plan_id}):
+#                 bulk_operations.append(
+#                     UpdateOne(
+#                         {'_id': health_plan_id},
+#                         {'$inc': {'score': score_modifier}}
+#                     )
+#                 )
+#         # If it's neither an ObjectId nor a UUID, log a warning
+#     else:
+#         logging.warning(f"Invalid health plan ID: {health_plan_id}")
 
-        # Ensure the dates are timezone-naive for comparison
-        current_week_start = current_week_start.replace(tzinfo=None)
-        current_week_end = current_week_end.replace(tzinfo=None)
+#     # Perform bulk update to MongoDB if there are operations to execute
+#     if bulk_operations:
+#         healthplans_collection.bulk_write(bulk_operations)
 
-        most_common_mood = get_most_common_mood_for_user(user_id, current_week_start, current_week_end)
+def refine_recommendations(user_id):
+    feedbacks = list(feedback_collection.find({"userId": ObjectId(user_id)}))
+    bulk_operations = []
 
-        recommended_plan = recommend_health_plan(most_common_mood, health_plans, mood_to_cluster_mapping)
-        if "error" in recommended_plan:
-            return jsonify(recommended_plan), 400
+    for feedback in feedbacks:
+        score_modifier = 1 if feedback['feedback'] == 'like' else -1
+        health_plan_id = feedback['healthPlanId']
         
-        # Convert the plan's ObjectId to string if it's not already in string format
-        health_plan_id = str(recommended_plan.get('_id'))
-        if not health_plan_id:
-            return jsonify({"error": "Health plan ID not found"}), 404
+        # Directly use the health_plan_id string to find the document
+        if healthplans_collection.find_one({'_id': health_plan_id}):
+            bulk_operations.append(
+                UpdateOne(
+                    {'_id': health_plan_id},
+                    {'$inc': {'score': score_modifier}}
+                )
+            )
+        else:
+            logging.warning(f"No match found for health plan ID: {health_plan_id}")
+    
+    # Perform bulk update to MongoDB if there are operations to execute
+    if bulk_operations:
+        healthplans_collection.bulk_write(bulk_operations)
 
-        return jsonify({"healthPlanId": health_plan_id, "recommendedPlan": recommended_plan})
+@app.route('/api/health/feedback', methods=['POST'])
+def collect_feedback():
+    feedback_data = request.json
+    user_id = feedback_data.get('userId')
+    health_plan_id = feedback_data.get('healthPlanId')
+
+    # Since the health_plan_id is a UUID string, no need to convert it to ObjectId
+    health_plan = healthplans_collection.find_one({'_id': health_plan_id})
+    if not health_plan_id or not health_plan or not user_id:
+        return jsonify({"error": "Invalid userId or healthPlanId"}), 400
+
+    # Insert feedback into MongoDB
+    feedback_collection.insert_one(feedback_data)
+    return jsonify({"message": "Feedback received"}), 201
+
+
+# This function should be defined in your Flask app to update the scores based on feedback.
+def update_scores_with_feedback(feedback_df, health_plans_df):
+    for _, feedback in feedback_df.iterrows():
+        plan_id = feedback['healthPlanId']
+        user_feedback = feedback['feedback']
         
+        # Check if the health plan ID from feedback exists in the DataFrame
+        if plan_id in health_plans_df['_id'].values:
+            # Update the score based on feedback
+            if user_feedback == 'like':
+                health_plans_df.loc[health_plans_df['_id'] == plan_id, 'score'] += 1
+            elif user_feedback == 'dislike':
+                health_plans_df.loc[health_plans_df['_id'] == plan_id, 'score'] -= 1
+        else:
+            # Log warning if health plan ID from feedback doesn't exist
+            print(f"Warning: Health plan ID {plan_id} from feedback doesn't exist in health plans.")
 
-    except Exception as e:
-        logging.exception("An error occurred during recommendation")
-        return jsonify({"error": str(e)}), 500
-    
-def get_most_common_mood_for_user(user_id, start, end):
-    logging.basicConfig(level=logging.DEBUG)
-    
-    user_data = users_collection.find_one({'_id': ObjectId(user_id)})
-    if not user_data or 'moods' not in user_data:
-        return None
-    
-    moods_df = pd.DataFrame(user_data['moods'])
-    moods_df['date'] = pd.to_datetime(moods_df['date']).dt.tz_localize(None)
-
-    logging.debug(f"Start date type: {type(start)}; Value: {start}")
-    logging.debug(f"End date type: {type(end)}; Value: {end}")
-    logging.debug(f"'date' column dtype: {moods_df['date'].dtype}")
-
-    weekly_moods = moods_df[(moods_df['date'] >= start) & (moods_df['date'] <= end)]
-    if weekly_moods.empty:
-        return None
-    return weekly_moods['mood'].mode()[0]
 
 def recommend_health_plan(mood, health_plans_df, mood_to_cluster_mapping):
     cluster_label = mood_to_cluster_mapping.get(mood, None)
@@ -189,18 +248,84 @@ def recommend_health_plan(mood, health_plans_df, mood_to_cluster_mapping):
     if 'cluster' not in health_plans_df.columns:
         return {"error": "Cluster information is missing in health plans data."}
 
+    # Filter plans by the cluster label associated with the mood
     plans_in_cluster = health_plans_df[health_plans_df['cluster'] == cluster_label]
     if plans_in_cluster.empty:
         return {"error": "No health plans available for this cluster."}
+    
+    # Sort the filtered plans based on the score and select the best-scoring plan
+    best_plan = plans_in_cluster.sort_values(by='score', ascending=False).iloc[0].to_dict()
+    
+    # Convert _id to string if it's not already in string format
+    best_plan['_id'] = str(best_plan['_id'])
+    
+    return best_plan
 
-     # Convert ObjectId to string and return the health plan.
-    health_plan = plans_in_cluster.sort_values(by='Exercise Type').iloc[0].to_dict()
-    # Check and convert _id to string
-    if '_id' in health_plan:
-        health_plan['_id'] = str(health_plan['_id'])
-    else:
-        return {"error": "Health plan ID not found in the selected plan."}
-    return health_plan
+@app.route('/health/recommend', methods=['POST'])
+def get_health_plan_recommendation():
+    try:
+        data = request.json
+        user_id = data.get('userId')
+        week_number = data.get('weekNumber')
+
+        if user_id is None or week_number is None:
+            return jsonify({"error": "User ID or week number not specified"}), 400
+        
+        # Call the function to refine health plans based on user feedback
+        refine_recommendations(user_id)
+
+        # Calculate the week's start and end dates
+        current_week_start = datetime.utcnow().replace(tzinfo=pytz.utc) - timedelta(days=datetime.utcnow().weekday() + (week_number * 7))
+        current_week_end = current_week_start + timedelta(days=7)
+
+        # Assume `get_most_common_mood_for_user` is a function that returns the most common mood
+        most_common_mood = get_most_common_mood_for_user(user_id, current_week_start, current_week_end)
+
+        # Use the MongoDB aggregation pipeline to find the best health plan for the most common mood
+        cluster_label = mood_to_cluster_mapping.get(most_common_mood, None)
+        if cluster_label is None:
+            return jsonify({"error": "No recommendation available for this mood."}), 404
+
+        best_health_plan = healthplans_collection.find_one(
+            {'cluster': cluster_label},
+            sort=[('score', DESCENDING)]
+        )
+
+        if not best_health_plan:
+            return jsonify({"error": "No suitable health plan found"}), 404
+        
+        best_health_plan['_id'] = str(best_health_plan['_id'])  # Convert ObjectId to string
+        return jsonify({"healthPlanId": best_health_plan['_id'], "recommendedPlan": best_health_plan})
+
+    except Exception as e:
+        logging.exception("An error occurred during recommendation")
+        return jsonify({"error": str(e)}), 500
+
+def get_most_common_mood_for_user(user_id, start, end):
+    logging.basicConfig(level=logging.DEBUG)
+    
+    user_data = users_collection.find_one({'_id': ObjectId(user_id)})
+    if not user_data or 'moods' not in user_data:
+        return None
+    
+    moods_df = pd.DataFrame(user_data['moods'])
+    
+    # Ensure both start and end are timezone-naive or timezone-aware before comparison
+    moods_df['date'] = pd.to_datetime(moods_df['date']).dt.tz_localize(None)
+    start = start.replace(tzinfo=None)
+    end = end.replace(tzinfo=None)
+    
+    logging.debug(f"Start date type: {type(start)}; Value: {start}")
+    logging.debug(f"End date type: {type(end)}; Value: {end}")
+    logging.debug(f"'date' column dtype: {moods_df['date'].dtype}")
+    
+    # Now compare
+    weekly_moods = moods_df[(moods_df['date'] >= start) & (moods_df['date'] <= end)]
+    
+    if weekly_moods.empty:
+        return None
+    
+    return weekly_moods['mood'].mode()[0]
    
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

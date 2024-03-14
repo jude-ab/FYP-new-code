@@ -52,15 +52,17 @@ function HealthPlanModal({ recommendation, isOpen, onClose, onOpenFeedback }) {
   // };
   
  const tableRows = recommendation && recommendation.details 
-    ? Object.keys(recommendation.details)
-      .filter(key => !keysToExclude.includes(key)) // Exclude specific keys
-      .map(key => (
-        <Tr key={key}>
-          <Td>{key.replace(/([A-Z])/g, ' $1').trim()}</Td> {/* Optional: Add space before capital letters for better readability */}
-          <Td>{recommendation.details[key]}</Td>
-        </Tr>
-      ))
-    : null;
+  ? orderedKeys
+    .filter(key => Object.keys(recommendation.details).includes(key)) // Filter keys to ensure they exist in recommendation.details
+    .filter(key => !keysToExclude.includes(key)) // Exclude keys specified in keysToExclude
+    .map(key => (
+      <Tr key={key}>
+        <Td>{key.replace(/([A-Z])/g, ' $1').trim()}</Td> {/* Optional: Add space before capital letters for better readability */}
+        <Td>{recommendation.details[key]}</Td>
+      </Tr>
+    ))
+  : null;
+
 
 
   // Modify the onClose prop to not only close the modal but also to open the feedback modal
@@ -72,19 +74,19 @@ function HealthPlanModal({ recommendation, isOpen, onClose, onOpenFeedback }) {
 return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Your Recommended Health Plan</ModalHeader>
+      <ModalContent fontFamily="Work sans">
+        <ModalHeader textAlign="center">Your Recommended Health Plan</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody  >
           {recommendation && recommendation.details ? (
-            <Table variant="simple">
+            <Table  variant="simple">
               <Thead>
-                <Tr>
-                  <Th>Aspect</Th>
+                <Tr >
+                  <Th>To Do</Th>
                   <Th>Details</Th>
                 </Tr>
               </Thead>
-              <Tbody>
+              <Tbody >
                 {tableRows}
               </Tbody>
             </Table>
