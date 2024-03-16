@@ -218,43 +218,40 @@ function Chart() {
 }, [recommendation]);
 
 
-  const handleRecommendationClick = async () => {
-    try {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        const userId = userInfo?._id;
-        const response = await fetch('/api/health/recommend', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, weekNumber: visibleWeek })
-        });
+const handleRecommendationClick = async () => {
+  try {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const userId = userInfo?._id;
+    const response = await fetch('/api/health/recommend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }) // Remove weekNumber as it's not needed
+    });
 
-        if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.status}`);
-        }
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.status}`);
+    }
 
-        const data = await response.json();
-        console.log("Received recommendation with _id:", data); // Verify the structure
-       setRecommendation({
-        details: data.recommendedPlan,
-        healthPlanId: data.healthPlanId
-       });
-       console.log("Recommendation after fetching:", {
-          details: data.recommendedPlan,
-          healthPlanId: data.healthPlanId,
-        });
-        setIsModalOpen(true);
-    } catch (error) {
-        console.error('Error fetching recommendation:', error);
+    const data = await response.json();
+    console.log("Received recommendation:", data);
+    setRecommendation({
+      details: data.recommendedPlan,
+      healthPlanId: data.healthPlanId
+    });
+    setIsModalOpen(true);
+  } catch (error) {
+    console.error('Error fetching recommendation:', error);
     toast({
-      title: "No moods logged to give recommendation!",
-      description: "Log your mood to get a health plan recommendation.",
+      title: "Error fetching recommendation!",
+      description: error.toString(),
       status: "error",
       duration: 5000,
       isClosable: true,
-      position:"top",
+      position: "top",
     });
   }
 };
+
 
   const handleMouseEnter = (event, dateStr, moodsForDate) => {
     const position = { x: event.clientX, y: event.clientY + window.scrollY }; // Adjust for scrolling

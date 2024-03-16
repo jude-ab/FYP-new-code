@@ -14,10 +14,14 @@ import logging
 from flask_cors import CORS
 from bson.errors import InvalidId
 from bson import ObjectId
+import pytz
+
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
 CORS(app)
+
+logging.basicConfig(level=logging.INFO)
 
 # Configure MongoDB connection
 client = MongoClient('mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mongodb.net/yogahub')
@@ -49,6 +53,9 @@ with open('mood_to_cluster_mapping.pkl', 'rb') as file:
 
 # Load health plan data with clusters
 health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
+# Check if 'score' is in columns after loading
+if 'score' not in health_plans.columns:
+    print("Warning: 'score' column not found in CSV.")
 
 # Load serialized models and encoders
 def load_pickle(file_name):
@@ -241,6 +248,11 @@ def update_scores_with_feedback(feedback_df, health_plans_df):
 
 
 def recommend_health_plan(mood, health_plans_df, mood_to_cluster_mapping):
+    if 'score' not in health_plans_df.columns:
+        # Initialize the 'score' column to 0 if it doesn't exist
+        health_plans_df['score'] = 0
+        # You may need to calculate and update the 'score' based on other data/logic here    
+
     cluster_label = mood_to_cluster_mapping.get(mood, None)
     if cluster_label is None:
         return {"error": "No recommendation available for this mood."}
@@ -266,66 +278,74 @@ def get_health_plan_recommendation():
     try:
         data = request.json
         user_id = data.get('userId')
-        week_number = data.get('weekNumber')
-
-        if user_id is None or week_number is None:
-            return jsonify({"error": "User ID or week number not specified"}), 400
         
-        # Call the function to refine health plans based on user feedback
+        if not user_id:
+            return jsonify({"error": "User ID not specified"}), 400
+        
+        # Call the function to update health plans based on user feedback before making a recommendation
         refine_recommendations(user_id)
 
-        # Calculate the week's start and end dates
-        current_week_start = datetime.utcnow().replace(tzinfo=pytz.utc) - timedelta(days=datetime.utcnow().weekday() + (week_number * 7))
-        current_week_end = current_week_start + timedelta(days=7)
+        # Determine the user's most common mood for the last 7 days
+        most_common_mood = get_most_common_mood_for_user(user_id)
 
-        # Assume `get_most_common_mood_for_user` is a function that returns the most common mood
-        most_common_mood = get_most_common_mood_for_user(user_id, current_week_start, current_week_end)
-
-        # Use the MongoDB aggregation pipeline to find the best health plan for the most common mood
-        cluster_label = mood_to_cluster_mapping.get(most_common_mood, None)
-        if cluster_label is None:
-            return jsonify({"error": "No recommendation available for this mood."}), 404
-
-        best_health_plan = healthplans_collection.find_one(
-            {'cluster': cluster_label},
-            sort=[('score', DESCENDING)]
-        )
-
-        if not best_health_plan:
-            return jsonify({"error": "No suitable health plan found"}), 404
+        if not most_common_mood:
+            error_msg = "Could not determine the user's most common mood for the last 7 days"
+            logging.error(error_msg)  # Log error message
+            return jsonify({"error": error_msg}), 404
         
-        best_health_plan['_id'] = str(best_health_plan['_id'])  # Convert ObjectId to string
-        return jsonify({"healthPlanId": best_health_plan['_id'], "recommendedPlan": best_health_plan})
+        # Fetch a health plan recommendation based on the user's most common mood
+        recommended_plan = recommend_health_plan(most_common_mood, health_plans, mood_to_cluster_mapping)
+
+        if recommended_plan:
+            return jsonify({"recommendedPlan": recommended_plan})
+        else:
+            error_msg = "No suitable health plan found based on the mood"
+            logging.error(error_msg)  # Log error message
+            return jsonify({"error": error_msg}), 404
 
     except Exception as e:
-        logging.exception("An error occurred during recommendation")
-        return jsonify({"error": str(e)}), 500
+        logging.exception("An error occurred during health plan recommendation")  # Log exception
+        # Here, we log the exception and return a more descriptive message
+        return jsonify({"message": "Error fetching health plan recommendations", "exception": str(e)}), 500
 
-def get_most_common_mood_for_user(user_id, start, end):
-    logging.basicConfig(level=logging.DEBUG)
+
+
+def get_most_common_mood_for_user(user_id):
+    # Get today's date in UTC and calculate the date 7 days ago
+    utc_zone = pytz.utc
+    end_date = datetime.utcnow().replace(tzinfo=utc_zone)
+    start_date = end_date - timedelta(days=6)
+
+    # Print or log the values of start_date and end_date
+    logging.info(f"Calculating most common mood from {start_date} to {end_date}")
     
-    user_data = users_collection.find_one({'_id': ObjectId(user_id)})
-    if not user_data or 'moods' not in user_data:
+    pipeline = [
+        {"$match": {"_id": ObjectId(user_id)}},
+        {"$unwind": "$moods"},
+        {"$match": {"moods.date": {"$gte": start_date, "$lte": end_date}}},
+        {"$group": {
+            "_id": "$moods.mood",
+            "count": {"$sum": 1}
+        }},
+        {"$sort": {"count": -1}},
+        {"$limit": 1}
+    ]
+    
+    # Print or log the pipeline variable
+    logging.info(f"Aggregation pipeline for mood calculation: {pipeline}")
+    
+    result = users_collection.aggregate(pipeline)
+    most_common_mood = list(result)
+    if most_common_mood:
+        mood, count = most_common_mood[0]['_id'], most_common_mood[0]['count']
+        logging.info(f"Most common mood for the last 7 days: {mood} (Count: {count})")
+        return mood
+    else:
+        logging.info("No moods found in the last 7 days.")
         return None
-    
-    moods_df = pd.DataFrame(user_data['moods'])
-    
-    # Ensure both start and end are timezone-naive or timezone-aware before comparison
-    moods_df['date'] = pd.to_datetime(moods_df['date']).dt.tz_localize(None)
-    start = start.replace(tzinfo=None)
-    end = end.replace(tzinfo=None)
-    
-    logging.debug(f"Start date type: {type(start)}; Value: {start}")
-    logging.debug(f"End date type: {type(end)}; Value: {end}")
-    logging.debug(f"'date' column dtype: {moods_df['date'].dtype}")
-    
-    # Now compare
-    weekly_moods = moods_df[(moods_df['date'] >= start) & (moods_df['date'] <= end)]
-    
-    if weekly_moods.empty:
-        return None
-    
-    return weekly_moods['mood'].mode()[0]
+
+
+
    
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
