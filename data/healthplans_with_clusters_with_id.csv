@@ -1,72 +1,72 @@
 Exercise Type,Duration,Meal Plan,Supplements,Duration_mins,cluster,_id
-Cycling,45 mins,Low-Fat Diet,Iron Supplement,45,0,49497455-3d1c-4869-b06f-a01adad99eee
-Pilates,30 mins,Vegan Diet,Vitamin E,30,0,ce022b8d-ddd4-4cdd-810a-6d9da842fa9b
-Boxing,60 mins,Keto Diet,Magnesium Supplement,60,0,1af9fce4-c9a9-4177-a98f-b0c5374613a9
-Rowing,40 mins,Paleo Diet,Coenzyme Q10,40,0,ff1bbbb7-b69b-4227-8e6f-5ba00c39697f
-Dancing,45 mins,Gluten-Free Diet,Fish Oil,45,0,5256140d-ee4a-4b61-95f7-7e196ae071c3
-Jump Rope,20 mins,Intermittent Fasting,Zinc Supplement,20,0,b3b17961-ce35-4142-b30f-c84c1530dffe
-Pilates,45 mins,Plant-Based Diet,Protein Shake,45,0,dfef4315-3df8-4364-b429-1f813dc82fca
-Yoga,60 mins,High Fiber Diet,Vitamin A,60,0,ff9d9366-6e84-4061-b636-39ed88c966d6
-Swimming,90 mins,Low-Sodium Diet,Calcium Supplement,90,3,8ec81470-8429-4ab2-961b-e4ce0bb8e271
-Cardio,45 mins, Mediterranean Diet,Probiotics,45,0,19eb353f-8eb2-4f1f-b669-10f5cf6860f5
-Hiking,120 mins,Whole Foods Diet,Vitamin B Complex,120,1,456a1ee6-80dd-412c-af21-2b4ff4ab1ace
-Yoga,30 mins,Low-Carb Diet,Fish Oil,30,0,5e3691c8-1818-4726-b7b9-ea8172ea6d01
-Running,50 mins,Balanced Diet,Multivitamin,50,0,babee2f4-a75d-4a15-a7e2-fe4465d454fc
-Strength Training,75 mins,High-Protein Diet,Protein Powder,75,3,4968a4e1-39bb-4b1e-9c63-cbeb8a1b0466
-HIIT,30 mins,Vegetarian Diet,Vitamin D,30,0,31b7460d-f9ee-4e66-a654-b1ded282247a
-Swimming,45 mins,Low-Calorie Diet,Iron Supplement,45,0,a75c74d0-c997-4a78-8678-c0424eb592bc
-Cycling,60 mins,Keto Diet,Magnesium Supplement,60,0,4053c529-212d-47db-b981-9afe24db3491
-Boxing,45 mins,Paleo Diet,Coenzyme Q10,45,0,9c4da924-845e-494f-96aa-70f85888c133
-Dancing,60 mins,Gluten-Free Diet,Vitamin C,60,0,f88b51b2-d7bc-476f-bc27-db9cb9b50dea
-Jump Rope,25 mins,Intermittent Fasting,Zinc Supplement,25,0,92ac9210-0545-465c-80c7-46dff90a7720
-Pilates,45 mins,Plant-Based Diet,Protein Shake,45,0,e16420bf-5341-409b-a7be-c0d61f1b889c
-Yoga,75 mins,High Fiber Diet,Vitamin B12,75,3,bb5f2f0b-c5b1-4d47-b107-94d87e063d25
-Hiking,150 mins,Whole Foods Diet,Vitamin E,150,4,9a54a66b-c280-4148-b2f8-75372a014728
-Yoga,40 mins,Low-Carb Diet,Fish Oil,40,0,5a4d21eb-10e8-4899-8785-0c15f241760e
-Running,55 mins,Balanced Diet,Multivitamin,55,0,3de54d1b-5da2-4f2c-8334-d66d8da44345
-Strength Training,90 mins,High-Protein Diet,Protein Powder,90,3,117c4e03-3444-448b-ba7e-5977b6cfe8d1
-HIIT,35 mins,Vegetarian Diet,Vitamin D,35,0,ec724617-dc1d-4040-b861-dbb061bfd57d
-Swimming,50 mins,Low-Calorie Diet,Iron Supplement,50,0,2498dd43-daa0-4e05-b763-8b940a87f14c
-Cycling,75 mins,Keto Diet,Magnesium Supplement,75,3,ab63064d-2705-4318-9860-7d0efd30ee0f
-Yoga,50 mins,Paleo Diet,Coenzyme Q10,50,0,2770d0f0-7b33-40c2-bf50-6e15c2a292a5
-Dancing,75 mins,Gluten-Free Diet,Vitamin C,75,3,0a0e28b9-33df-482c-9080-34a7fd79c8d6
-Jump Rope,30 mins,Intermittent Fasting,Zinc Supplement,30,0,eed49076-d2a2-4606-bd1c-565aac876184
-Pilates,50 mins,Plant-Based Diet,Protein Shake,50,0,5fbdc802-c4d6-4ab5-a078-966fbd892254
-Yoga,90 mins,High Fiber Diet,Vitamin A,90,3,3545106b-f249-48e4-ab56-fb4b6b1e42bb
-Hiking,180 mins,Whole Foods Diet,Vitamin B Complex,180,4,eb9b5c8d-b3c9-4f2e-8edb-22fe05e1fc6c
-Yoga,50 mins,Low-Carb Diet,Fish Oil,50,0,388fe535-4599-44e1-bfb5-a002666e392f
-Running,60 mins,Balanced Diet,Multivitamin,60,0,bb964aba-f731-46fb-a4e4-362575fa3c8d
-Strength Training,120 mins,High-Protein Diet,Protein Powder,120,1,f7c54ed0-bb86-431d-9fdd-408217ca896e
-HIIT,45 mins,Vegetarian Diet,Vitamin D,45,0,0fcb9e5d-46f2-4170-a121-9f9d7de0474e
-Swimming,60 mins,Low-Calorie Diet,Iron Supplement,60,0,154c91d4-a829-4dfd-80bb-be9ca17a171d
-Cycling,90 mins,Keto Diet,Magnesium Supplement,90,3,6e5f3c38-96ef-4f1b-9225-71ed64069667
-Boxing,60 mins,Paleo Diet,Coenzyme Q10,60,0,45c2d110-fe4f-403e-b471-b3a62546348d
-Dancing,90 mins,Gluten-Free Diet,Vitamin E,90,3,01f8b130-29ef-4a41-9c8c-bf0c1a29efab
-Jump Rope,35 mins,Intermittent Fasting,Zinc Supplement,35,0,3dcd45cc-9b13-4fa2-8fbd-c7571d3eade6
-Yoga,60 mins,Plant-Based Diet,Protein Shake,60,0,7f7bd144-ae14-4b22-adba-f7c0fd73cd0d
-Yoga,120 mins,High Fiber Diet,Vitamin C,120,1,14f6bbd5-a8e1-4df8-a897-04e73bb0c12e
-Hiking,210 mins,Whole Foods Diet,Vitamin B12,210,2,34d3e423-2a3e-4e00-b7be-4f20158b4bf3
-Yoga,60 mins,Low-Carb Diet,Fish Oil,60,0,ed6048e0-bfc7-41b1-a984-7f0de279f1c6
-Running,75 mins,Balanced Diet,Multivitamin,75,3,14fadcb9-ca27-404f-b2b8-82e00330363b
-Strength Training,150 mins,High-Protein Diet,Protein Powder,150,4,6f738e2b-417a-4439-aa46-195061669f59
-HIIT,50 mins,Vegetarian Diet,Vitamin D,50,0,4f3ec594-edab-4f03-bd1d-4e694e70d0b3
-Swimming,75 mins,Low-Calorie Diet,Iron Supplement,75,3,a673af01-2ec0-423e-a8f2-755a139bc4cb
-Cycling,120 mins,Keto Diet,Magnesium Supplement,120,1,be432fd8-2c71-4e5d-beae-baf0663dd140
-Boxing,75 mins,Paleo Diet,Coenzyme Q10,75,3,080a93d4-8ebc-4b00-aa1a-12be9bdb6e3b
-Dancing,120 mins,Gluten-Free Diet,Vitamin A,120,1,6b430b3d-d9b9-4f48-9108-0f3d8ed844a1
-Jump Rope,40 mins,Intermittent Fasting,Zinc Supplement,40,0,ea18597f-0a6d-4aae-b11c-394f52c11b0d
-Pilates,75 mins,Plant-Based Diet,Protein Shake,75,3,a2dcf09c-4bc7-4bb7-8515-6119e035193c
-Yoga,150 mins,High Fiber Diet,Vitamin B Complex,150,4,4f5aa4da-a9da-4f4a-8dc0-5fb80a085961
-Hiking,240 mins,Whole Foods Diet,Vitamin C,240,2,14175c23-b44e-400d-9af0-793167eab5fb
-Yoga,75 mins,Low-Carb Diet,Fish Oil,75,3,4eab9fbc-e3b9-4101-8ab1-7a4d82fc2d53
-Running,90 mins,Balanced Diet,Multivitamin,90,3,534d1d4e-282f-4a45-9f68-6305dbaa7cc6
-Strength Training,180 mins,High-Protein Diet,Protein Powder,180,4,13405eca-77ed-489c-9ba4-5516a58dedf7
-HIIT,60 mins,Vegetarian Diet,Vitamin E,60,0,333ffd54-017b-43c8-b6ea-8504e06dc547
-Swimming,90 mins,Low-Calorie Diet,Iron Supplement,90,3,4bbe096d-bade-40d2-a41d-7f73dd9a3d04
-Cycling,150 mins,Keto Diet,Magnesium Supplement,150,4,55ed9770-ca9c-4dca-890e-ef9019f26d06
-Boxing,90 mins,Paleo Diet,Coenzyme Q10,90,3,376bd1e3-5e4e-4ac1-8546-01149ba590ea
-Dancing,150 mins,Gluten-Free Diet,Vitamin D,150,4,5281cd9e-58e1-4384-b0ad-e16a783fbba0
-Jump Rope,45 mins,Intermittent Fasting,Zinc Supplement,45,0,0033f99d-9428-47cd-82c6-15673bd07ac4
-Pilates,90 mins,Plant-Based Diet,Protein Shake,90,3,e543b0e1-99be-4022-b4ca-2b3640c00d83
-Yoga,180 mins,High Fiber Diet,Vitamin B12,180,4,6fbf2f07-5c79-4970-bd3d-0fe1ca613886
-Hiking,270 mins,Whole Foods Diet,Vitamin A,270,2,3c8a8c28-528a-4133-b4a1-c0136b14f235
+Cycling,45 mins,Low-Fat Diet,Iron Supplement,45,0,919c4535-921f-49dc-8464-8b0cfac446cb
+Pilates,30 mins,Vegan Diet,Vitamin E,30,0,394aa47a-a799-4c04-92f9-b27d5f9396aa
+Boxing,60 mins,Keto Diet,Magnesium Supplement,60,0,24cf8ea4-fbd5-4256-a2fc-04d287176b2b
+Rowing,40 mins,Paleo Diet,Coenzyme Q10,40,0,f3e16cc6-1ca0-48b9-8370-e4243527eaef
+Dancing,45 mins,Gluten-Free Diet,Fish Oil,45,0,35f86987-e675-4932-8fe8-ee8c186a35f6
+Jump Rope,20 mins,Intermittent Fasting,Zinc Supplement,20,0,34461c51-3656-4b3b-9e02-c1fd458f50fd
+Pilates,45 mins,Plant-Based Diet,Protein Shake,45,0,dab0f351-8f60-4ab7-9002-fa93eed76d33
+Yoga,60 mins,High Fiber Diet,Vitamin A,60,0,70ef346f-a160-4e13-88ec-70a1debb109d
+Swimming,90 mins,Low-Sodium Diet,Calcium Supplement,90,3,b8eb9882-32ac-4435-93b4-d20d56d3e476
+Cardio,45 mins, Mediterranean Diet,Probiotics,45,0,2964e0d4-3ab4-4980-8672-c0cb80b9b86a
+Hiking,120 mins,Whole Foods Diet,Vitamin B Complex,120,1,aecc7c84-df6f-4233-ad1b-98da91ddfc7b
+Yoga,30 mins,Low-Carb Diet,Fish Oil,30,0,8858b39d-a0d4-4c05-8f6f-f4c8fcd10b61
+Running,50 mins,Balanced Diet,Multivitamin,50,0,d50742dd-a3e9-4f24-b5ab-2ad7b160c937
+Strength Training,75 mins,High-Protein Diet,Protein Powder,75,3,8501e638-bd99-40ad-a691-d8b1a8ec2d90
+HIIT,30 mins,Vegetarian Diet,Vitamin D,30,0,e4547730-120f-4773-b939-e0594ef02cb2
+Swimming,45 mins,Low-Calorie Diet,Iron Supplement,45,0,a5de7602-e206-4b21-884c-c4b35bc2f809
+Cycling,60 mins,Keto Diet,Magnesium Supplement,60,0,e70ab4ef-6acc-4171-80cc-895bc6f6fbcb
+Boxing,45 mins,Paleo Diet,Coenzyme Q10,45,0,6edffe73-7d95-434c-a420-38578ae88268
+Dancing,60 mins,Gluten-Free Diet,Vitamin C,60,0,1d2b90cf-5dc5-436e-8f8b-3907cad0135b
+Jump Rope,25 mins,Intermittent Fasting,Zinc Supplement,25,0,c85ff244-d73a-4a41-8c03-e59991fcc70e
+Pilates,45 mins,Plant-Based Diet,Protein Shake,45,0,a4730199-9ff5-40b7-a677-589b30fce5c3
+Yoga,75 mins,High Fiber Diet,Vitamin B12,75,3,330392e9-d71b-4c75-b849-071b2f20f5ce
+Hiking,150 mins,Whole Foods Diet,Vitamin E,150,4,ff14b21c-7436-439e-9767-f539c9f5f679
+Yoga,40 mins,Low-Carb Diet,Fish Oil,40,0,c9826b34-dfe7-47d5-8f8a-bee921dc6fdb
+Running,55 mins,Balanced Diet,Multivitamin,55,0,431efd10-4a03-49a8-b65a-bdb6fca3c29d
+Strength Training,90 mins,High-Protein Diet,Protein Powder,90,3,a08a7a82-e560-4cfa-8e36-c844eecafb19
+HIIT,35 mins,Vegetarian Diet,Vitamin D,35,0,5a543a5f-93a1-4bf5-b30d-39f657f9636f
+Swimming,50 mins,Low-Calorie Diet,Iron Supplement,50,0,d411203f-5bd8-447d-827a-78c8798e9ce1
+Cycling,75 mins,Keto Diet,Magnesium Supplement,75,3,3aac745d-ae11-4576-8aba-769ed1b25daa
+Yoga,50 mins,Paleo Diet,Coenzyme Q10,50,0,416d64ef-1493-44db-87bd-218aa700f2cd
+Dancing,75 mins,Gluten-Free Diet,Vitamin C,75,3,1d0ea9b8-928a-401f-96ed-c752f3803e7f
+Jump Rope,30 mins,Intermittent Fasting,Zinc Supplement,30,0,c653ba53-a3ff-44a6-aadc-e9a4cdee0b70
+Pilates,50 mins,Plant-Based Diet,Protein Shake,50,0,ae4fcdab-af74-4174-bd31-5b27b6517186
+Yoga,90 mins,High Fiber Diet,Vitamin A,90,3,151743f9-ca16-4ed5-b74b-a48bc97e3ecc
+Hiking,180 mins,Whole Foods Diet,Vitamin B Complex,180,4,4b84598b-6647-4122-8dfa-e10a4168205d
+Yoga,50 mins,Low-Carb Diet,Fish Oil,50,0,80fe28b5-e546-4efc-9773-22a30b43097e
+Running,60 mins,Balanced Diet,Multivitamin,60,0,3bdb2059-eb1f-45ca-9121-043a1ce372b2
+Strength Training,120 mins,High-Protein Diet,Protein Powder,120,1,65f30a0f-83b4-4a4f-8e56-a8b1d46273eb
+HIIT,45 mins,Vegetarian Diet,Vitamin D,45,0,4bac8f8d-e11e-4b45-9276-70e925b80b2f
+Swimming,60 mins,Low-Calorie Diet,Iron Supplement,60,0,cb6c9b8a-54e6-44a4-8376-4e206a82a1ea
+Cycling,90 mins,Keto Diet,Magnesium Supplement,90,3,ebafa466-b77f-4d12-b2ef-b26928bfc2d6
+Boxing,60 mins,Paleo Diet,Coenzyme Q10,60,0,5d9ccb8c-4503-45d0-829a-a4563fda3f77
+Dancing,90 mins,Gluten-Free Diet,Vitamin E,90,3,572a516a-aed5-4791-8090-64614a38d16a
+Jump Rope,35 mins,Intermittent Fasting,Zinc Supplement,35,0,8c008da8-d53a-49bc-a835-706b92509916
+Yoga,60 mins,Plant-Based Diet,Protein Shake,60,0,56170719-be03-4da1-ba4b-74d54fcb3e1c
+Yoga,120 mins,High Fiber Diet,Vitamin C,120,1,633a5086-10f0-4c61-99cb-fa1e0ecd7dbc
+Hiking,210 mins,Whole Foods Diet,Vitamin B12,210,2,06c5acee-89f4-4d82-8c96-6130b9be69e7
+Yoga,60 mins,Low-Carb Diet,Fish Oil,60,0,b3525a15-4a4b-4dde-88c8-492072c8f542
+Running,75 mins,Balanced Diet,Multivitamin,75,3,ceac1488-c407-4ab5-8787-444a8792449b
+Strength Training,150 mins,High-Protein Diet,Protein Powder,150,4,2cbbfdec-6ad4-4ee5-8e45-35b032ca82e1
+HIIT,50 mins,Vegetarian Diet,Vitamin D,50,0,a151bb12-7ff3-46f1-afe9-a99888015ee6
+Swimming,75 mins,Low-Calorie Diet,Iron Supplement,75,3,9422867f-6778-4f2f-b842-c47a0585a5d2
+Cycling,120 mins,Keto Diet,Magnesium Supplement,120,1,18df0656-de2e-4e11-b3b4-e78e8b26f1a5
+Boxing,75 mins,Paleo Diet,Coenzyme Q10,75,3,ac739b8a-560a-4284-8666-0d1d07f2738d
+Dancing,120 mins,Gluten-Free Diet,Vitamin A,120,1,90898a23-5c8b-46e9-a647-67ba2f26e154
+Jump Rope,40 mins,Intermittent Fasting,Zinc Supplement,40,0,784779c4-9f88-4f32-ac0e-1c0b1bc3fbd5
+Pilates,75 mins,Plant-Based Diet,Protein Shake,75,3,ffc23a28-3b61-4782-b6f0-852e8892ec79
+Yoga,150 mins,High Fiber Diet,Vitamin B Complex,150,4,2bac1c0e-73f7-4e85-bced-57e0e199635b
+Hiking,240 mins,Whole Foods Diet,Vitamin C,240,2,bf6ad24f-dacf-49ff-9494-3896cf335523
+Yoga,75 mins,Low-Carb Diet,Fish Oil,75,3,f5861f43-d628-4c64-a0dd-0d8c0f6ab857
+Running,90 mins,Balanced Diet,Multivitamin,90,3,8aa57d6b-aa3c-4ec1-93d4-dc6a8db778fe
+Strength Training,180 mins,High-Protein Diet,Protein Powder,180,4,d87ff138-c3fd-4722-9826-e235c2f5edad
+HIIT,60 mins,Vegetarian Diet,Vitamin E,60,0,c760590c-75a6-41c7-9eb7-d5382c357f7f
+Swimming,90 mins,Low-Calorie Diet,Iron Supplement,90,3,94551e09-2368-473a-84bf-06f8212938cb
+Cycling,150 mins,Keto Diet,Magnesium Supplement,150,4,24ad8e44-ab9b-4fe4-a5c4-d0d76f88b666
+Boxing,90 mins,Paleo Diet,Coenzyme Q10,90,3,ef1f367d-f3f3-4305-b91d-bc4e185abba9
+Dancing,150 mins,Gluten-Free Diet,Vitamin D,150,4,364e2b6e-255a-4340-bea6-6e81f804ee7d
+Jump Rope,45 mins,Intermittent Fasting,Zinc Supplement,45,0,43fb0225-e60e-47ff-9147-e0aa20925dbe
+Pilates,90 mins,Plant-Based Diet,Protein Shake,90,3,e20a7363-eedf-4ef0-9238-21babb1085cc
+Yoga,180 mins,High Fiber Diet,Vitamin B12,180,4,e84e8c9f-97a7-4dd0-b654-f78de40d7296
+Hiking,270 mins,Whole Foods Diet,Vitamin A,270,2,7936e7f0-4d33-4464-a632-dd0ad3f063b8
