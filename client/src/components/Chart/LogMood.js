@@ -252,7 +252,7 @@ const deleteMood = async (moodId) => {
         How are you feeling today?
       </Text>
       <Text fontSize="xl" fontFamily="Work sans" color="black" textAlign="center">
-        Based on how you're currently feeling, we will keep track of your mood and recommend yoga poses tailored just for you!
+        Based on how you're feeling, you can get yoga recommendations. We will also keep track of your mood and recommend health plans tailored just for you!
       </Text>
       <Text fontSize="xl" fontFamily="Work sans" color="black" textAlign="center">
         Just click on the mood you're feeling right now.

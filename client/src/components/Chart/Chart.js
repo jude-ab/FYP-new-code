@@ -204,13 +204,6 @@ function Chart() {
       },
     },
   };
-
-//   useEffect(() => {
-//     console.log("Received recommendation in modal:", recommendation);
-//     if (recommendation && recommendation._id) {
-//         setIsFeedbackModalOpen(true);
-//     }
-  // }, [recommendation]);
   
   useEffect(() => {
   console.log("Updated recommendation:", recommendation);
@@ -236,7 +229,8 @@ const handleRecommendationClick = async () => {
     console.log("Received recommendation:", data);
     setRecommendation({
       details: data.recommendedPlan,
-      healthPlanId: data.healthPlanId
+      healthPlanId: data.healthPlanId,
+      mostCommonMood: data.mostCommonMood
     });
     setIsModalOpen(true);
   } catch (error) {

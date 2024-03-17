@@ -28,28 +28,6 @@ function HealthPlanModal({ recommendation, isOpen, onClose, onOpenFeedback }) {
   ];
   
   const keysToExclude = ['cluster', 'Duration_mins', '_id'];
-
-  // Function to create table rows from recommendation object in the specified order
-  // const tableRows = recommendation && recommendation.details ? Object.keys(recommendation.details).map((key) =>  {
-  //    console.log("recommendation exists?", !!recommendation);
-  // console.log("recommendation.details exists?", !!recommendation?.details);
-
-  // if (recommendation?.details) {
-  //     console.log("Accessing a specific detail:", recommendation.details['Exercise Type']);
-
-  //   return [];
-  // }
-
-  // console.log("Processing recommendation details:", recommendation.details);
-  //   return orderedKeys
-  //   .filter(key => !keysToExclude.includes(key) && recommendation.details[key]) // Check inside recommendation.details
-  //   .map(key => (
-  //     <Tr key={key}>
-  //       <Td>{key}</Td>
-  //       <Td>{recommendation.details[key]}</Td>
-  //     </Tr>
-  //   ));
-  // };
   
  const tableRows = recommendation && recommendation.details 
   ? orderedKeys
@@ -75,9 +53,16 @@ return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent fontFamily="Work sans">
-        <ModalHeader textAlign="center">Your Recommended Health Plan</ModalHeader>
+        <ModalHeader textAlign="center"> Here is your recommended health plan. </ModalHeader>
         <ModalCloseButton />
-        <ModalBody  >
+      <ModalBody  >
+        <Text
+          fontSize="lg"
+          textAlign="center"
+          mb={4}
+        >
+           You've been feeling mostly {recommendation.mostCommonMood} this past week.
+        </Text>
           {recommendation && recommendation.details ? (
             <Table  variant="simple">
               <Thead>

@@ -304,7 +304,8 @@ def get_health_plan_recommendation():
         # Add the healthPlanId to the response
         return jsonify({
             "recommendedPlan": recommended_plan,
-            "healthPlanId": recommended_plan.get('_id')  # This line is crucial
+            "healthPlanId": recommended_plan.get('_id'),
+            "mostCommonMood": most_common_mood 
         })
 
         if recommended_plan:
