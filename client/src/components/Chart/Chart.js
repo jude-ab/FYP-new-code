@@ -581,16 +581,15 @@ const updateChartDataForMonth = () => {
     <Button
       _hover={{ bg: "#1E4D38" }}
       backgroundColor="#0C301F"
-      marginLeft='60.5%'
       marginTop={{ base: "200%", md: "1%" }}
       color='white'
       onClick={handleRecommendationClick}
       fontFamily="Work sans"
-      width={{ base: "60%", md: "20%" }} // Adjusted width
+      width={{ base: "60%", md: "23%" }} // Adjusted width
       fontSize={{ base: '80%', md: '90%' }} // Responsive font size
-      ml={{ base: '20%', md: '62.5%' }} // Responsive marginLeft, shorthand for marginLeft
+      ml={{ base: '20%', md: '60.8%' }} // Responsive marginLeft, shorthand for marginLeft
     >
-      Get Health Plan Recommendation
+      Get Health Plan Recommendation for this Week
       </Button>
     </Box>
 
@@ -616,7 +615,7 @@ const updateChartDataForMonth = () => {
         Its capacity to connect mind, body, and spirit is what gives it its transformational power.
         It has significant positive effects on mental health, such as lowered stress levels, happier moods, and increased emotional fortitude.
         People can proactively cultivate their mental and emotional well-being and live a more vibrant and fulfilling life by adopting these comprehensive health plan pillars.
-        Find out here what health plan is recommended for you now based on your current mood stats!
+        Find out here what health plan is recommended for you now based on your most common mood this week!
       </Text>
     </Box>
 

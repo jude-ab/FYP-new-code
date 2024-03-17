@@ -30,6 +30,12 @@ users_collection = db.users
 feedback_collection = db.feedbacks
 healthplans_collection = db.healthplans
 
+# Load health plan data with clusters
+health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
+df = pd.read_csv('healthplans_with_clusters.csv')
+
+# Generate a unique ID for each row and create a new '_id' column
+df['_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
 # Initialize NLP resources
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -51,12 +57,6 @@ with open('onehot_encoder.pkl', 'rb') as file:
 with open('mood_to_cluster_mapping.pkl', 'rb') as file:
     mood_to_cluster_mapping = pickle.load(file)
 
-# Load health plan data with clusters
-health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
-# Check if 'score' is in columns after loading
-if 'score' not in health_plans.columns:
-    print("Warning: 'score' column not found in CSV.")
-
 # Load serialized models and encoders
 def load_pickle(file_name):
     with open(file_name, 'rb') as file:
@@ -75,13 +75,6 @@ df = pd.read_csv('healthplans_with_clusters.csv')
 
 # Generate a unique ID for each row and create a new '_id' column
 df['_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
-
-# Save the DataFrame back to CSV
-df.to_csv('healthplans_with_clusters_with_id.csv', index=False)
-
-# Load health plan data with clusters
-health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
-print(health_plans.head())
 
 def lemmatize_and_remove_stopwords(text):
     tokens = word_tokenize(text.lower())
@@ -198,6 +191,9 @@ def refine_recommendations(user_id):
         score_modifier = 1 if feedback['feedback'] == 'like' else -1
         health_plan_id = feedback['healthPlanId']
         
+        print("health_plan_id:", health_plan_id)
+        print("Type of health_plan_id:", type(health_plan_id))
+
         # Directly use the health_plan_id string to find the document
         if healthplans_collection.find_one({'_id': health_plan_id}):
             bulk_operations.append(
@@ -219,14 +215,23 @@ def collect_feedback():
     user_id = feedback_data.get('userId')
     health_plan_id = feedback_data.get('healthPlanId')
 
+    # Debug: Print out the health plan ID received to check
+    print("Received health plan ID:", health_plan_id)
+
     # Since the health_plan_id is a UUID string, no need to convert it to ObjectId
     health_plan = healthplans_collection.find_one({'_id': health_plan_id})
-    if not health_plan_id or not health_plan or not user_id:
-        return jsonify({"error": "Invalid userId or healthPlanId"}), 400
+
+    # Debug: Print whether a matching health plan was found
+    if health_plan:
+        print("Matching health plan found for ID:", health_plan_id)
+    else:
+        print("No matching health plan found for ID:", health_plan_id)
+        return jsonify({"error": "Health plan ID is not available."}), 400
 
     # Insert feedback into MongoDB
     feedback_collection.insert_one(feedback_data)
     return jsonify({"message": "Feedback received"}), 201
+
 
 
 # This function should be defined in your Flask app to update the scores based on feedback.
@@ -247,31 +252,30 @@ def update_scores_with_feedback(feedback_df, health_plans_df):
             print(f"Warning: Health plan ID {plan_id} from feedback doesn't exist in health plans.")
 
 
-def recommend_health_plan(mood, health_plans_df, mood_to_cluster_mapping):
-    if 'score' not in health_plans_df.columns:
-        # Initialize the 'score' column to 0 if it doesn't exist
-        health_plans_df['score'] = 0
-        # You may need to calculate and update the 'score' based on other data/logic here    
-
+def recommend_health_plan(mood, mood_to_cluster_mapping):
     cluster_label = mood_to_cluster_mapping.get(mood, None)
     if cluster_label is None:
         return {"error": "No recommendation available for this mood."}
 
-    if 'cluster' not in health_plans_df.columns:
-        return {"error": "Cluster information is missing in health plans data."}
-
-    # Filter plans by the cluster label associated with the mood
-    plans_in_cluster = health_plans_df[health_plans_df['cluster'] == cluster_label]
-    if plans_in_cluster.empty:
+    # Query health plans by cluster label and sort by score
+    cursor = healthplans_collection.find({"cluster": cluster_label}).sort("score", DESCENDING)
+    health_plans = list(cursor)
+    
+    if not health_plans:
         return {"error": "No health plans available for this cluster."}
     
-    # Sort the filtered plans based on the score and select the best-scoring plan
-    best_plan = plans_in_cluster.sort_values(by='score', ascending=False).iloc[0].to_dict()
+    # Check if the first document has a "score" field and log the result
+    if "score" in health_plans[0]:
+        print("Score field found in the first document of the result set.")
+    else:
+        print("Score field not found in the first document of the result set.")
     
-    # Convert _id to string if it's not already in string format
-    best_plan['_id'] = str(best_plan['_id'])
+    # Select the best-scoring plan
+    best_plan = health_plans[0]
+    best_plan['_id'] = str(best_plan['_id'])  # Convert ObjectId to string for JSON serialization
     
     return best_plan
+
 
 @app.route('/health/recommend', methods=['POST'])
 def get_health_plan_recommendation():
@@ -294,7 +298,14 @@ def get_health_plan_recommendation():
             return jsonify({"error": error_msg}), 404
         
         # Fetch a health plan recommendation based on the user's most common mood
-        recommended_plan = recommend_health_plan(most_common_mood, health_plans, mood_to_cluster_mapping)
+        # Note: The updated function call no longer passes 'health_plans' as an argument
+        recommended_plan = recommend_health_plan(most_common_mood, mood_to_cluster_mapping)
+
+        # Add the healthPlanId to the response
+        return jsonify({
+            "recommendedPlan": recommended_plan,
+            "healthPlanId": recommended_plan.get('_id')  # This line is crucial
+        })
 
         if recommended_plan:
             return jsonify({"recommendedPlan": recommended_plan})
@@ -307,6 +318,7 @@ def get_health_plan_recommendation():
         logging.exception("An error occurred during health plan recommendation")  # Log exception
         # Here, we log the exception and return a more descriptive message
         return jsonify({"message": "Error fetching health plan recommendations", "exception": str(e)}), 500
+
 
 
 
