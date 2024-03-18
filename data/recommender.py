@@ -24,7 +24,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from xgboost import XGBClassifier
 from keras.models import Sequential, load_model
-from keras.layers import Dense 
+from keras.layers import Dense, Input
 import numpy as np
 import json
 import os
@@ -57,6 +57,13 @@ df = pd.read_csv('healthplans_with_clusters.csv')
 
 # Generate a unique ID for each row and create a new '_id' column
 df['_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
+
+# Initialize and configure the scheduler
+scheduler = APScheduler()
+scheduler.init_app(app)
+# Start the scheduler
+scheduler.start()
+
 # Initialize NLP resources
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -84,15 +91,14 @@ def load_pickle(file_name):
         return pickle.load(file)
     
 # Load the serialized models into memory using the load_model function
-nn_model = load_model('nn_model.h5')
+nn_model = load_model('nn_model.keras')
 lr_model = joblib.load('lr_model.pkl')
 gb_model = joblib.load('gb_model.pkl')
 xgb_model = joblib.load('xgb_model.pkl')
 rf_model = joblib.load('rf_model.pkl')
 
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
+# def test_job():
+#     logging.info("The test job has been executed.")
 
 # Create lemmatizer and stopwords list 
 #function that tokenizes, lemmatizes, and removes stop words from text
@@ -370,7 +376,7 @@ load_scaler()
 # Define the function to load or reload the models into memory
 def load_models():
     global nn_model, lr_model, rf_model, gb_model, xgb_model
-    nn_model = load_model('nn_model.h5')
+    nn_model = load_model('nn_model.keras')
     lr_model = joblib.load('lr_model.pkl')
     gb_model = joblib.load('gb_model.pkl')
     xgb_model = joblib.load('xgb_model.pkl')
@@ -379,7 +385,7 @@ def load_models():
     # Call load_models initially to load the models when the app starts
     load_models()
 
-@scheduler.task('interval', id='fetch_data_job', hours=24, misfire_grace_time=900)
+@scheduler.task('interval', id='fetch_data_job', hours=1, misfire_grace_time=900)
 def fetch_data():
     client = MongoClient(MONGODB_CONNECTION)
     db = client.yogahub
@@ -445,7 +451,7 @@ def preprocess_data(input_X, input_y):
     # Assuming X_train_processed is your processed training data
     columns_after_preprocessing = X_processed.columns.tolist()   
 
-    with open('model_columns.json', 'w') as file:
+    with open('/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/model_columns.json', 'w') as file:
         json.dump(columns_after_preprocessing, file) 
 
     return X_processed, y_processed, feature_names
@@ -455,7 +461,8 @@ def preprocess_data(input_X, input_y):
 # Define a function to create and compile a Keras neural network model
 def create_neural_network(input_dim):
     model = Sequential()
-    model.add(Dense(64, input_dim=input_dim, activation='relu'))
+    model.add(Input(shape=(input_dim,))) 
+    model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))  # For binary classification
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -523,11 +530,11 @@ def save_model(model, filename):
 # Full update pipeline integrating all models
 def full_update_pipeline():
 
-    log_path = "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/log.txt"
+    # log_path = "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/log.txt"
     
-     # Log when the cron job runs
-    with open(log_path, "a") as log_file:
-        log_file.write(f"Cron job started at {datetime.now()}\n")
+    #  # Log when the cron job runs
+    # with open(log_path, "a") as log_file:
+    #     log_file.write(f"Cron job started at {datetime.now()}\n")
         
     X_new, y_new = fetch_data()
     X_processed, y_processed = preprocess_data(X_new, y_new)
@@ -549,9 +556,12 @@ def full_update_pipeline():
     # Evaluate models and create hybrid model
     ensemble_accuracy = evaluate_and_create_hybrid(X_val_scaled, y_val, nn_model, lr_model, rf_model, gb_model, xgb_model)  
     
+    model_path = 'nn_model.keras'
+    os.chmod(model_path, 0o644) 
+
     # If ensemble model is satisfactory, save the models
     if ensemble_accuracy > 0.85:  # Threshold accuracy for your use case
-        nn_model.save('nn_model.h5')
+        nn_model = load_model(model_path)
         save_model(lr_model, 'lr_model.pkl')
         save_model(rf_model, 'rf_model.pkl')
         save_model(gb_model, 'gb_model.pkl')
@@ -560,14 +570,16 @@ def full_update_pipeline():
          # After saving the models, reload them into memory
         load_models()
         
-         # Log after all tasks are completed
-    with open(log_path, "a") as log_file:
-        log_file.write(f"Cron job finished at {datetime.now()}\n")
+    #      # Log after all tasks are completed
+    # with open(log_path, "a") as log_file:
+    #     log_file.write(f"Cron job finished at {datetime.now()}\n")
 
 # Setup a scheduled job to train models periodically
-@scheduler.task('interval', id='train_models_job', hours=24, misfire_grace_time=900)
+@scheduler.task('interval', id='train_models_job', hours=1, misfire_grace_time=900)
 def scheduled_model_training():
     full_update_pipeline()
+    logging.info("The job has been executed.")
+    
 
 def process_input_data_for_prediction(input_data):
     scaler_file = 'scaler.pkl'
@@ -602,7 +614,7 @@ def process_input_data_for_prediction(input_data):
     return input_data_scaled
 
 def load_expected_columns():
-    with open('model_columns.json', 'r') as file:
+    with open('/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/model_columns.json', 'r') as file:
         columns = json.load(file)
     return columns
 
@@ -624,6 +636,19 @@ def get_predictions_from_models(X_to_predict):
     ], axis=0)
     
     return ensemble_predictions
+
+# Initialize and configure the scheduler
+scheduler = APScheduler()
+scheduler.init_app(app)
+
+# Schedule the test job
+# scheduler.add_job(func=test_job, trigger="interval", hours=1, id="test_job")
+scheduler.add_job(func=scheduled_model_training, trigger="interval", hours=1, id="scheduled_model_training")
+scheduler.add_job(func=fetch_data, trigger="interval", hours=1, id="fetch_data")
+scheduler.add_job(func=full_update_pipeline, trigger="interval", hours=1, id="full_update_pipeline")
+
+# Start the scheduler
+scheduler.start()
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

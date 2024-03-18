@@ -48,7 +48,7 @@ const LogMood = () => {
     
   async function fetchRecommendations(moodData) {
     try {
-      const response = await fetch("/recommend", {
+      const response = await fetch("/recommend", { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ moods: moodData.mood }),
@@ -60,7 +60,7 @@ const LogMood = () => {
       console.error("Error fetching recommendations:", error);
     }
   }
-    
+         
   async function saveUserMood(moodData) {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   if (!userInfo || !userInfo.token) {

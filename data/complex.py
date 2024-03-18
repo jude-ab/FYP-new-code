@@ -7,11 +7,13 @@ import joblib  # Used for saving models
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from xgboost import XGBClassifier
-from keras.models import Sequential
-from keras.layers import Dense
+from keras.models import Sequential, load_model
+from keras.layers import Dense, Input
 import numpy as np
 from datetime import datetime
 import json
+import os
+
 
 # Define the connection string for MongoDB
 MONGODB_CONNECTION = "mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mongodb.net/yogahub"
@@ -64,7 +66,7 @@ def preprocess_data(X, y):
 
     # Save the columns (features) to a JSON file for later use in prediction
     model_columns = X_processed.columns.tolist()
-    with open('model_columns.json', 'w') as f:
+    with open('/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/model_columns.json', 'w') as f:
         json.dump(model_columns, f)
 
     # Initialize the StandardScaler
@@ -82,11 +84,13 @@ def preprocess_data(X, y):
 # Define a function to create and compile a Keras neural network model
 def create_neural_network(input_dim):
     model = Sequential()
-    model.add(Dense(64, input_dim=input_dim, activation='relu'))
+    model.add(Input(shape=(input_dim,)))  # Use Input layer
+    model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))  # For binary classification
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
+
 
 # Initialize the models
 def initialize_models(X_train_scaled_shape):
@@ -150,11 +154,11 @@ def save_model(model, filename):
 # Full update pipeline integrating all models
 def full_update_pipeline():
 
-    log_path = "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/log.txt"
+    # log_path = "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/log.txt"
     
-     # Log when the cron job runs
-    with open(log_path, "a") as log_file:
-        log_file.write(f"Cron job started at {datetime.now()}\n")
+    #  # Log when the cron job runs
+    # with open(log_path, "a") as log_file:
+    #     log_file.write(f"Cron job started at {datetime.now()}\n")
         
     X_new, y_new = fetch_data()
     X_processed, y_processed = preprocess_data(X_new, y_new)
@@ -174,17 +178,21 @@ def full_update_pipeline():
     # Evaluate models and create hybrid model
     ensemble_accuracy = evaluate_and_create_hybrid(X_val_scaled, y_val, nn_model, lr_model, rf_model, gb_model, xgb_model)  
     
+    model_path = 'nn_model.keras'
+    os.chmod(model_path, 0o644) 
+
     # If ensemble model is satisfactory, save the models
     if ensemble_accuracy > 0.85:  # Threshold accuracy for your use case
-        nn_model.save('nn_model.h5')
+        nn_model = load_model(model_path)
         save_model(lr_model, 'lr_model.pkl')
         save_model(rf_model, 'rf_model.pkl')
         save_model(gb_model, 'gb_model.pkl')
         save_model(xgb_model, 'xgb_model.pkl')
+
         
-         # Log after all tasks are completed
-    with open(log_path, "a") as log_file:
-        log_file.write(f"Cron job finished at {datetime.now()}\n")
+    #      # Log after all tasks are completed
+    # with open(log_path, "a") as log_file:
+    #     log_file.write(f"Cron job finished at {datetime.now()}\n")
         
 # Run the update pipeline
 if __name__ == '__main__':

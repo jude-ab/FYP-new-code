@@ -14,7 +14,7 @@ const PoseDetailsModal = ({ isOpen, onClose, pose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl" scrollBehavior="inside">
       <ModalOverlay />
-      <ModalContent maxW="2xl" maxH="80vh">
+      <ModalContent maxW="2xl" maxH="100vh">
         <ModalHeader textAlign="center" fontFamily="Work sans">{pose?.AName}</ModalHeader>
         <ModalCloseButton />
         <ModalBody
@@ -32,12 +32,14 @@ const PoseDetailsModal = ({ isOpen, onClose, pose }) => {
                 borderRadius: '24px',
                 }
             }}
-        >
+        > 
           <Text mb={2}>Level: {pose?.Level}</Text>
           <Text mb={2}>Description: {pose?.Description}</Text>
           <Text mb={2}>Benefits: {pose?.Benefits}</Text>
           <Text mb={2}>Breathing: {pose?.Breathing}</Text>
-          <Text mb={2}>Awareness: {pose?.Awareness}</Text>
+          {pose?.ImagePath && (
+            <img src={`http://localhost:4001/${pose.ImagePath}`} alt={pose.AName} style={{ width: '100%', marginTop: '10px' }} />
+          )}
         </ModalBody>
       </ModalContent>
     </Modal>
