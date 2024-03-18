@@ -49,6 +49,8 @@ users_collection = db.users
 feedback_collection = db.feedbacks
 healthplans_collection = db.healthplans
 
+poses_processed = pd.read_csv("poses_processed.csv")
+
 # Load health plan data with clusters
 health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
 df = pd.read_csv('healthplans_with_clusters.csv')
@@ -414,14 +416,16 @@ def fetch_data():
 
     return X_new, y_new
 
-def preprocess_data(X, y):
+def preprocess_data(input_X, input_y):
+    # Initialize X_processed
+    X_processed = pd.DataFrame(input_X)
+    
     # Preprocess 'Duration' column by removing ' mins' and converting to int
-    X['Duration'] = X['Duration'].str.replace(' mins', '').astype(int)
+    X_processed['Duration'] = X_processed['Duration'].str.replace(' mins', '').astype(int)
     
     # One-hot encode categorical columns
-    categorical_columns = ['Exercise Type', 'Meal Plan', 'Supplements']  # Add all other categorical columns here
-    X_processed = pd.get_dummies(X, columns=categorical_columns)
-
+    X_processed = pd.get_dummies(X_processed, columns=['Exercise Type', 'Meal Plan', 'Supplements'])
+    
     # After preprocessing but before scaling, save feature names
     feature_names = X_processed.columns.tolist()
     with open('feature_names.pkl', 'wb') as f:
@@ -431,9 +435,12 @@ def preprocess_data(X, y):
     scaler = StandardScaler()
     X_processed = scaler.fit_transform(X_processed)
 
+    # Convert X_processed back to DataFrame with expected feature names
+    X_processed = pd.DataFrame(X_processed, columns=feature_names)
+
     # Encode the labels
     encoder = LabelEncoder()
-    y_processed = encoder.fit_transform(y)
+    y_processed = encoder.fit_transform(input_y)
 
     # Assuming X_train_processed is your processed training data
     columns_after_preprocessing = X_processed.columns.tolist()   
@@ -441,7 +448,9 @@ def preprocess_data(X, y):
     with open('model_columns.json', 'w') as file:
         json.dump(columns_after_preprocessing, file) 
 
-    return X_processed, y_processed
+    return X_processed, y_processed, feature_names
+
+
 
 # Define a function to create and compile a Keras neural network model
 def create_neural_network(input_dim):
@@ -573,7 +582,8 @@ def process_input_data_for_prediction(input_data):
     
     # Preprocessing 'Duration' to numeric if it's a feature in your model
     if 'Duration' in input_data:
-        input_data['Duration'] = input_data['Duration'].str.replace(' mins', '').astype(int)
+        input_data['Duration'] = input_data['Duration'].astype(str).str.replace(' mins', '').astype(int)
+
 
     # Apply one-hot encoding to the categorical variables present in the input data
     input_data_processed = pd.get_dummies(input_data)
