@@ -41,11 +41,6 @@ const SidePopUp = () => {
     history.push("/");
   };
 
-  // const moodNav = () => {
-  //   onClose();
-  //   history.push("/mood");
-  // };
-
   const chatNav = () => {
     onClose();
     history.push("/chats");
@@ -71,7 +66,7 @@ const SidePopUp = () => {
         w="100%"
         p="5px 10px"
         boxShadow="sm"
-        zIndex="sticky"
+        zIndex={20}
         top="0"
         position="fixed"
         left="0"
@@ -89,7 +84,8 @@ const SidePopUp = () => {
           </Button>
         </Tooltip>
         <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-  <DrawerOverlay bg="transparent"/>
+  <DrawerOverlay bg="rgba(0, 0, 0, 0.7)"/> 
+
   <DrawerContent borderRadius="0px 20px 20px 0px">
     {/* Remove or comment out the close button */}
     {/* <DrawerCloseButton /> */}

@@ -25,11 +25,11 @@ const YogaLibrary = () => {
           right={0}
           bottom={0}
           left={0}
-          backgroundImage={`url(${backgroundImage})`}
+          backgroundImage={`linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url(${backgroundImage})`}
           backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
-          filter="blur(3px)" // Apply blur to just the background image
+          filter="blur(4px)" // Apply blur to just the background image
           zIndex={-1}
         />
         <SidePopUp />
@@ -97,16 +97,17 @@ const YogaLibrary = () => {
           </Box>
           {/* Box for Advanced level */}
           <Box
-            width="45%" // Adjust the width as necessary
-            textAlign="center"
-            p={5}
-            borderRadius="md"
-            borderWidth="1px"
-            borderColor="white"
-            backgroundColor="white"
-            marginTop={{ base: "-9%", md: "-2.4%" }} // Responsive marginTop
-            marginLeft="-44.5%"
-            shadow="lg"
+          width="45%" // Adjust the width as necessary
+          textAlign="center"
+          p={5}
+          borderRadius="md"
+          borderWidth="1px"
+          borderColor="white"
+          backgroundColor="white"
+          marginTop={{ base: "-9%", md: "-2.4%" }} // Responsive marginTop
+          marginLeft="-44.5%"
+          shadow="lg"
+          marginBottom={{ base: "0%", md: "1%" }}
           >
             <Image src={advancedImage} borderRadius="md" mb={4} objectFit="cover" />
             <Box height="40px" backgroundColor="white" /> {/* Adjusted height */}
