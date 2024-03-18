@@ -560,7 +560,7 @@ const updateChartDataForMonth = () => {
         fontFamily="Work sans"
         fontSize={{ base: '90%', md: '90%' }} // Responsive font size
         height={{ base: '40px', md: '30px' }} // Responsive height
-        width={{ base: '35%', md: '11%' }} // Responsive width
+        width={{ base: '34%', md: '11%' }} // Responsive width
         _hover={{ bg: '#1E4D38' }} // Adjust hover background color
         borderRadius='5px'
         ml={{ base: '32%', md: '67%' }} // Responsive marginLeft, shorthand for marginLeft
@@ -575,16 +575,17 @@ const updateChartDataForMonth = () => {
     <Button
       _hover={{ bg: "#1E4D38" }}
       backgroundColor="#0C301F"
-      marginTop={{ base: "200%", md: "1%" }}
+      marginTop={{ base: "204%", md: "1%" }}
       color='white'
       onClick={handleRecommendationClick}
       fontFamily="Work sans"
-      width={{ base: "60%", md: "23%" }} // Adjusted width
+      width={{ base: "80%", md: "23%" }} // Adjusted width
       fontSize={{ base: '80%', md: '90%' }} // Responsive font size
-      ml={{ base: '20%', md: '60.8%' }} // Responsive marginLeft, shorthand for marginLeft
+      ml={{ base: '11%', md: '60.8%' }} // Responsive marginLeft, shorthand for marginLeft
     >
       Get Health Plan Recommendation for this Week
-      </Button>
+        </Button>
+        
     </Box>
 
     {/* Text explaining health plan */}
@@ -596,7 +597,7 @@ const updateChartDataForMonth = () => {
         paddingTop= "5px"
         borderRadius= "20px"
         boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)"
-        marginTop={{ base: "-200%", md: "-19%" }} // Adjusted margin for mobile    
+        marginTop={{ base: "-210%", md: "-19%" }} // Adjusted margin for mobile    
         marginBottom={{ base: "1%", md: "1%" }} // Adjusted marginBottom for mobile
     >
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="5%">

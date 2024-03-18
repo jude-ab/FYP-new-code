@@ -11,6 +11,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 import numpy as np
 from datetime import datetime
+import json
 
 # Define the connection string for MongoDB
 MONGODB_CONNECTION = "mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mongodb.net/yogahub"
@@ -61,9 +62,15 @@ def preprocess_data(X, y):
     categorical_columns = ['Exercise Type', 'Meal Plan', 'Supplements']  # Add all other categorical columns here
     X_processed = pd.get_dummies(X, columns=categorical_columns)
 
+    # Save the columns (features) to a JSON file for later use in prediction
+    model_columns = X_processed.columns.tolist()
+    with open('model_columns.json', 'w') as f:
+        json.dump(model_columns, f)
+
     # Initialize the StandardScaler
     scaler = StandardScaler()
     X_processed = scaler.fit_transform(X_processed)
+    joblib.dump(scaler, 'scaler.pkl')  # Save the scaler
 
     # Encode the labels
     encoder = LabelEncoder()
