@@ -16,7 +16,12 @@ import {
   Button,
   useDisclosure,
   HStack,
-  IconButton
+  IconButton,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
 import frustratedImg from '../../assets/images/lightning.png';
 import sadImg from '../../assets/images/rain (4).png';
@@ -26,7 +31,6 @@ import { useState, useEffect } from 'react';
 import backgroundImage from '../../assets/images/log.png';
 import SidePopUp from "../Mcomponents/SidePopUp";
 import { DeleteIcon } from "@chakra-ui/icons";
-import PoseDetailsModal from './PoseDetailsModal';
 
 const LogMood = () => {
 
@@ -112,30 +116,28 @@ function handleGetRecommendations(mood) {
   const moodData = { mood };
   fetchRecommendations(moodData);
 }
-
-
-
+ 
  useEffect(() => {
   const startIndex = (currentPage - 1) * posesPerPage;
   const endIndex = startIndex + posesPerPage;
   setPaginatedPoses(recommendationsM.slice(startIndex, endIndex));
 }, [currentPage, recommendationsM, posesPerPage]);
 
-const handleMoreInfo = async (poseId) => {
-  console.log('Clicked poseId:', poseId);
-  try {
-    const response = await fetch(`http://localhost:4000/api/yoga/poses/${poseId}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const poseDetails = await response.json();
-    console.log('Pose details:', poseDetails); // Ensure this logs expected details
-    setSelectedPose(poseDetails);
-    onPoseDetailsOpen(); // Ensure this is being called
-  } catch (error) {
-    console.error('Error fetching pose details:', error);
-  }
-};
+// const handleMoreInfo = async (poseId) => {
+//   console.log('Clicked poseId:', poseId);
+//   try {
+//     const response = await fetch(`http://localhost:4000/api/yoga/poses/${poseId}`);
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok');
+//     }
+//     const poseDetails = await response.json();
+//     console.log('Pose details:', poseDetails); // Ensure this logs expected details
+//     setSelectedPose(poseDetails);
+//     onPoseDetailsOpen(); // Ensure this is being called
+//   } catch (error) {
+//     console.error('Error fetching pose details:', error);
+//   }
+// };
 
      async function fetchYogaPoses() {
   try {
@@ -230,6 +232,30 @@ const deleteMood = async (moodId) => {
     alert('Error deleting mood. Please try again.'); // Fallback error message
   }
 };
+  
+const renderPoseDetailsAccordion = (pose) => (
+  <Accordion allowToggle>
+    <AccordionItem>
+      <h2>
+        <AccordionButton>
+          <Box flex="1" textAlign="left">
+            More Information
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+      </h2>
+      <AccordionPanel pb={5}>
+        {pose?.Description && <Text mb={2}>Description: {pose.Description}</Text>}
+        {pose?.Benefits && <Text mb={2}>Benefits: {pose.Benefits}</Text>}
+        {pose?.Breathing && <Text mb={2}>Breathing: {pose.Breathing}</Text>}
+        {pose?.ImagePath && (
+          <Image src={`http://localhost:4001/${pose.ImagePath}`} alt={pose.AName} />
+        )}
+      </AccordionPanel>
+    </AccordionItem>
+  </Accordion>
+);
+
 
     return (
   <Box position="relative" width="100vw" height="100vh" overflowY="auto">
@@ -329,7 +355,7 @@ const deleteMood = async (moodId) => {
     </Box>
     <Modal isOpen={isMoodModalOpen} onClose={onMoodModalClose}>
       <ModalOverlay />
-      <ModalContent maxW="3xl">
+      <ModalContent maxW="4xl">
         <ModalHeader fontFamily="Work sans" textAlign="center">Your Yoga Recommendations</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -337,22 +363,14 @@ const deleteMood = async (moodId) => {
             {paginatedPoses.map((poseName, index) => {
               const pose = yogaPoses.find(p => p.AName === poseName);
               if (!pose) return null;
+
               return (
                 <Box key={index} p={5} shadow="md" borderWidth="1px" borderRadius="md" position="relative" rounded="md" height="100%">
                   <VStack spacing={4} align="stretch" height="100%">
                     <Text fontFamily="Work sans" fontWeight="bold">{pose?.AName}</Text>
                     <Text fontFamily="Work sans" noOfLines={1}>Level: {pose?.Level}</Text>
                     <Spacer />
-                    <Button
-                      size="sm"
-                      onClick={() => handleMoreInfo(pose?._id)}
-                      backgroundColor="#0C301F"
-                      color="white"
-                      _hover={{ backgroundColor: "#1E4D38" }}
-                      fontFamily="Work sans"
-                    >
-                      More Information
-                    </Button>
+                    {renderPoseDetailsAccordion(pose)}
                   </VStack>
                 </Box>
               );
@@ -370,11 +388,11 @@ const deleteMood = async (moodId) => {
         </ModalBody>
       </ModalContent>
     </Modal>
-    <PoseDetailsModal
+    {/* <PoseDetailsModal
       isOpen={isPoseDetailsOpen}
       onClose={onPoseDetailsClose}
       pose={selectedPose}
-    />
+    /> */}
   </Box>
 );
 

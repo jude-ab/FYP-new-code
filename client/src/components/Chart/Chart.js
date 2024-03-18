@@ -480,7 +480,7 @@ const updateChartDataForMonth = () => {
          {/* Text for current mood stats */}
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%"
         marginLeft={{ base: "18%", md: "58%" }} // Adjusted marginLeft for mobile
-        marginTop={{ base: "65%", md: "-19.5%" }} // Adjusted marginTop for mobile
+        marginTop={{ base: "65%", md: "-22.5%" }} // Adjusted marginTop for mobile
       >
       Your Current Mood Stats for: {displayDate}
         </Text>
@@ -597,7 +597,7 @@ const updateChartDataForMonth = () => {
         paddingTop= "5px"
         borderRadius= "20px"
         boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)"
-        marginTop={{ base: "-210%", md: "-19%" }} // Adjusted margin for mobile    
+        marginTop={{ base: "-210%", md: "-17%" }} // Adjusted margin for mobile    
         marginBottom={{ base: "1%", md: "1%" }} // Adjusted marginBottom for mobile
     >
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="5%">
