@@ -5,6 +5,7 @@ import HealthModal from './HealthModal.js';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Button, Box, Flex } from '@chakra-ui/react';
+import axios from 'axios';
 import {
   Chart as ChartJS,
   CategoryScale,

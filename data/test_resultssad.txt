@@ -1,0 +1,32 @@
+1.3.2
+health_plan_id: 39fb8009-4abe-48c1-8563-eec55a745b6b
+Type of health_plan_id: <class 'str'>
+health_plan_id: 1f075e94-af5c-4956-b86d-0bae00da97bf
+Type of health_plan_id: <class 'str'>
+health_plan_id: 39fb8009-4abe-48c1-8563-eec55a745b6b
+Type of health_plan_id: <class 'str'>
+health_plan_id: 5a8ef8e7-b592-4b76-a159-caa71dda0fac
+Type of health_plan_id: <class 'str'>
+health_plan_id: 39fb8009-4abe-48c1-8563-eec55a745b6b
+Type of health_plan_id: <class 'str'>
+health_plan_id: 5a8ef8e7-b592-4b76-a159-caa71dda0fac
+Type of health_plan_id: <class 'str'>
+health_plan_id: 9bc885df-3bf3-4861-aa88-fdde91477518
+Type of health_plan_id: <class 'str'>
+health_plan_id: 9bc885df-3bf3-4861-aa88-fdde91477518
+Type of health_plan_id: <class 'str'>
+health_plan_id: 39fb8009-4abe-48c1-8563-eec55a745b6b
+Type of health_plan_id: <class 'str'>
+health_plan_id: bedc39f3-4ebc-45e6-a7ba-3c10032adf13
+Type of health_plan_id: <class 'str'>
+health_plan_id: 5a8ef8e7-b592-4b76-a159-caa71dda0fac
+Type of health_plan_id: <class 'str'>
+health_plan_id: 39fb8009-4abe-48c1-8563-eec55a745b6b
+Type of health_plan_id: <class 'str'>
+health_plan_id: 5a8ef8e7-b592-4b76-a159-caa71dda0fac
+Type of health_plan_id: <class 'str'>
+health_plan_id: 1f075e94-af5c-4956-b86d-0bae00da97bf
+Type of health_plan_id: <class 'str'>
+Score field found in the first document of the result set.
+[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 29ms/step[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 29ms/step
+Response data: ['Palming (Eye Exercise)', 'TRIKONASANA', 'Mayurasana (peacock pose)', 'BHASTRIKA PRANAYAMA', 'Surya Bheda Pranayama (vitality stimulating breath) ', 'MOOLA BANDHA', 'JALA NETI']

@@ -617,4 +617,3 @@ def get_predictions_from_models(X_to_predict):
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
