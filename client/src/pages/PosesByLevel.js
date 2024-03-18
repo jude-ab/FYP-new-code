@@ -20,7 +20,7 @@ import {
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { useHistory } from "react-router-dom";
 import SidePopUp from "../components/Mcomponents/SidePopUp";
-import backgroundImage from '../assets/images/yoga1.png';
+import backgroundImage from '../assets/images/bylevel.jpg';
 
 const PosesByLevel = ({ match }) => {
   const [poses, setPoses] = useState([]);
@@ -145,7 +145,6 @@ const PosesByLevel = ({ match }) => {
             <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
             <ModalCloseButton />
             <ModalBody fontFamily="Work sans">
-              <Text mb={2}>Level: {selectedPose?.Level}</Text>
               <Text mb={2}>Description: {selectedPose?.Description}</Text>
               <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
               <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>

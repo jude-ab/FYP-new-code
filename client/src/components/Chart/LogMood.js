@@ -273,7 +273,7 @@ const renderPoseDetailsAccordion = (pose) => (
       zIndex="-1"
     />
     <SidePopUp />
-    <VStack spacing="15px" paddingTop="100px" alignItems="center" marginLeft={{base: "2%", md: "2%" }} marginTop="-2%">
+    <VStack spacing="15px" paddingTop="100px" alignItems="center" marginLeft={{base: "2%", md: "0.5%" }} marginTop="-2%">
       <Text fontFamily="Work sans" fontSize="2xl" fontWeight="bold" textAlign="center" paddingX="2">
         How are you feeling today?
       </Text>
@@ -363,7 +363,6 @@ const renderPoseDetailsAccordion = (pose) => (
             {paginatedPoses.map((poseName, index) => {
               const pose = yogaPoses.find(p => p.AName === poseName);
               if (!pose) return null;
-
               return (
                 <Box key={index} p={5} shadow="md" borderWidth="1px" borderRadius="md" position="relative" rounded="md" height="100%">
                   <VStack spacing={4} align="stretch" height="100%">

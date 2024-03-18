@@ -4,7 +4,7 @@ import {
   Text, VStack,
 } from "@chakra-ui/react";
 import SidePopUp from "../components/Mcomponents/SidePopUp";
-import backgroundImage from '../assets/images/yoga1.png';
+import backgroundImage from '../assets/images/library2.jpg';
 import { useHistory } from "react-router-dom";
 import beginnerimage from '../assets/images/beginneraes.png';
 import intermediateImage from '../assets/images/intermediate.png';
@@ -50,6 +50,7 @@ const YogaLibrary = () => {
             backgroundColor="white"
             marginTop="2%"
             marginLeft="-45%"
+            shadow="lg"
           > 
             <Image src={beginnerimage} borderRadius="md" mb={4} objectFit="cover" />
             <Box height="60px" backgroundColor="white" />
@@ -77,6 +78,7 @@ const YogaLibrary = () => {
             backgroundColor="white"
             marginTop={{ base: "-9%", md: "-2.4%" }} // Responsive marginTop
             marginRight="-45%"
+            shadow="lg"
           >
             <Image src={intermediateImage} borderRadius="md" mb={4} objectFit="cover" />
             <Box height="40px" backgroundColor="white" /> {/* Adjusted height */}
@@ -104,6 +106,7 @@ const YogaLibrary = () => {
             backgroundColor="white"
             marginTop={{ base: "-9%", md: "-2.4%" }} // Responsive marginTop
             marginLeft="-44.5%"
+            shadow="lg"
           >
             <Image src={advancedImage} borderRadius="md" mb={4} objectFit="cover" />
             <Box height="40px" backgroundColor="white" /> {/* Adjusted height */}
