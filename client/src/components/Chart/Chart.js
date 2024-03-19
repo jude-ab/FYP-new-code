@@ -467,7 +467,7 @@ const updateChartDataForMonth = () => {
 
    
        {/* Calendar */}
-      <Box marginTop={{ base: "20%", md: "5.5%" }} // Adjusted margin for mobile    
+      <Box marginTop={{ base: "20%", md: "6.5%" }} // Adjusted margin for mobile    
       > 
      <Calendar
         onClickDay={(value) => handleDayClick(value)}  
@@ -479,8 +479,8 @@ const updateChartDataForMonth = () => {
        <Box>
          {/* Text for current mood stats */}
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%"
-        marginLeft={{ base: "18%", md: "58%" }} // Adjusted marginLeft for mobile
-        marginTop={{ base: "65%", md: "-22.5%" }} // Adjusted marginTop for mobile
+        marginLeft={{ base: "18%", md: "60%" }} // Adjusted marginLeft for mobile
+        marginTop={{ base: "65%", md: "-23.9%" }} // Adjusted marginTop for mobile
       >
       Your Current Mood Stats for: {displayDate}
         </Text>
@@ -495,7 +495,7 @@ const updateChartDataForMonth = () => {
         borderRadius="20px"
         padding="1%"
         height={{ base: "35%", md: "60%" }}
-        marginTop={{ base: "8%", md: "1%" }}  
+        marginTop={{ base: "8%", md: "0.5%" }}  
         fontFamily="Work sans"  
         marginRight={{ base: "0", md: "2%" }} // Adjusted marginRight for mobile
         
@@ -597,7 +597,7 @@ const updateChartDataForMonth = () => {
         paddingTop= "5px"
         borderRadius= "20px"
         boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)"
-        marginTop={{ base: "-210%", md: "-17%" }} // Adjusted margin for mobile    
+        marginTop={{ base: "-210%", md: "-15%" }} // Adjusted margin for mobile    
         marginBottom={{ base: "1%", md: "1%" }} // Adjusted marginBottom for mobile
     >
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="5%">

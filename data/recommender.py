@@ -381,19 +381,24 @@ load_scaler()
 def load_models():
     global nn_model, lr_model, rf_model, gb_model, xgb_model
 
-    nn_model_path = os.path.join(base_model_dir, 'nn_model.keras')
-    lr_model_path = os.path.join(base_model_dir, 'lr_model.pkl')
-    gb_model_path = os.path.join(base_model_dir, 'gb_model.pkl')
-    xgb_model_path = os.path.join(base_model_dir, 'xgb_model.pkl')
-    rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
+    try:
+        nn_model_path = os.path.join(base_model_dir, 'nn_model.keras')
+        lr_model_path = os.path.join(base_model_dir, 'lr_model.pkl')
+        gb_model_path = os.path.join(base_model_dir, 'gb_model.pkl')
+        xgb_model_path = os.path.join(base_model_dir, 'xgb_model.pkl')
+        rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
 
-    nn_model = load_model(nn_model_path)
-    lr_model = joblib.load(lr_model_path)
-    gb_model = joblib.load(gb_model_path)
-    xgb_model = joblib.load(xgb_model_path)
-    rf_model = joblib.load(rf_model_path)
+        nn_model = load_model(nn_model_path)
+        lr_model = joblib.load(lr_model_path)
+        gb_model = joblib.load(gb_model_path)
+        xgb_model = joblib.load(xgb_model_path)
+        rf_model = joblib.load(rf_model_path)
+        logging.info("All models loaded successfully.")
+    except Exception as e:
+        logging.error("Failed to load models: {}".format(e))
+        raise e
 
-@scheduler.task('interval', id='fetch_data_job', hours=1, misfire_grace_time=900)
+@scheduler.task('interval', id='fetch_data_job', seconds=200, misfire_grace_time=900)
 def fetch_data():
     client = MongoClient(MONGODB_CONNECTION)
     db = client.yogahub
@@ -569,8 +574,12 @@ def full_update_pipeline():
     if ensemble_accuracy > 0.85:  # Threshold accuracy for your use case
         nn_model = load_model(model_path)
         save_model(lr_model, 'lr_model.pkl')
-        rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
-        joblib.dump(rf_model, rf_model_path)
+        try:
+            logging.info(f"Loading model from {rf_model_path}")
+            rf_model = joblib.load(rf_model_path)
+            logging.info("Model loaded successfully.")
+        except Exception as e:
+            logging.error(f"Failed to load model: {e}")
         save_model(gb_model, 'gb_model.pkl')
         save_model(xgb_model, 'xgb_model.pkl')
 
@@ -581,8 +590,9 @@ def full_update_pipeline():
     # with open(log_path, "a") as log_file:
     #     log_file.write(f"Cron job finished at {datetime.now()}\n")
 
+
 # Setup a scheduled job to train models periodically
-@scheduler.task('interval', id='train_models_job', hours=1, misfire_grace_time=900)
+@scheduler.task('interval', id='train_models_job', seconds=200, misfire_grace_time=900)
 def scheduled_model_training():
     full_update_pipeline()
     logging.info("The job has been executed.")
@@ -649,10 +659,10 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 
 # Schedule the test job
-# scheduler.add_job(func=test_job, trigger="interval", hours=1, id="test_job")
-scheduler.add_job(func=scheduled_model_training, trigger="interval", hours=1, id="scheduled_model_training")
-scheduler.add_job(func=fetch_data, trigger="interval", hours=1, id="fetch_data")
-scheduler.add_job(func=full_update_pipeline, trigger="interval", hours=1, id="full_update_pipeline")
+# scheduler.add_job(func=test_job, trigger="interval", seconds=200, id="test_job")
+scheduler.add_job(func=scheduled_model_training, trigger="interval", seconds=200, id="scheduled_model_training")
+scheduler.add_job(func=fetch_data, trigger="interval", seconds=200, id="fetch_data")
+scheduler.add_job(func=full_update_pipeline, trigger="interval", seconds=200, id="full_update_pipeline")
 
 # Start the scheduler
 scheduler.start()

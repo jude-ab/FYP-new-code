@@ -145,6 +145,7 @@ const PosesByLevel = ({ match }) => {
             <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
             <ModalCloseButton />
             <ModalBody fontFamily="Work sans">
+              <Text mb={2}>Level: {selectedPose?.Level}</Text>
               <Text mb={2}>Description: {selectedPose?.Description}</Text>
               <Text mb={2}>Benefits: {selectedPose?.Benefits}</Text>
               <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>

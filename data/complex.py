@@ -14,11 +14,27 @@ from datetime import datetime
 import json
 import os
 import pickle
+from flask_apscheduler import APScheduler
+import logging
+from flask import Flask
+from flask_cors import CORS
 
+# Initialize Flask app and CORS
+app = Flask(__name__)
+CORS(app)
+
+logging.basicConfig(level=logging.INFO)
 
 # Define the connection string for MongoDB
 MONGODB_CONNECTION = "mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mongodb.net/yogahub"
 
+# Initialize and configure the scheduler
+scheduler = APScheduler()
+scheduler.init_app(app)
+# Start the scheduler
+scheduler.start()
+
+@scheduler.task('interval', id='fetch_data_job', seconds=150, misfire_grace_time=900)
 # Function to fetch data from MongoDB
 def fetch_data():
     client = MongoClient(MONGODB_CONNECTION)
@@ -199,6 +215,25 @@ def full_update_pipeline():
         save_model(rf_model, 'rf_model.pkl')
         save_model(gb_model, 'gb_model.pkl')
         save_model(xgb_model, 'xgb_model.pkl')
+
+    # Setup a scheduled job to train models periodically
+@scheduler.task('interval', id='train_models_job', seconds=150, misfire_grace_time=900)
+def scheduled_model_training():
+    full_update_pipeline()
+    logging.info("The job has been executed.")
+
+    # Initialize and configure the scheduler
+scheduler = APScheduler()
+scheduler.init_app(app)
+
+# Schedule the test job
+# scheduler.add_job(func=test_job, trigger="interval", seconds=150, id="test_job")
+scheduler.add_job(func=scheduled_model_training, trigger="interval", seconds=150, id="scheduled_model_training")
+scheduler.add_job(func=fetch_data, trigger="interval", seconds=150, id="fetch_data")
+scheduler.add_job(func=full_update_pipeline, trigger="interval", seconds=150, id="full_update_pipeline")
+
+# Start the scheduler
+scheduler.start()
 
         
     #      # Log after all tasks are completed

@@ -1,13 +1,64 @@
 import React from 'react';
 import { Box, Button, Image, Center, VStack, Flex } from '@chakra-ui/react';
 import SidePopUp from "../components/Mcomponents/SidePopUp";
-import moodimage from '../assets/images/mh4.png';
-import statimage from '../assets/images/s9.png';
+import moodimage from '../assets/images/dalle.png';
+import statimage from '../assets/images/dallestats.png';
 import logimage from '../assets/images/yogastat.png';
 import { useHistory } from "react-router-dom";
 
 const LogHealth = () => {
   const history = useHistory();
+
+  const semiCircleStyleLeft = {
+  overflow: 'hidden',
+  borderRadius: '240px 240px 0 0px', // Top-left and bottom-left corners are rounded
+  height: '250px',
+  width: '500px',
+  bg:"rgba(12, 48, 31, 0.5)",
+  borderWidth: '1px',
+  borderColor: 'white',
+  position: 'relative',
+  marginLeft: '-23%',
+  marginTop: '5%',
+  border: '0.1px black',
+};
+
+  const semiCircleStyleRight = {
+    overflow: 'hidden',
+    borderRadius: '0 0 240px 240px', // Top-right and bottom-right corners are rounded
+    height: '250px',
+    width: '500px',
+    bg: 'rgba(255, 255, 255, 0.95)',
+    borderWidth: '1px',
+    borderColor: 'white',
+    position: 'relative',
+    marginLeft: '25%',
+    marginTop: '-2%',
+    border: '0.1px black',
+  };
+
+  const imageSemiCircleStyleLeft = {
+  position: 'absolute',
+    // left: '0',
+  marginLeft: '10%', // Center the image
+  top: '50%',
+  transform: 'translateY(-50%)',
+  width: '400px', // Slightly smaller than the container
+  height: '195px', // Half the width to maintain the aspect ratio
+  borderRadius: '300px 300px 0 0', // Semi-circle shape
+  objectFit: 'cover', // Cover the shape without stretching
+  border: '8px solid white', // Optional, adds a border to separate image from the background
+  marginTop: '-1%',
+};
+
+  const imageSemiCircleStyleRight = {
+    ...imageSemiCircleStyleLeft, // Spreading the same styles
+    marginRight: '10%', // Center the image
+    right: '0',
+    borderRadius: '0 0 260px 260px', // Semi-circle shape on the opposite side
+    marginTop: '1%',
+  };
+
 
   return (
      <Box position="relative" width="100vw" height="100vh" overflowY="auto">
@@ -25,81 +76,42 @@ const LogHealth = () => {
         zIndex={-1}
       />
       <SidePopUp />
-      <VStack
-        marginTop={{ base: "45%", md: "9.5%" }}
-        justifyContent="center"
-        spacing={10}
-        alignItems="flex-start"
-        marginLeft={{ base: "10%", md: "20%" }}
-      >
-        <Flex
-          width={{ base: "90%", md: "77%" }}
-          minHeight="200px" // Example minimum height
-          direction={{ base: "column", md: "row" }}
-          textAlign="center"
-          borderRadius="20px"
-          borderWidth="1px"
-          borderColor="white"
-          background="rgba(255, 255, 255, 0.95)"
-          shadow="md"
-          alignItems="center"
-          p={3}
+      <VStack spacing={10} alignItems="center" justifyContent="center" height="100vh">
+        <Box
+          style={semiCircleStyleLeft}
+          bg="rgba(12, 48, 31, 0.5)"
         >
           <Image
-            borderRadius="20px"
+            style={imageSemiCircleStyleLeft}
             src={moodimage}
-            width={{ base: "100%", md: "70%" }} // Adjust width as needed
-            maxHeight="150px" // Keep the maxHeight to limit the height
-            objectFit="contain" // Ensure the image aspect ratio is maintained
-            m={3}
+            alt="Mood"
           />
           <Button
+            marginLeft={{ base: "0", md: "40%" }}
+            marginTop={{ base: "0", md: "42.5%" }}
             onClick={() => history.push('/logMood')}
-            variant='ghost'
-            flexGrow={1}
-            _hover={{ bg: '#ebedf0' }}
-            fontFamily="Work sans"
-            fontSize={{ base: "md", md: "lg" }}
-            marginRight={{ base: "2%", md: "11%" }}
-          >
+            background="transparent"
+            fontFamily="Work Sans"
+          >  
             Log Mood
           </Button>
-        </Flex>
+      </Box>
 
-        <Flex
-          width={{ base: "90%", md: "77%" }}
-          minHeight="200px" // Example minimum height
-          direction={{ base: "column", md: "row" }}
-          textAlign="center"
-          borderRadius="20px"
-          borderWidth="1px"
-          borderColor="white"
-          background="rgba(255, 255, 255, 0.95)"
-          shadow="md"
-          alignItems="center"
-          p={3}
+        <Box
+          style={semiCircleStyleRight}
+          bg="rgba(12, 48, 31, 0.5)"
         >
-         <Image
-            borderRadius="20px"
-            src={statimage}
-            width={{ base: "100%", md: "70%" }} // Adjust width as needed
-            maxHeight="150px" // Keep the maxHeight to limit the height
-            objectFit="contain" // Ensure the image aspect ratio is maintained
-            m={3}
-          />
+        <Image style={imageSemiCircleStyleRight} src={statimage} alt="Stats" />
           <Button
             onClick={() => history.push('/moodStats')}
-            variant='ghost'
-            flexGrow={1}
-            _hover={{ bg: '#ebedf0' }}
-            fontFamily="Work sans"
-            marginRight={{ base: "2%", md: "11%" }}
-            fontSize={{ base: "md", md: "lg" }}
+            background="transparent"
+            marginLeft={{ base: "0", md: "38%" }}
+            fontFamily="Work Sans"
           >
             Mood Stats
           </Button>
-        </Flex>
-      </VStack>
+      </Box>
+    </VStack>
     </Box>
   );
 };

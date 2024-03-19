@@ -64,7 +64,7 @@ const SidePopUp = () => {
         bg="transparent"
         w="100%"
         p="5px 10px"
-        boxShadow="md"
+        boxShadow="0 1px 5px rgba(0, 0, 0, 0.1)"
         zIndex={20}
         top="0"
         position="fixed"
