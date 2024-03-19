@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -65,7 +64,7 @@ const SidePopUp = () => {
         bg="transparent"
         w="100%"
         p="5px 10px"
-        boxShadow="sm"
+        boxShadow="md"
         zIndex={20}
         top="0"
         position="fixed"
@@ -112,17 +111,6 @@ const SidePopUp = () => {
     <DrawerBody color="white" bg="rgba(12, 48, 31, 0.5)" borderRadius="0px 0px 20px 0px">
       {user && (
       <>
-{/*                   
-           <Text
-            cursor="pointer"
-            onClick={moodNav}
-            mt={4}
-            fontFamily="Work sans"
-            fontSize="xl"
-          >
-            Mood
-          </Text>
-                 */}
           <Text
             mt={4}
             cursor="pointer"
