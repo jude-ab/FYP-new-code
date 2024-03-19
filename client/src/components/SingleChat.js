@@ -172,6 +172,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     placeholder="Enter a message..."
                     value={newMessage}
                     onChange={typingHandler}
+                    boxShadow="0 2px 10px rgba(0, 0, 0, 0.3)"
                   />
                   <InputRightElement>
                     <IconButton

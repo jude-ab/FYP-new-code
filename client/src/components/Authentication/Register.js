@@ -256,6 +256,7 @@ const Register = () => {
         marginLeft={{ base: "38.5%", md: "63%" }}
         fontSize="sm"
         fontFamily="Work sans"
+        boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"
       >
         Sign up
       </Button>

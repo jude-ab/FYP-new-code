@@ -52,7 +52,11 @@ function HealthPlanModal({ recommendation, isOpen, onClose, onOpenFeedback }) {
 return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
-      <ModalContent fontFamily="Work sans">
+    <ModalContent
+      fontFamily="Work sans"
+      borderRadius="50px"
+      boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
+    >
         <ModalHeader textAlign="center"> Here is your recommended health plan. </ModalHeader>
         <ModalCloseButton />
       <ModalBody  >

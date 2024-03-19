@@ -148,6 +148,7 @@ const MyChats = ({ fetchAgain }) => {
       height={{ base: "auto", md: "88vh" }} // Adjust height responsively
       marginTop={{ base: "1rem", md: "5%" }}
       marginLeft={{ base: "0", md: "2%" }}
+      boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
     >
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay bg="transparent" />

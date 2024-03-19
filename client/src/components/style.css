@@ -68,6 +68,7 @@ html, body {
   max-width: 40%; /* Allow calendar to use up to 95% of container width */
   width: auto; /* Use auto width for flexibility */
   /* Remove margin-top: -35%; which could interfere with responsiveness */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 /* Responsive modifications */

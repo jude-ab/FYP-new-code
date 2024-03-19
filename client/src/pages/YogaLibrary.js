@@ -51,6 +51,7 @@ const YogaLibrary = () => {
             marginTop="2%"
             marginLeft="-45%"
             shadow="lg"
+            boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"
           > 
             <Image src={beginnerimage} borderRadius="md" mb={4} objectFit="cover" />
             <Box height="60px" backgroundColor="white" />
@@ -62,7 +63,8 @@ const YogaLibrary = () => {
               width={{ base: "auto", md: "auto" }} // Responsive width
               _hover={{ bg: '#ebedf0' }}
               fontFamily="Work sans"
-              marginLeft={{ base: "-5%", md: "0" }}
+            marginLeft={{ base: "-5%", md: "0" }}
+            boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)"
             >
               Beginner Poses
             </Button>
@@ -79,6 +81,7 @@ const YogaLibrary = () => {
             marginTop={{ base: "-9%", md: "-2.4%" }} // Responsive marginTop
             marginRight="-45%"
             shadow="lg"
+            boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"
           >
             <Image src={intermediateImage} borderRadius="md" mb={4} objectFit="cover" />
             <Box height="40px" backgroundColor="white" /> {/* Adjusted height */}
@@ -90,7 +93,8 @@ const YogaLibrary = () => {
               width={{ base: "120%", md: "auto" }} // Responsive width
               _hover={{ bg: '#ebedf0' }}
               fontFamily="Work sans"
-              marginLeft={{ base: "-10%", md: "0" }}
+            marginLeft={{ base: "-10%", md: "0" }}
+            boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)"
             >
               Intermediate Poses
             </Button>
@@ -108,6 +112,7 @@ const YogaLibrary = () => {
           marginLeft="-44.5%"
           shadow="lg"
           marginBottom={{ base: "0%", md: "1%" }}
+          boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"
           >
             <Image src={advancedImage} borderRadius="md" mb={4} objectFit="cover" />
             <Box height="40px" backgroundColor="white" /> {/* Adjusted height */}
@@ -120,6 +125,7 @@ const YogaLibrary = () => {
               _hover={{ bg: '#ebedf0' }}
               fontFamily="Work sans"
               marginLeft={{ base: "-7%", md: "0" }}
+              boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)"
             >
               Advanced Poses
             </Button>

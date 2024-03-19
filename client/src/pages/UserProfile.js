@@ -206,6 +206,7 @@ function UserProfile() {
               onChange={handleChange}
               isReadOnly={!editMode}
               bg="white"
+              boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
             />
           </FormControl>
           <FormControl id="email">
@@ -216,6 +217,7 @@ function UserProfile() {
               onChange={handleChange}
               isReadOnly={!editMode}
               bg="white"
+              boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
             />
           </FormControl>
           <FormControl id="dob">
@@ -227,6 +229,7 @@ function UserProfile() {
               onChange={handleChange}
               isReadOnly={!editMode}
               bg="white"
+              boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
             />
           </FormControl>
           <FormControl id="about">
@@ -237,6 +240,7 @@ function UserProfile() {
               onChange={handleChange}
               isReadOnly={!editMode}
               bg="white"
+              boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
             />
           </FormControl>
           <Button
@@ -246,8 +250,10 @@ function UserProfile() {
                 bg: editMode ? "#1E4D38" : "#1E4D38" // Darken the color on hover
             }}
             onClick={editMode ? handleSaveChanges : toggleEditMode}
+            boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
             >
             {editMode ? "Save Changes" : "Edit Profile"}
+            
            </Button>
 
         </VStack>

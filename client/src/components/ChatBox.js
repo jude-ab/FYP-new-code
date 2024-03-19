@@ -24,6 +24,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       backgroundSize="cover"
       backgroundPosition="center"
       backgroundRepeat="no-repeat"
+      boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
     >
       <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
     </Box>

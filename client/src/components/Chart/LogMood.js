@@ -334,7 +334,7 @@ const renderPoseDetailsAccordion = (pose) => (
 </Flex>
 
     </VStack>
-    <Box background="rgba(255, 255, 255, 0.7)" width="60%" padding={4} boxShadow="lg" borderRadius="15px"  marginLeft={{base: "20%", md: "20%" }} marginBottom="3%" marginTop="3%">
+    <Box background="rgba(255, 255, 255, 0.7)" width="60%" padding={4}  boxShadow="lg" borderRadius="15px"  marginLeft={{base: "20%", md: "20%" }} marginBottom="3%" marginTop="3%">
       <VStack>
         {todaysMoods.length > 0 ? (
           todaysMoods.map((mood) => (

@@ -98,6 +98,8 @@ const PosesByLevel = ({ match }) => {
                     position="relative"
                     rounded="md"
                     backgroundImage={`linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9))`}
+                    boxShadow="0 2px 10px rgba(0, 0, 0, 0.35)"
+                    borderRadius="15px"
                     >
                  <VStack spacing={4} align="stretch">
                 <Text fontFamily="Work sans" fontWeight="bold" fontSize="1xl" noOfLines={1}>
@@ -141,7 +143,7 @@ const PosesByLevel = ({ match }) => {
         {/* Modal for displaying pose details */}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay  />
-          <ModalContent>
+          <ModalContent borderRadius="25px" boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)">
             <ModalHeader textAlign="center" fontFamily="Work sans">{selectedPose?.AName}</ModalHeader>
             <ModalCloseButton />
             <ModalBody fontFamily="Work sans">

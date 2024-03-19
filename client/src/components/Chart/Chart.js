@@ -467,7 +467,8 @@ const updateChartDataForMonth = () => {
 
    
        {/* Calendar */}
-      <Box marginTop={{ base: "20%", md: "6.5%" }} // Adjusted margin for mobile    
+      <Box
+        marginTop={{ base: "20%", md: "6.5%" }} // Adjusted margin for mobile    
       > 
      <Calendar
         onClickDay={(value) => handleDayClick(value)}  
@@ -491,7 +492,7 @@ const updateChartDataForMonth = () => {
         marginLeft={{ base: "1%", md: "47%" }} // Adjusted marginLeft for mobile
         backgroundColor="white"
         border="1px solid #e5e5e5"
-        boxShadow="0 0 0.625rem rgba(0, 0, 0, 0.1)"
+        boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)" 
         borderRadius="20px"
         padding="1%"
         height={{ base: "35%", md: "60%" }}
@@ -546,6 +547,7 @@ const updateChartDataForMonth = () => {
           marginBottom={{ base: "20%", md: "0" }} // Adjusted marginBottom for mobile  
           marginTop={{ base: "20%", md: "0" }} // Adjusted marginTop for mobile
           marginLeft="5%"
+          boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"  
           >
           {monthNames.map((name, index) => (
             <option key={index} value={index + 1}>{name}</option> // Display month names, store 1-based month number
@@ -566,6 +568,8 @@ const updateChartDataForMonth = () => {
         ml={{ base: '32%', md: '67%' }} // Responsive marginLeft, shorthand for marginLeft
         cursor='pointer'
         mt={{ base: '5%', md: '0.1%' }} // Adjust marginTop for mobile
+        boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"
+        
       >
         Update Chart
       </Button>
@@ -582,6 +586,7 @@ const updateChartDataForMonth = () => {
       width={{ base: "80%", md: "23%" }} // Adjusted width
       fontSize={{ base: '80%', md: '90%' }} // Responsive font size
       ml={{ base: '11%', md: '60.8%' }} // Responsive marginLeft, shorthand for marginLeft
+      boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"    
     >
       Get Health Plan Recommendation for this Week
         </Button>
@@ -596,9 +601,10 @@ const updateChartDataForMonth = () => {
         padding= "30px"
         paddingTop= "5px"
         borderRadius= "20px"
-        boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)"
+        boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)" 
         marginTop={{ base: "-210%", md: "-15%" }} // Adjusted margin for mobile    
         marginBottom={{ base: "1%", md: "1%" }} // Adjusted marginBottom for mobile
+       
     >
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="5%">
         A thoughtfully designed health plan is essential to preserving happiness and general wellbeing.
