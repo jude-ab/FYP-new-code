@@ -36,8 +36,12 @@ CORS(app)
 import sklearn
 print(sklearn.__version__)
 
-
 logging.basicConfig(level=logging.INFO)
+
+base_model_dir = '/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data'
+rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
+rf_model = joblib.load(rf_model_path)
+
 
 # Define the connection string for MongoDB
 MONGODB_CONNECTION = "mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mongodb.net/yogahub"
@@ -47,9 +51,9 @@ client = MongoClient('mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mon
 db = client.yogahub
 users_collection = db.users
 feedback_collection = db.feedbacks
-healthplans_collection = db.healthplans
+healthplans_collection = db.healthplans  
 
-poses_processed = pd.read_csv("poses_processed.csv")
+poses_processed = pd.read_csv("poses_processed.csv")       
 
 # Load health plan data with clusters
 health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
@@ -95,7 +99,7 @@ nn_model = load_model('nn_model.keras')
 lr_model = joblib.load('lr_model.pkl')
 gb_model = joblib.load('gb_model.pkl')
 xgb_model = joblib.load('xgb_model.pkl')
-rf_model = joblib.load('rf_model.pkl')
+rf_model = joblib.load('rf_model.pkl') 
 
 # def test_job():
 #     logging.info("The test job has been executed.")
@@ -376,14 +380,18 @@ load_scaler()
 # Define the function to load or reload the models into memory
 def load_models():
     global nn_model, lr_model, rf_model, gb_model, xgb_model
-    nn_model = load_model('nn_model.keras')
-    lr_model = joblib.load('lr_model.pkl')
-    gb_model = joblib.load('gb_model.pkl')
-    xgb_model = joblib.load('xgb_model.pkl')
-    rf_model = joblib.load('rf_model.pkl')
 
-    # Call load_models initially to load the models when the app starts
-    load_models()
+    nn_model_path = os.path.join(base_model_dir, 'nn_model.keras')
+    lr_model_path = os.path.join(base_model_dir, 'lr_model.pkl')
+    gb_model_path = os.path.join(base_model_dir, 'gb_model.pkl')
+    xgb_model_path = os.path.join(base_model_dir, 'xgb_model.pkl')
+    rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
+
+    nn_model = load_model(nn_model_path)
+    lr_model = joblib.load(lr_model_path)
+    gb_model = joblib.load(gb_model_path)
+    xgb_model = joblib.load(xgb_model_path)
+    rf_model = joblib.load(rf_model_path)
 
 @scheduler.task('interval', id='fetch_data_job', hours=1, misfire_grace_time=900)
 def fetch_data():
@@ -455,8 +463,6 @@ def preprocess_data(input_X, input_y):
         json.dump(columns_after_preprocessing, file) 
 
     return X_processed, y_processed, feature_names
-
-
 
 # Define a function to create and compile a Keras neural network model
 def create_neural_network(input_dim):
@@ -537,7 +543,7 @@ def full_update_pipeline():
     #     log_file.write(f"Cron job started at {datetime.now()}\n")
         
     X_new, y_new = fetch_data()
-    X_processed, y_processed = preprocess_data(X_new, y_new)
+    X_processed, y_processed, feature_names = preprocess_data(X_new, y_new)
     X_train, X_val, y_train, y_val = train_test_split(X_processed, y_processed, test_size=0.2, random_state=42)
     
     # Scale your data
@@ -563,7 +569,8 @@ def full_update_pipeline():
     if ensemble_accuracy > 0.85:  # Threshold accuracy for your use case
         nn_model = load_model(model_path)
         save_model(lr_model, 'lr_model.pkl')
-        save_model(rf_model, 'rf_model.pkl')
+        rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
+        joblib.dump(rf_model, rf_model_path)
         save_model(gb_model, 'gb_model.pkl')
         save_model(xgb_model, 'xgb_model.pkl')
 

@@ -13,6 +13,7 @@ import numpy as np
 from datetime import datetime
 import json
 import os
+import pickle
 
 
 # Define the connection string for MongoDB
@@ -56,29 +57,39 @@ def fetch_data():
     return X_new, y_new
 
 # Function to preprocess data
-def preprocess_data(X, y):
+def preprocess_data(input_X, input_y):
+    # Initialize X_processed
+    X_processed = pd.DataFrame(input_X)
+    
     # Preprocess 'Duration' column by removing ' mins' and converting to int
-    X['Duration'] = X['Duration'].str.replace(' mins', '').astype(int)
+    X_processed['Duration'] = X_processed['Duration'].str.replace(' mins', '').astype(int)
     
     # One-hot encode categorical columns
-    categorical_columns = ['Exercise Type', 'Meal Plan', 'Supplements']  # Add all other categorical columns here
-    X_processed = pd.get_dummies(X, columns=categorical_columns)
-
-    # Save the columns (features) to a JSON file for later use in prediction
-    model_columns = X_processed.columns.tolist()
-    with open('/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/model_columns.json', 'w') as f:
-        json.dump(model_columns, f)
+    X_processed = pd.get_dummies(X_processed, columns=['Exercise Type', 'Meal Plan', 'Supplements'])
+    
+    # After preprocessing but before scaling, save feature names
+    feature_names = X_processed.columns.tolist()
+    with open('feature_names.pkl', 'wb') as f:
+        pickle.dump(feature_names, f)
 
     # Initialize the StandardScaler
     scaler = StandardScaler()
     X_processed = scaler.fit_transform(X_processed)
-    joblib.dump(scaler, 'scaler.pkl')  # Save the scaler
+
+    # Convert X_processed back to DataFrame with expected feature names
+    X_processed = pd.DataFrame(X_processed, columns=feature_names)
 
     # Encode the labels
     encoder = LabelEncoder()
-    y_processed = encoder.fit_transform(y)
+    y_processed = encoder.fit_transform(input_y)
 
-    return X_processed, y_processed
+    # Assuming X_train_processed is your processed training data
+    columns_after_preprocessing = X_processed.columns.tolist()   
+
+    with open('/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/model_columns.json', 'w') as file:
+        json.dump(columns_after_preprocessing, file) 
+
+    return X_processed, y_processed, feature_names
 
 
 # Define a function to create and compile a Keras neural network model
@@ -161,7 +172,7 @@ def full_update_pipeline():
     #     log_file.write(f"Cron job started at {datetime.now()}\n")
         
     X_new, y_new = fetch_data()
-    X_processed, y_processed = preprocess_data(X_new, y_new)
+    X_processed, y_processed, feature_names = preprocess_data(X_new, y_new)
     X_train, X_val, y_train, y_val = train_test_split(X_processed, y_processed, test_size=0.2, random_state=42)
     
     # Scale your data
