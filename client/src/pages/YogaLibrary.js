@@ -37,7 +37,7 @@ const YogaLibrary = () => {
           spacing={8} // Adjust the space between boxes
           align="center"
           justify="center"
-          mt={{ base: "28%", md: "0.5%" }} // Adjust marginTop as necessary
+          mt={{ base: "15%", md: "0.5%" }} // Adjust marginTop as necessary
         >
           {/* Box for Beginner level */}
           <Box

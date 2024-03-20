@@ -137,7 +137,8 @@ const GroupChatM = ({ children }) => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius="18px"
+      boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)">
           <ModalHeader
             fontSize={{ base: "1.5rem", md: "2rem" }}
             d="flex"

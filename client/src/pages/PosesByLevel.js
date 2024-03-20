@@ -31,7 +31,7 @@ const PosesByLevel = ({ match }) => {
   const [totalPages, setTotalPages] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedPose, setSelectedPose] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchedWord, setSearchedWord] = useState("");
 
   const level = match.params.level; // Get the level from the URL parameters
   console.log("Level:", level);
@@ -64,12 +64,12 @@ const PosesByLevel = ({ match }) => {
   }
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchedWord(event.target.value);
   };
 
-  const displayedPoses = searchTerm.trim()
+  const displayedPoses = searchedWord.trim()
     ? poses.filter((pose) =>
-        pose.AName.toLowerCase().includes(searchTerm.toLowerCase())
+        pose.AName.toLowerCase().includes(searchedWord.toLowerCase())
       )
     : poses;
 
@@ -94,13 +94,13 @@ const PosesByLevel = ({ match }) => {
         filter="blur(5px)"
         />
         <SidePopUp />
-        <InputGroup marginTop={{ base: "0", md: "5%" }}
-          width={{ base: "0", md: "21.5%" }}
+        <InputGroup marginTop={{ base: "19%", md: "5%" }}
+          width={{ base: "80%", md: "21.5%" }}
           background="rgba(255, 255, 255, 0.5)"
           borderRadius="10px"
           boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)"
-          marginLeft={{ base: "0", md: "2.6%" }}
-          marginBottom={{ base: "0", md: "-5%" }}
+          marginLeft={{ base: "10%", md: "2.6%" }}
+          marginBottom={{ base: "-20%", md: "-5%" }}
         >
         <InputLeftElement
           pointerEvents="none"
@@ -110,7 +110,7 @@ const PosesByLevel = ({ match }) => {
         />
         <Input
           placeholder="Search for a pose"
-          value={searchTerm}
+          value={searchedWord}
           onChange={handleSearchChange}
           borderRadius="10px"   
           fontFamily="Work sans"  
@@ -152,7 +152,7 @@ const PosesByLevel = ({ match }) => {
                 </Box>
               ))}
         </SimpleGrid>
-        <Flex fontFamily="Work sans" align="center" justify="center" my={6}>
+        <Flex fontFamily="Work sans" align="center" justify="center" my={6} marginBottom={{base: "18%", md: "5%"}}  >
           <IconButton
             icon={<ChevronLeftIcon />}
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
