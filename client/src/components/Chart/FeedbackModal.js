@@ -20,7 +20,8 @@ function FeedbackModal({ isOpen, onClose, onFeedback, healthPlanId }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent fontFamily="Work sans" >
+      <ModalContent borderRadius="30px"
+      boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)" fontFamily="Work sans" >
       <ModalHeader
             fontSize={{ base: "1.1rem", md: "1.2rem" }}
             textAlign={{ base: "center", md: "center" }}      

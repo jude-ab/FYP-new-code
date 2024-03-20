@@ -54,10 +54,10 @@ return (
       <ModalOverlay />
     <ModalContent
       fontFamily="Work sans"
-      borderRadius="50px"
+      borderRadius="30px"
       boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
     >
-        <ModalHeader textAlign="center"> Here is your recommended health plan. </ModalHeader>
+      <ModalHeader textAlign="center" mt={6}> Here is your recommended health plan. </ModalHeader>
         <ModalCloseButton />
       <ModalBody  >
         <Text
@@ -81,7 +81,16 @@ return (
             </Table>
           ) : (
             <Text>No details available for this recommendation.</Text>
-          )}
+        )}
+        
+        <Text
+          fontSize="sm"
+          textAlign="center"
+          mb={4}
+          mt={4}
+        >
+          Please consult a healthcare professional before taking any supplements and taking on new diets.
+        </Text>
         </ModalBody>
       </ModalContent>
     </Modal>

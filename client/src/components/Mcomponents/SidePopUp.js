@@ -191,7 +191,7 @@ const SidePopUp = () => {
                 mr={{ base: "2", md: "4", lg: "50px" }}
               />
               <MenuList boxShadow="lg"
-                borderRadius="10px"
+                borderRadius="10px" 
               >
                 <MenuItem onClick={profileNav}>My Profile</MenuItem>
                 <MenuItem onClick={logoutHandler}>Logout</MenuItem>
