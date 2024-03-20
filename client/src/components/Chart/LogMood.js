@@ -273,7 +273,9 @@ const renderPoseDetailsAccordion = (pose) => (
       zIndex="-1"
     />
     <SidePopUp />
-    <VStack spacing="15px" paddingTop="100px" alignItems="center" marginLeft={{base: "2%", md: "0.5%" }} marginTop={{base:"-20%", md:"-5%"}} >
+        <VStack
+         
+          spacing="12px" paddingTop="100px" alignItems="center" marginLeft={{ base: "2%", md: "0.5%" }} marginTop={{ base: "-20%", md: "-5%" }} >
       <Text fontFamily="Work sans" fontSize="2xl" fontWeight="bold" textAlign="center" paddingX="2">
         How are you feeling today?
       </Text>
@@ -287,11 +289,11 @@ const renderPoseDetailsAccordion = (pose) => (
         Check Mood Stats to see how you've been feeling over time and to get health plan recommendations.
       </Text>
       <Flex
-  wrap="wrap" // Allow items to wrap in smaller screens
-  justify="center" // Center items horizontally
-  align="center" // Center items vertically
-  marginTop="4%"
-  fontWeight="bold"
+            wrap="wrap" // Allow items to wrap in smaller screens
+            justify="center" // Center items horizontally
+            align="center" // Center items vertically
+            fontWeight="bold"
+            marginTop={{ base: "4%", md: "1%" }}         
 >
   {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
     .map(({ src, mood }) => (

@@ -97,7 +97,7 @@ const PosesByLevel = ({ match }) => {
         <InputGroup marginTop={{ base: "0", md: "5%" }}
           width={{ base: "0", md: "21.5%" }}
           background="rgba(255, 255, 255, 0.5)"
-          borderRadius="full"
+          borderRadius="10px"
           boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)"
           marginLeft={{ base: "0", md: "2.6%" }}
           marginBottom={{ base: "0", md: "-5%" }}
@@ -105,18 +105,18 @@ const PosesByLevel = ({ match }) => {
         <InputLeftElement
           pointerEvents="none"
           children={<SearchIcon color="gray.300"
-          borderRadius="full"    
+          borderRadius="10px"    
             />}
         />
         <Input
           placeholder="Search for a pose"
           value={searchTerm}
           onChange={handleSearchChange}
-          borderRadius="full"   
+          borderRadius="10px"   
           fontFamily="Work sans"  
         />
       </InputGroup>
-      <Box maxH="calc(100vh - 50px)" overflowY="auto" mt="44px">
+      <Box maxH="calc(100vh - 50px)" overflowY="auto" mt="75px">
         <SimpleGrid columns={[1, 2, 4]} spacing={10} m={9} >
           {displayedPoses
             .slice((currentPage - 1) * posesPerPage, currentPage * posesPerPage)

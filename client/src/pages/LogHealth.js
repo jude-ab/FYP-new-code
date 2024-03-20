@@ -12,7 +12,7 @@ const LogHealth = () => {
 
   const semiCircleStyleLeft = {
   overflow: 'hidden',
-  borderRadius: '240px 240px 5px 5px', // Top-left and bottom-left corners are rounded
+  borderRadius: '240px 240px 10px 10px', // Top-left and bottom-left corners are rounded
   height: '250px',
   width: '500px',
   bg:"rgba(12, 48, 31, 0.5)",
@@ -27,7 +27,7 @@ const LogHealth = () => {
 
   const semiCircleStyleRight = {
     overflow: 'hidden',
-    borderRadius: '5px 5px 240px 240px', // Top-right and bottom-right corners are rounded
+    borderRadius: '10px 10px 240px 240px', // Top-right and bottom-right corners are rounded
     height: '250px',
     width: '500px',
     bg: 'rgba(255, 255, 255, 0.95)',
@@ -46,7 +46,7 @@ const LogHealth = () => {
   transform: 'translateY(-50%)',
   width: '600px', // Slightly smaller than the container
   height: '280px', // Half the width to maintain the aspect ratio
-  borderRadius: '300px 300px 5px 5px', // Semi-circle shape
+  borderRadius: '300px 300px 10px 10px', // Semi-circle shape
   objectFit: 'cover', // Cover the shape without stretching
   marginTop: '%',
 };
