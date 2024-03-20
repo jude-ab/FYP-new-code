@@ -125,10 +125,10 @@ def lemmatize_and_remove_stopwords(text):
 
 # Preprocess data
 mood_keywords = {
-    "frustrated": lemmatize_and_remove_stopwords(" menopausal fever tension"),
-    "sad": lemmatize_and_remove_stopwords(" phsychological depression humour"),
-    "anxious": lemmatize_and_remove_stopwords("nervous relaxtion imbalance"),
-    "happy": lemmatize_and_remove_stopwords("spiritual stronger plexus")
+    "frustrated": lemmatize_and_remove_stopwords(" menopausal fever tension concentration comfortable balance chest jaw"), 
+    "sad": lemmatize_and_remove_stopwords(" phsychological depression humour stress toning strengthens powerful mouth shoulder"),
+    "anxious": lemmatize_and_remove_stopwords("nervous relaxtion imbalance calmness regulate breathe simple blinking neck jaw teeth shoulder"),
+    "happy": lemmatize_and_remove_stopwords("spiritual stronger plexus maintain eye chest")
 }
 
 # Adapted recommend function
