@@ -193,7 +193,7 @@ function UserProfile() {
               accept="image/*"
               onChange={handleProfilePicChange}
               bg="transparent"
-              width="49%"  
+              width={{ base: "50%", md: "49%" }}  
               marginLeft="23%"  
             />
           </FormControl>

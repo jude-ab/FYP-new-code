@@ -258,7 +258,7 @@ const renderPoseDetailsAccordion = (pose) => (
 
 
     return (
-  <Box position="relative" width="100vw" height="100vh" overflowY="auto">
+  <Box position="relative" width="100vw" height="100vh" overflowY="auto" mt="50px">
     <Box
       position="fixed"
       top="0"
@@ -273,7 +273,7 @@ const renderPoseDetailsAccordion = (pose) => (
       zIndex="-1"
     />
     <SidePopUp />
-    <VStack spacing="15px" paddingTop="100px" alignItems="center" marginLeft={{base: "2%", md: "0.5%" }} marginTop="-2%">
+    <VStack spacing="15px" paddingTop="100px" alignItems="center" marginLeft={{base: "2%", md: "0.5%" }} marginTop={{base:"-20%", md:"-5%"}} >
       <Text fontFamily="Work sans" fontSize="2xl" fontWeight="bold" textAlign="center" paddingX="2">
         How are you feeling today?
       </Text>
@@ -334,7 +334,7 @@ const renderPoseDetailsAccordion = (pose) => (
 </Flex>
 
     </VStack>
-    <Box background="rgba(255, 255, 255, 0.7)" width="60%" padding={4}  boxShadow="lg" borderRadius="15px"  marginLeft={{base: "20%", md: "20%" }} marginBottom="3%" marginTop="3%">
+        <Box background="rgba(255, 255, 255, 0.7)" width="60%" padding={4} boxShadow="lg" borderRadius="15px" marginLeft={{ base: "20%", md: "20%" }} marginBottom={{ base: "18%", md: "5%" }}  marginTop="3%">
       <VStack>
         {todaysMoods.length > 0 ? (
           todaysMoods.map((mood) => (

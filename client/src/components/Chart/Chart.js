@@ -446,7 +446,7 @@ const updateChartDataForMonth = () => {
   };
 
   return (
-  <div style={{ fontFamily:"Work sans" ,position: 'relative', height: '100vh',  overflowY:"auto"}}>
+  <div style={{ fontFamily:"Work sans" ,position: 'relative', height: '100vh',  overflowY:"auto", marginTop:"50px"  }}>
     {/* Background image */}
     <Box 
       position="fixed"
@@ -468,7 +468,7 @@ const updateChartDataForMonth = () => {
    
        {/* Calendar */}
       <Box
-        marginTop={{ base: "20%", md: "6.5%" }} // Adjusted margin for mobile    
+        marginTop={{ base: "10%", md: "3.5%" }} // Adjusted margin for mobile    
       > 
      <Calendar
         onClickDay={(value) => handleDayClick(value)}  
@@ -518,7 +518,7 @@ const updateChartDataForMonth = () => {
         </Box>
     
       <Box display='flex' alignItems='center' marginBottom='1%'
-        marginTop={{ base: "10%", md: "1.5%" }}
+        marginTop={{ base: "7%", md: "1.5%" }}
         width={{ base: "230%", md: "20%" }}
         marginLeft={{ base: "36%", md: "67%" }} // Adjusted marginLeft for mobile
       > 
@@ -567,7 +567,7 @@ const updateChartDataForMonth = () => {
         borderRadius='5px'
         ml={{ base: '32%', md: '67%' }} // Responsive marginLeft, shorthand for marginLeft
         cursor='pointer'
-        mt={{ base: '5%', md: '0.1%' }} // Adjust marginTop for mobile
+        mt={{ base: '3%', md: '0.1%' }} // Adjust marginTop for mobile
         boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"
         
       >
@@ -579,7 +579,7 @@ const updateChartDataForMonth = () => {
     <Button
       _hover={{ bg: "#1E4D38" }}
       backgroundColor="#0C301F"
-      marginTop={{ base: "204%", md: "1%" }}
+      marginTop={{ base: "2%", md: "1%" }}
       color='white'
       onClick={handleRecommendationClick}
       fontFamily="Work sans"
@@ -602,8 +602,8 @@ const updateChartDataForMonth = () => {
         paddingTop= "5px"
         borderRadius= "20px"
         boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)" 
-        marginTop={{ base: "-210%", md: "-15%" }} // Adjusted margin for mobile    
-        marginBottom={{ base: "1%", md: "1%" }} // Adjusted marginBottom for mobile
+        marginTop={{ base: "2%", md: "-15%" }} // Adjusted margin for mobile    
+        marginBottom={{ base: "16%", md: "5%" }} // Adjusted marginBottom for mobile
        
     >
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="5%">

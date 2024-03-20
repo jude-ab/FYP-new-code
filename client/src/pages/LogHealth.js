@@ -12,7 +12,7 @@ const LogHealth = () => {
 
   const semiCircleStyleLeft = {
   overflow: 'hidden',
-  borderRadius: '240px 240px 0 0px', // Top-left and bottom-left corners are rounded
+  borderRadius: '240px 240px 5px 5px', // Top-left and bottom-left corners are rounded
   height: '250px',
   width: '500px',
   bg:"rgba(12, 48, 31, 0.5)",
@@ -27,7 +27,7 @@ const LogHealth = () => {
 
   const semiCircleStyleRight = {
     overflow: 'hidden',
-    borderRadius: '0 0 240px 240px', // Top-right and bottom-right corners are rounded
+    borderRadius: '5px 5px 240px 240px', // Top-right and bottom-right corners are rounded
     height: '250px',
     width: '500px',
     bg: 'rgba(255, 255, 255, 0.95)',
@@ -46,7 +46,7 @@ const LogHealth = () => {
   transform: 'translateY(-50%)',
   width: '600px', // Slightly smaller than the container
   height: '280px', // Half the width to maintain the aspect ratio
-  borderRadius: '300px 300px 0 0', // Semi-circle shape
+  borderRadius: '300px 300px 5px 5px', // Semi-circle shape
   objectFit: 'cover', // Cover the shape without stretching
   marginTop: '%',
 };
@@ -55,7 +55,7 @@ const LogHealth = () => {
     ...imageSemiCircleStyleLeft, // Spreading the same styles
     marginRight: '0%', // Center the image
     right: '0',
-    borderRadius: '0 0 260px 260px', // Semi-circle shape on the opposite side
+    borderRadius: '5px 5px 260px 260px', // Semi-circle shape on the opposite side
     marginTop: '1%',
   };
 
@@ -92,14 +92,14 @@ const LogHealth = () => {
         </Button>
         <Text
             position="absolute"
-            bottom={{ base: "0", md: "83%" }}
-            left={{ base: "0", md: "35.5%" }}
+            bottom={{ base: "81.5%", md: "83%" }}
+            left={{ base: "27%", md: "35.5%" }}
             fontSize="xl"
             cursor="pointer"
-            fontWeight="500px"
             onClick={() => history.push('/logMood')}
             fontFamily="Work Sans"
             _hover={{ bg: "transparent" }}
+            fontWeight={{ base: "bold", md: "500" }}
           >  
             Log Mood
           </Text>
@@ -114,13 +114,13 @@ const LogHealth = () => {
         </Button>
         <Text
             position="absolute"
-            bottom={{ base: "0", md: "2%" }}
-            left={{ base: "0", md: "58.5%" }}
+            bottom={{ base: "13%", md: "2%" }}
+            left={{ base: "47%", md: "58.5%" }}
             fontSize="xl"
             cursor="pointer"
             onClick={() => history.push('/moodStats')}
             fontFamily="Work Sans"
-            fontWeight="500px"
+            fontWeight={{ base: "bold", md: "500" }}
           >
             Mood Stats
           </Text>

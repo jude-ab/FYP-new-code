@@ -230,25 +230,19 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
     setGroupChatN("");
   };
 
-  const onOpenDebug = () => {
-  console.log("onOpen function called"); // Add this line for debugging
-  onOpen();
-};
-
   return (
     <>
       <EditIcon
-        boxSize={{ base: "4%", md: "3%" }}
-        position="absolute" // Use absolute positioning for better control
-        right={{ base: "10px", md: "30px" }} // Adjust the right position based on your layout
-        top={{ base: "90px", md: "83px" }} // Adjust the top position based on your layout
+        boxSize={{ base: "5.5%", md: "2.1%" }}
+        marginLeft={{ base: "38%", md: "75%" }} // Adjust the right position based on your layout
+        marginTop={{ base: "-1.5%", md: "-1.5%" }} // Adjust the top position based on your layout
         onClick={onOpen}
         cursor="pointer"
         zIndex="docked" // This ensures it's above most elements but below modal overlays
       />
       <Modal fontFamily="Work sans" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius="20px" boxShadow="0 2px 10px rgba(0, 0, 0, 0.6)" >
           <ModalHeader
             fontSize="23px"
             fontFamily="Work sans"

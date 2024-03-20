@@ -18,7 +18,7 @@ const YogaLibrary = () => {
   };
 
   return (
-     <Box position="relative" width="100vw" height="100vh" overflowY="auto">
+     <Box position="relative" width="100vw" height="100vh" overflowY="auto" mt="50px">
         <Box
           position="fixed"
           top={0}
@@ -37,7 +37,7 @@ const YogaLibrary = () => {
           spacing={8} // Adjust the space between boxes
           align="center"
           justify="center"
-          mt={{ base: "28%", md: "5%" }} // Adjust marginTop as necessary
+          mt={{ base: "28%", md: "0.5%" }} // Adjust marginTop as necessary
         >
           {/* Box for Beginner level */}
           <Box
@@ -111,7 +111,7 @@ const YogaLibrary = () => {
           marginTop={{ base: "-9%", md: "-2.4%" }} // Responsive marginTop
           marginLeft="-44.5%"
           shadow="lg"
-          marginBottom={{ base: "0%", md: "1%" }}
+          marginBottom={{ base: "0%", md: "6%" }}
           boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)"
           >
             <Image src={advancedImage} borderRadius="md" mb={4} objectFit="cover" />

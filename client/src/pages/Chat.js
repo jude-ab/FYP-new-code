@@ -20,6 +20,7 @@ const Chat = () => {
         p="0"
         m="0"
         overflow="hidden"
+        mt={{ base: "50px", md: "0" }}
       >
         <Box
           backgroundImage={`url(${backgroundImage})`}

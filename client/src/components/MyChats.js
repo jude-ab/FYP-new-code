@@ -146,7 +146,7 @@ const MyChats = ({ fetchAgain }) => {
       borderRadius="lg"
       borderWidth="1px"
       height={{ base: "auto", md: "88vh" }} // Adjust height responsively
-      marginTop={{ base: "1rem", md: "5%" }}
+      marginTop={{ base: "-10%", md: "4.5%" }}
       marginLeft={{ base: "0", md: "2%" }}
       boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
     >

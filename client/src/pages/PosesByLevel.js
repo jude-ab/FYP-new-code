@@ -13,14 +13,16 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
-  ModalCloseButton
+  ModalCloseButton,
+  Input,
+  InputGroup,
+  InputLeftElement
 } from "@chakra-ui/react";
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
-import { useHistory } from "react-router-dom";
 import SidePopUp from "../components/Mcomponents/SidePopUp";
 import backgroundImage from '../assets/images/bylevel.jpg';
+import { SearchIcon } from "@chakra-ui/icons";
 
 const PosesByLevel = ({ match }) => {
   const [poses, setPoses] = useState([]);
@@ -29,6 +31,7 @@ const PosesByLevel = ({ match }) => {
   const [totalPages, setTotalPages] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedPose, setSelectedPose] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const level = match.params.level; // Get the level from the URL parameters
   console.log("Level:", level);
@@ -60,9 +63,15 @@ const PosesByLevel = ({ match }) => {
     return <Box>Error: {error}</Box>;
   }
 
-  // const goToPoseDetail = (poseId) => {
-  //   history.push(`/pose-detail/${poseId}`);
-  // };
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const displayedPoses = searchTerm.trim()
+    ? poses.filter((pose) =>
+        pose.AName.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : poses;
 
   const handleMoreInfo = (pose) => {
     setSelectedPose(pose);
@@ -84,42 +93,64 @@ const PosesByLevel = ({ match }) => {
         zIndex={-1}
         filter="blur(5px)"
         />
-      <SidePopUp />
-      <Box maxH="calc(100vh - 50px)" overflowY="auto" mt="50px">
-        <SimpleGrid columns={[1, 2, 4]} spacing={10} m={10}>
-          {poses
+        <SidePopUp />
+        <InputGroup marginTop={{ base: "0", md: "5%" }}
+          width={{ base: "0", md: "21.5%" }}
+          background="rgba(255, 255, 255, 0.5)"
+          borderRadius="full"
+          boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)"
+          marginLeft={{ base: "0", md: "2.6%" }}
+          marginBottom={{ base: "0", md: "-5%" }}
+        >
+        <InputLeftElement
+          pointerEvents="none"
+          children={<SearchIcon color="gray.300"
+          borderRadius="full"    
+            />}
+        />
+        <Input
+          placeholder="Search for a pose"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          borderRadius="full"   
+          fontFamily="Work sans"  
+        />
+      </InputGroup>
+      <Box maxH="calc(100vh - 50px)" overflowY="auto" mt="44px">
+        <SimpleGrid columns={[1, 2, 4]} spacing={10} m={9} >
+          {displayedPoses
             .slice((currentPage - 1) * posesPerPage, currentPage * posesPerPage)
             .map((pose) => (
                 <Box
-                    key={pose._id}
-                    p={5}
-                    shadow="md"
-                    borderWidth="1px"
-                    position="relative"
-                    rounded="md"
-                    backgroundImage={`linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9))`}
-                    boxShadow="0 2px 10px rgba(0, 0, 0, 0.35)"
-                    borderRadius="15px"
-                    >
-                 <VStack spacing={4} align="stretch">
-                <Text fontFamily="Work sans" fontWeight="bold" fontSize="1xl" noOfLines={1}>
-                  {pose.AName}
-                </Text>
-                <Text fontFamily="Work sans" noOfLines={1}>Level: {pose.Level}</Text>
-                <Button
-                  size="sm"
-                  onClick={() => handleMoreInfo(pose)}
-                  backgroundColor="#0C301F"
-                  color="white"
-                  _hover={{ backgroundColor: "#1E4D38" }}
-                  mt="auto" // Push the button to the bottom of the VStack
-                  fontFamily="Work sans"
+                  key={pose._id}
+                  p={5}
+                  shadow="md"
+                  borderWidth="1px"
+                  position="relative"
+                  rounded="md"
+                  backgroundImage={`linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9))`}
+                  boxShadow="0 2px 10px rgba(0, 0, 0, 0.35)"
+                  borderRadius="15px"
                 >
-                  More Information
-                </Button>
-              </VStack>
-              </Box>
-            ))}
+                  <VStack spacing={4} align="stretch">
+                    <Text fontFamily="Work sans" fontWeight="bold" fontSize="1xl" noOfLines={1}>
+                      {pose.AName}
+                    </Text>
+                    <Text fontFamily="Work sans" noOfLines={1}>Level: {pose.Level}</Text>
+                    <Button
+                      size="sm"
+                      onClick={() => handleMoreInfo(pose)}
+                      backgroundColor="#0C301F"
+                      color="white"
+                      _hover={{ backgroundColor: "#1E4D38" }}
+                      mt="auto" // Push the button to the bottom of the VStack
+                      fontFamily="Work sans"
+                    >
+                      More Information
+                    </Button>
+                  </VStack>
+                </Box>
+              ))}
         </SimpleGrid>
         <Flex fontFamily="Work sans" align="center" justify="center" my={6}>
           <IconButton
