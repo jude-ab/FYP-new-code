@@ -12,7 +12,7 @@
       "node_modules/**/node_modules"
     ]
   },
-  "description": "",
+  "description": "The idea of YogaHub is to provide a secure, welcoming environment where people can learn yoga, develop a feeling of community, and improve their mental health. Fundamentally, YogaHub is an all-inclusive online platform for mental health and yoga that is meant to accommodate users. It offers features such as a library of yoga poses, live chat between users and yoga and user recommendations.",
   "main": "server.js",
   "scripts": {
     "start": "nodemon ./server/server.js"
@@ -37,5 +37,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "keywords": []
 }
