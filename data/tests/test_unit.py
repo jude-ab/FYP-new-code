@@ -9,30 +9,29 @@ class TestRecommenderSystems(unittest.TestCase):
     def test_recommend_by_mood(self):
 
         mood = "sad"
-        # Load the DataFrame with the "ProcessedDescription" column
-        poses_processed = pd.read_csv("poses_processed.csv")
-        # Call the recommend_by_mood function with the correct DataFrame
-        recommendations = recommend_by_mood(mood, poses_processed)
-        # Strip leading and trailing whitespace from each recommendation
+        processed_poses = pd.read_csv("poses_processed.csv")
+        recommendations = recommend_by_mood(mood, processed_poses)
         recommendations = [pose.strip() for pose in recommendations]
-        # Define the expected recommendations
-        expected_recommendations = ['BHASTRIKA PRANAYAMA', 'JALA NETI', 'MOOLA BANDHA', 'Mayurasana (peacock pose)', 'Palming (Eye Exercise)', 'Surya Bheda Pranayama (vitality stimulating breath)', 'TRIKONASANA']
-        # Perform assertions to compare actual and expected recommendations
-        self.assertEqual(sorted(recommendations), sorted(expected_recommendations))
-        
+        expected_recommendation = ['BHASTRIKA PRANAYAMA', 'JALA NETI', 'MOOLA BANDHA', 'Mayurasana (peacock pose)', 'Palming (Eye Exercise)', 'Surya Bheda Pranayama (vitality stimulating breath)', 'TRIKONASANA']
+        self.assertEqual(sorted(recommendations), sorted(expected_recommendation))
+
+    #test for the preprocess_data function   
     def test_preprocess_data(self):
-        # Define a sample input data
+        # Create a sample input dataframe
         input_X = pd.DataFrame({
             'Duration': ["30 mins", "45 mins"],
             'Exercise Type': ["Cycling", "Dancing"],
             'Meal Plan': ["Standard", "Gluten-Free"],
             'Supplements': ["None", "Vitamin D"]
         })
-        # Define dummy target labels for the input data
-        input_y = pd.Series([1, 0])  # Assuming binary classification for simplicity
-        # Call the preprocess_data function
-        output_X, output_y, feature_names = preprocess_data(input_X, input_y)
-        # Define expected columns after preprocessing
+
+        # Create a sample output dataframe
+        input_y = pd.Series([1, 0])  
+       
+       # Call the preprocess_data function
+        output_X, feature_names = preprocess_data(input_X, input_y)
+
+        # Check if the output is a numpy array
         expected_columns = [
             'Duration',
             'Exercise Type_Cycling',
@@ -42,14 +41,16 @@ class TestRecommenderSystems(unittest.TestCase):
             'Supplements_None',
             'Supplements_Vitamin D'
         ]
-        # Convert output_X back to DataFrame for comparison
-        output_X_df = pd.DataFrame(output_X, columns=feature_names)
-        # Check if all expected columns are present in the output
+        # Convert the output to a dataframe
+        output_df = pd.DataFrame(output_X, columns=feature_names)
+
+        # Check if the output dataframe has the expected columns
         for column in expected_columns:
-            self.assertIn(column, output_X_df.columns)
-        # Further checks can include the shape of the DataFrame and dtype of columns
-        self.assertEqual(output_X_df.shape[1], len(expected_columns))
-        self.assertTrue(all(is_numeric_dtype(output_X_df[col]) for col in output_X_df.columns if col != 'Duration'))
+            self.assertIn(column, output_df.columns)
+
+        # Check if the output dataframe has the expected number of columns
+        self.assertEqual(output_df.shape[1], len(expected_columns))
+        self.assertTrue(all(is_numeric_dtype(output_df[col]) for col in output_df.columns if col != 'Duration'))
 
 
 if __name__ == '__main__':

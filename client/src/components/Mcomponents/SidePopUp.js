@@ -161,7 +161,7 @@ const SidePopUp = () => {
               </MenuButton>
               <MenuList pl={2}>
                 {!notif.length && "No New Messages"}
-                {notif.map((ntf) => ( 
+                {notif.map((ntf) => (
                   <MenuItem
                     key={ntf._id}
                     onClick={() => {

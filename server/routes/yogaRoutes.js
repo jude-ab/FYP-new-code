@@ -6,21 +6,13 @@ const router = express.Router();
 router.get("/poses", async (req, res) => {
   try {
     const { name, level } = req.query;
-
-    // Construct the query object
     const query = {};
-
-    // Add the name query if provided
     if (name) {
-      query.AName = { $regex: new RegExp(name, "i") }; // Case-insensitive search
+      query.AName = { $regex: new RegExp(name, "i") }; 
     }
-
-    // Add the level query if provided
     if (level) {
-      query.Level = { $regex: new RegExp(level, "i") }; // Case-insensitive search
+      query.Level = { $regex: new RegExp(level, "i") }; 
     }
-
-    // Find poses that match the query
     const poses = await YogaPose.find(query);
     
     // If no poses are found, return a 404 status code

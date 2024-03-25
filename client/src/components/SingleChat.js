@@ -129,7 +129,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             <IconButton
               d={{ base: "flex", md: "none" }}
               icon={<ArrowBackIcon />} onClick={() => setSelectedChat(null)}
-              marginTop="-0.3%" marginRight="2%"
+              margiTop="-0.3%" marginRight="2%"
               background="transparent"
               color="black" />
             {messages && (!selectedChat.isGroupChat ? (
@@ -161,12 +161,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     height={90}
                     isStopped={false}
                     isPaused={false}
-                    style={{ marginLeft: "-3.2%", position: "absolute", bottom: "20%" }} // Adjust marginLeft and position here
+                    style={{ marginLeft: "-3.2%", position: "absolute", bottom: "20%" }} 
                   />
                 )}
                 <InputGroup width="100%">
                   <Input
-                    marginTop={{ base: "-7%", md: "-2%" }}
+                    marginTop={{ base: "-7%", md: "2.5%" }}
                     variant="filled"
                     bg="#F0F0F0"
                     placeholder="Enter a message..."
@@ -177,7 +177,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   <InputRightElement>
                     <IconButton
                       icon={<ChevronRightIcon />}
-                      marginTop={{ base: "-100%", md: "-80%" }}
+                      marginTop={{ base: "-100%", md: "116%" }}
                       onClick={sendMessage}
                       mr={5} background="#A3B3A7"
                       width={{ base: "10%", md: "3%" }}

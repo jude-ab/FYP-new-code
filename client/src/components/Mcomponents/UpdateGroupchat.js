@@ -233,12 +233,13 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   return (
     <>
       <EditIcon
-        boxSize={{ base: "5.5%", md: "2.1%" }}
-        marginLeft={{ base: "38%", md: "75%" }} // Adjust the right position based on your layout
-        marginTop={{ base: "-1.5%", md: "-1.5%" }} // Adjust the top position based on your layout
+        boxSize={{ base: "5.5%", md: "24.5%" }}
+        marginLeft={{ base: "38%", md: "87%" }}
+        marginTop={{ base: "-1.5%", md: "-19.5%" }} 
         onClick={onOpen}
         cursor="pointer"
-        zIndex="docked" // This ensures it's above most elements but below modal overlays
+        marginBottom={{ base: "0", md: "-10%" }}
+        zIndex="docked" 
       />
       <Modal fontFamily="Work sans" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />

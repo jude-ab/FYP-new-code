@@ -17,37 +17,37 @@ class TestIntegration(unittest.TestCase):
 
 
     def test_integration_new_feedback_updates_recommendations(self):
-        # Insert a new user and get their ID
-        user_result = self.db.users_collection.insert_one({"username": "Test User"})
-        user_id = user_result.inserted_id
+        # Insert a new feedback document
+        user_feedback = self.db.users_collection.insert_one({"username": "Test User"})
+        user_id = user_feedback.inserted_id
 
-        # Insert a new health plan and get its ID
-        health_plan_result = self.db.healthplans_collection.insert_one({"Exercise Type": "Cycling"})
-        health_plan_id = health_plan_result.inserted_id
+       # Insert a new health plan document
+        health_plan = self.db.healthplans_collection.insert_one({"Exercise Type": "Cycling"})
+        health_plan_id = health_plan.inserted_id
 
-        # Insert new feedback
-        feedback_data = {
+        # Insert a new feedback document
+        feedback_input = {
             "userId": user_id,
             "healthPlanId": health_plan_id,
             "feedback": "like"
         }
-        feedback_result = self.db.feedbacks_collection.insert_one(feedback_data)
+        feedback_result = self.db.feedbacks_collection.insert_one(feedback_input)
 
-        # Check that the feedback was inserted
+        # Check if the feedback document was inserted successfully
         self.assertIsNotNone(feedback_result.inserted_id)
 
-        # Call the function that refines recommendations based on feedback
+
         refine_recommendations(user_id)
 
-        # Fetch the updated recommendations for the user's most common mood
-        most_common_mood = 'happy'  # Assuming the most common mood is happy for simplicity
-        # Make sure mood_to_cluster_mapping is loaded correctly
+
+        most_common_mood = 'happy'  
+
+        # Load the mood to cluster mapping and call the recommend_health_plan function
         mood_to_cluster_mapping = self.load_mood_to_cluster_mapping()
         updated_recommendation = recommend_health_plan(most_common_mood, mood_to_cluster_mapping)
 
-        # Assert that the recommendations are updated accordingly
-        # This should be checking for a single plan now, not a list
-        self.assertEqual('Cycling', updated_recommendation.get('Exercise Type'), "The updated recommendation does not contain 'Rowing'")
+        # Check if the updated recommendation contains the updated health plan       
+        self.assertEqual('Cycling', updated_recommendation.get('Exercise Type'), "Cycling does not match the updated recommendation")
 
     def load_mood_to_cluster_mapping(self):
         with open('mood_to_cluster_mapping.pkl', 'rb') as file:

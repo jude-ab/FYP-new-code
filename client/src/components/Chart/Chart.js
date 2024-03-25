@@ -141,12 +141,10 @@ function Chart() {
       setMoods(processedMoodsForPieChart);
       setMoodsByDate(processedMoodsForCalendar);
     } catch (error) {
-      console.error('Error fetching moods:', error); // Log any errors that occur
+      console.error('Error fetching moods:', error); 
     }
   }
 };
-
-
     fetchMoods();
   }, [userInfo]);
 
@@ -210,7 +208,7 @@ function Chart() {
   console.log("Does details exist now?", !!recommendation?.details);
 }, [recommendation]);
 
-
+//function to fetch health plan recommendation
 const handleRecommendationClick = async () => {
   try {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -218,7 +216,7 @@ const handleRecommendationClick = async () => {
     const response = await fetch('/api/health/recommend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId }) // Remove weekNumber as it's not needed
+      body: JSON.stringify({ userId })
     });
 
     if (!response.ok) {
@@ -636,7 +634,7 @@ const updateChartDataForMonth = () => {
       isOpen={isFeedbackModalOpen}
       onClose={handleCloseFeedbackModal}
       onFeedback={handleFeedback}
-      healthPlanId={recommendation?._id} // Use optional chaining here to prevent errors if recommendation is null.
+      healthPlanId={recommendation?._id} 
     />
   </div>
 );

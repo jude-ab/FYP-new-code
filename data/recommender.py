@@ -213,21 +213,20 @@ def collect_feedback():
     user_id = feedback_data.get('userId')
     health_plan_id = feedback_data.get('healthPlanId')
 
-    # Debug: Print out the health plan ID received to check
     print("Received health plan ID:", health_plan_id)
 
-    # Since the health_plan_id is a UUID string, no need to convert it to ObjectId
+    #check if the health plan ID is valid
     health_plan = healthplans_collection.find_one({'_id': health_plan_id})
 
-    # Debug: Print whether a matching health plan was found
     if health_plan:
         print("Matching health plan found for ID:", health_plan_id)
     else:
         print("No matching health plan found for ID:", health_plan_id)
         return jsonify({"error": "Health plan ID is not available."}), 400
 
-    # Insert feedback into MongoDB
+    #insert feedback into MongoDB collection and update recommendations
     feedback_collection.insert_one(feedback_data)
+    refine_recommendations(user_id)
     return jsonify({"message": "Feedback received"}), 201
 
 # This function should be defined in your Flask app to update the scores based on feedback.

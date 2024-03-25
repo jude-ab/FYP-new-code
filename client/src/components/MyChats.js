@@ -139,13 +139,13 @@ const MyChats = ({ fetchAgain }) => {
     <Box
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDirection="column"
-      width={{ base: "100%", md: "30%" }}
+      width={{ base: "100%", md: "28%" }}
       alignItems="center"
       padding={3}
       bg="rgba(255, 255, 255, 0.9)"
       borderRadius="lg"
       borderWidth="1px"
-      height={{ base: "auto", md: "88vh" }} // Adjust height responsively
+      height={{ base: "auto", md: "88vh" }} 
       marginTop={{ base: "-10%", md: "4.5%" }}
       marginLeft={{ base: "0", md: "2%" }}
       boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
@@ -153,7 +153,6 @@ const MyChats = ({ fetchAgain }) => {
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay bg="transparent" />
         <DrawerContent borderRadius="0px 20px 20px 0px">
-          {/* Remove the DrawerCloseButton component */}
           <DrawerHeader
             borderBottomWidth="1px"
             fontFamily="Work sans"
@@ -212,7 +211,7 @@ const MyChats = ({ fetchAgain }) => {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        marginBottom="4" // Add some space between this section and the list below
+        marginBottom="4" 
       >
           <Tooltip label="Search for friends to chat with!" hasArrow placement="bottom-end">
             <Button onClick={onOpen} variant="outline" width="full" justifyContent="start">
@@ -226,7 +225,7 @@ const MyChats = ({ fetchAgain }) => {
           fontSize={{ base: "25px", md: "28px" }}
           fontFamily="Work sans"
           textAlign="center"
-          marginTop="2" // Ensures space between the search bar and "Inbox" text
+          marginTop="2" 
           marginLeft="-79%"
         >
           Inbox
@@ -238,7 +237,7 @@ const MyChats = ({ fetchAgain }) => {
           fontSize={{ base: "sm", md: "sm" }}
           rightIcon={<AddIcon />}
           variant="ghost"
-          marginTop="-145%" // Adjusted for visual consistency
+          marginTop="-145%" 
           marginLeft="330%"  
         >
             {/* Create New Group Chat */}

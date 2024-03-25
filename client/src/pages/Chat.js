@@ -30,15 +30,16 @@ const Chat = () => {
           filter="blur(3px)"
           w="100%"
           h="100%"
-          position="fixed" // Use absolute positioning for the background
+          position="fixed" 
           zIndex="-1"
         />
         <Box
-          d={{ base: "block", md: "flex" }} // Use Chakra UI's responsive styles directly
+          d={{ base: "block", md: "flex" }} 
           justifyContent="space-between"
           h="100%"
           overflowY="auto"
-          pt={{ base: "60px", md: "0px" }} // Add top padding on smaller screens
+          pt={{ base: "60px", md: "0px" }} 
+          
         >
           {user && <MyChats fetchAgain={fetchAgain} />}
           {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}

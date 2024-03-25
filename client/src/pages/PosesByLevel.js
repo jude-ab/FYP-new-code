@@ -48,7 +48,7 @@ const PosesByLevel = ({ match }) => {
         );
         console.log("API response:", response.data);
         setPoses(response.data);
-        setTotalPages(Math.ceil(response.data.length / posesPerPage)); // Calculate total pages based on the number of poses and poses per page
+        setTotalPages(Math.ceil(response.data.length / posesPerPage));
       } catch (e) {
         setError(e.message);
         console.log(e);
@@ -56,8 +56,7 @@ const PosesByLevel = ({ match }) => {
     };
 
     fetchPoses();
-  }, [level, currentPage, posesPerPage]); // Include 'level' in the dependencies array
-
+  }, [level, currentPage, posesPerPage]); 
 
   if (error) {
     return <Box>Error: {error}</Box>;
@@ -171,7 +170,7 @@ const PosesByLevel = ({ match }) => {
             background="transparent"            
           />
         </Flex>
-        {/* Modal for displaying pose details */}
+        {/* modal for displaying yoga pose details */}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay  />
           <ModalContent borderRadius="25px" boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)">

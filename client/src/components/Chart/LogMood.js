@@ -50,6 +50,7 @@ const LogMood = () => {
   const storedUserInfo = localStorage.getItem("userInfo");
   const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
     
+  // Fetch recommendations based on the user's mood
   async function fetchRecommendations(moodData) {
     try {
       const response = await fetch("/recommend", { 
@@ -58,13 +59,14 @@ const LogMood = () => {
         body: JSON.stringify({ moods: moodData.mood }),
       });
       const result = await response.json();
-      setRecommendationsM(result); // Update the state with the received recommendations.
-      onMoodModalOpen(); // Open the modal to display recommendations.
+      setRecommendationsM(result); 
+      onMoodModalOpen(); 
     } catch (error) {
       console.error("Error fetching recommendations:", error);
     }
   }
-         
+
+  // Save the user's mood to the database       
   async function saveUserMood(moodData) {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   if (!userInfo || !userInfo.token) {
@@ -79,7 +81,7 @@ const LogMood = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // Include the token in the authorization header
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(moodData),
     });
@@ -88,7 +90,7 @@ const LogMood = () => {
     } else {
       const data = await response.json();
       console.log('Mood saved:', data);
-      // After successfully saving the mood, fetch today's moods again to update the table
+      
       fetchTodaysMoods();
     }
   } catch (error) {
@@ -389,11 +391,6 @@ const renderPoseDetailsAccordion = (pose) => (
         </ModalBody>
       </ModalContent>
     </Modal>
-    {/* <PoseDetailsModal
-      isOpen={isPoseDetailsOpen}
-      onClose={onPoseDetailsClose}
-      pose={selectedPose}
-    /> */}
   </Box>
 );
 
