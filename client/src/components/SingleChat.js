@@ -166,7 +166,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 )}
                 <InputGroup width="100%">
                   <Input
-                    marginTop={{ base: "-7%", md: "2.5%" }}
+                    marginTop={{ base: "5%", md: "2.5%" }}
                     variant="filled"
                     bg="#F0F0F0"
                     placeholder="Enter a message..."
@@ -177,7 +177,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   <InputRightElement>
                     <IconButton
                       icon={<ChevronRightIcon />}
-                      marginTop={{ base: "-100%", md: "116%" }}
+                      marginTop={{ base: "116%", md: "116%" }}
                       onClick={sendMessage}
                       mr={5} background="#A3B3A7"
                       width={{ base: "10%", md: "3%" }}

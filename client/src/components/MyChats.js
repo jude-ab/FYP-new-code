@@ -145,7 +145,7 @@ const MyChats = ({ fetchAgain }) => {
       bg="rgba(255, 255, 255, 0.9)"
       borderRadius="lg"
       borderWidth="1px"
-      height={{ base: "auto", md: "88vh" }} 
+      height={{ base: "88vh", md: "88vh" }} 
       marginTop={{ base: "-10%", md: "4.5%" }}
       marginLeft={{ base: "0", md: "2%" }}
       boxShadow="0 2px 10px rgba(0, 0, 0, 0.5)"
