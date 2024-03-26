@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e2050996.css",
+    "main.js": "/static/js/main.0313d637.js",
+    "static/media/yogaposes.png": "/static/media/yogaposes.3920e8f000e43ab469e5.png",
+    "static/media/log6.jpg": "/static/media/log6.57b6bf41b17ffd20f23d.jpg",
+    "static/media/bylevel.jpg": "/static/media/bylevel.5e7a46b37f672b10ac68.jpg",
+    "static/media/library2.jpg": "/static/media/library2.3fe81482926d380237b7.jpg",
+    "static/media/sun2.png": "/static/media/sun2.cb8744215d698415824e.png",
+    "static/media/frustrated.png": "/static/media/frustrated.deb4c0eecb5610ac0547.png",
+    "static/media/anxiety.png": "/static/media/anxiety.3c0ef113f26de10f9f4c.png",
+    "static/media/happy.png": "/static/media/happy.cf6df51cdf8860bf428c.png",
+    "static/media/advance.png": "/static/media/advance.cd21c13c8197995f7ba7.png",
+    "static/media/sad.png": "/static/media/sad.cebbe451b0e9f92f3b8e.png",
+    "static/media/yoga1.png": "/static/media/yoga1.cd7c8fde4f52b3ab781b.png",
+    "static/media/white.png": "/static/media/white.8be17a381abb5dc97919.png",
+    "static/media/mooncute.png": "/static/media/mooncute.51f7e2c33433d1a64454.png",
+    "static/media/yoga-poses.png": "/static/media/yoga-poses.5c635283f7e59195b753.png",
+    "static/media/beginneraes.png": "/static/media/beginneraes.20f9f3cc9ba6f55062c2.png",
+    "static/media/intermediate.png": "/static/media/intermediate.8ed09459ccf2bacb583a.png",
+    "static/media/cshape.png": "/static/media/cshape.5ac03f5a053448cf85b7.png",
+    "static/media/log.png": "/static/media/log.08e7de5d9c28de3d252c.png",
+    "static/media/hurricane.png": "/static/media/hurricane.f004e1127578f671da95.png",
+    "static/media/sun (2).png": "/static/media/sun (2).7deb514dfce06eea35ac.png",
+    "index.html": "/index.html",
+    "main.e2050996.css.map": "/static/css/main.e2050996.css.map",
+    "main.0313d637.js.map": "/static/js/main.0313d637.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e2050996.css",
+    "static/js/main.0313d637.js"
+  ]
+}
