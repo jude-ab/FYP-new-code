@@ -30,7 +30,7 @@ app.use('/yoga_images', (req, res, next) => {
 
 app.use(
   cors({
-    origin: "http://localhost:4001", // allow requests from frontend
+    origin: "https://yogahub-869755b3f896.herokuapp.com", // allow requests from frontend
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // if you need to handle cookies
   })
@@ -51,7 +51,7 @@ app.use("/api/health", healthRoutes);
 app.post("/api/health/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/health/recommend",
+      "https://yogahub-python-c7c68bb19801.herokuapp.com/health/recommend",
       req.body
     );
     res.json(response.data);
@@ -64,7 +64,7 @@ app.post("/api/health/recommend", async (req, res) => {
 app.post("/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/recommend",
+      "https://yogahub-python-c7c68bb19801.herokuapp.com/recommend",
       req.body
     );
     res.json(response.data);
@@ -83,7 +83,7 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:4001",
+    origin: "https://yogahub-869755b3f896.herokuapp.com",
   },
 });
 
