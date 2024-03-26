@@ -13,6 +13,7 @@ const axios = require("axios");
 const yogaRoutes = require("./routes/yogaRoutes.js");
 const cors = require("cors");
 const healthRoutes = require("./routes/healthRoutes.js");
+const path = require('path');
 
 const app = express();
 dotenv.config();
@@ -82,6 +83,15 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`.green.bold);
 });
 
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static(path.join(__dirname, '../client/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
+  });
+}
+
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
@@ -126,3 +136,5 @@ io.on("connection", (socket) => {
     socket.leave(userData._id);
   });
 });
+
+

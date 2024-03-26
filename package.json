@@ -15,7 +15,8 @@
   "description": "The idea of YogaHub is to provide a secure, welcoming environment where people can learn yoga, develop a feeling of community, and improve their mental health. Fundamentally, YogaHub is an all-inclusive online platform for mental health and yoga that is meant to accommodate users. It offers features such as a library of yoga poses, live chat between users and yoga and user recommendations.",
   "main": "server.js",
   "scripts": {
-    "start": "node ./server/server.js"
+    "start": "node ./server/server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "jude abouhajar",
   "license": "ISC",
