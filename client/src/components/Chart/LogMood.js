@@ -142,7 +142,7 @@ function handleGetRecommendations(mood) {
 
      async function fetchYogaPoses() {
   try {
-    const response = await fetch('https://yogahub-backend-7cd139cc022f.herokuapp.com/api/yoga/poses'); 
+    const response = await fetch('http://localhost:4001/api/yoga/poses'); 
     if (!response.ok) {
       throw new Error('Failed to fetch yoga poses');
     }
@@ -250,13 +250,12 @@ const renderPoseDetailsAccordion = (pose) => (
         {pose?.Benefits && <Text mb={2}>Benefits: {pose.Benefits}</Text>}
         {pose?.Breathing && <Text mb={2}>Breathing: {pose.Breathing}</Text>}
         {pose?.ImagePath && (
-          <Image src={`https://yogahub-869755b3f896.herokuapp.com/${pose.ImagePath}`} alt={pose.AName} />
+          <Image src={`http://localhost:4001/${pose.ImagePath}`} alt={pose.AName} />
         )}
       </AccordionPanel>
     </AccordionItem>
   </Accordion>
 );
-
 
     return (
   <Box position="relative" width="100vw" height="100vh" overflowY="auto" mt="50px">
@@ -298,7 +297,7 @@ const renderPoseDetailsAccordion = (pose) => (
 >
   {[{ src: happyImg, mood: "happy" }, { src: sadImg, mood: "sad" }, { src: anxiousImg, mood: "anxious" }, { src: frustratedImg, mood: "frustrated" }]
     .map(({ src, mood }) => (
-      <Flex
+      <Flex  
         key={mood}
         direction="column" // Stack items vertically
         align="center" // Center items horizontally

@@ -36,11 +36,11 @@ app.use(
   })
 );
 
-// app.get("/", (req, res) => {
-//   {
-//     res.send("Hello World");
-//   }
-// });
+app.get("/", (req, res) => {
+  {
+    res.send("Hello World");
+  }
+});
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
@@ -51,7 +51,7 @@ app.use("/api/health", healthRoutes);
 app.post("/api/health/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "https://yogahub-python-c7c68bb19801.herokuapp.com/health/recommend",
+      "http://localhost:5000/health/recommend",
       req.body
     );
     res.json(response.data);
@@ -64,7 +64,7 @@ app.post("/api/health/recommend", async (req, res) => {
 app.post("/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "https://yogahub-python-c7c68bb19801.herokuapp.com/recommend",
+      "http://localhost:5000/recommend",
       req.body
     );
     res.json(response.data);
@@ -83,19 +83,19 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "https://yogahub-869755b3f896.herokuapp.com",
+    origin: "http://localhost:4001",
   },
 });
 
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, '../client/build')));
+// if (process.env.NODE_ENV === 'production') {
+//   // Set static folder
+//   app.use(express.static(path.join(__dirname, '../client/build')));
 
-  app.get('*', (req, res) => {
-    console.log('Serving index.html');
-    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
-  });
-}
+//   app.get('*', (req, res) => {
+//     console.log('Serving index.html');
+//     res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
+//   });
+// }
 
 app.use(notFoundError);
 app.use(errorHandler);

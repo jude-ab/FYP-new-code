@@ -28,19 +28,11 @@ from keras.layers import Dense, Input
 import numpy as np
 import json
 import os
-from scout_apm.flask import ScoutApm
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
 CORS(app)
 
-# Attach ScoutApm to the Flask App
-ScoutApm(app)
-
-# Scout settings
-app.config["SCOUT_MONITOR"] = True
-app.config["SCOUT_KEY"] = "PGIXFL2dkIZusQbQPeUM"
-app.config["SCOUT_NAME"] = "recomender app"
 
 import sklearn
 print(sklearn.__version__)
