@@ -36,11 +36,11 @@ app.use(
   })
 );
 
-// app.get("/", (req, res) => {
-//   {
-//     res.send("Hello World");
-//   }
-// });
+app.get("/", (req, res) => {
+  {
+    res.send("Hello World");
+  }
+});
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
