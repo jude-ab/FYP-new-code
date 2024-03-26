@@ -51,7 +51,7 @@ app.use("/api/health", healthRoutes);
 app.post("/api/health/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/health/recommend",
+      "https://yogahub-python-c7c68bb19801.herokuapp.com/health/recommend",
       req.body
     );
     res.json(response.data);
@@ -64,7 +64,7 @@ app.post("/api/health/recommend", async (req, res) => {
 app.post("/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/recommend",
+      "https://yogahub-python-c7c68bb19801.herokuapp.com/recommend",
       req.body
     );
     res.json(response.data);
