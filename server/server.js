@@ -74,9 +74,6 @@ app.post("/recommend", async (req, res) => {
   }
 });
 
-app.use(notFoundError);
-app.use(errorHandler);
-
 const PORT = process.env.PORT || 4000;
 
 const server = app.listen(PORT, () => {
@@ -99,6 +96,9 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
   });
 }
+
+app.use(notFoundError);
+app.use(errorHandler);
 
 io.on("connection", (socket) => {
   console.log("New client connected");
