@@ -51,7 +51,7 @@ app.use("/api/health", healthRoutes);
 app.post("/api/health/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "https://yogahub-python-c7c68bb19801.herokuapp.com/health/recommend",
+      "http://localhost:5000/health/recommend",
       req.body
     );
     res.json(response.data);
@@ -64,7 +64,7 @@ app.post("/api/health/recommend", async (req, res) => {
 app.post("/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "https://yogahub-python-c7c68bb19801.herokuapp.com/recommend",
+      "http://localhost:5000/recommend",
       req.body
     );
     res.json(response.data);
@@ -73,6 +73,9 @@ app.post("/recommend", async (req, res) => {
     res.status(500).send("Error in fetching recommendations");
   }
 });
+
+app.use(notFoundError);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 
@@ -96,9 +99,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
   });
 }
-
-app.use(notFoundError);
-app.use(errorHandler);
 
 io.on("connection", (socket) => {
   console.log("New client connected");
