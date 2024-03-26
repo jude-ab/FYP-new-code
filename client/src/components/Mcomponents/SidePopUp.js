@@ -20,7 +20,7 @@ import { Avatar } from "@chakra-ui/avatar";
 import { ChatState } from "../../Providers/ChatP";
 import { useHistory } from "react-router-dom";
 import { getSenderName } from "../../utils/ChatLogic";
-import NotificationBadge, { Effect } from "react-notification-badge";
+// import NotificationBadge, { Effect } from "react-notification-badge";
 import { useDisclosure } from "@chakra-ui/hooks";
 
 const SidePopUp = () => {
@@ -156,7 +156,7 @@ const SidePopUp = () => {
             <Box display="flex" alignItems="center" justifyContent="flex-end" width={{ base: "50%", md: "auto" }}>
             <Menu>
               <MenuButton p={1} mr={{ base: "2", md: "4" }}>
-                <NotificationBadge count={notif.length} effect={Effect.SCALE} />
+                {/* <NotificationBadge count={notif.length} effect={Effect.SCALE} /> */}
                 <BellIcon fontSize="2xl" m={1} color="black"  />
               </MenuButton>
               <MenuList pl={2}>
