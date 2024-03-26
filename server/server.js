@@ -36,11 +36,11 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  {
-    res.send("Hello World");
-  }
-});
+// app.get("/", (req, res) => {
+//   {
+//     res.send("Hello World");
+//   }
+// });
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
@@ -83,6 +83,13 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`.green.bold);
 });
 
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:4001",
+  },
+});
+
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static(path.join(__dirname, '../client/build')));
@@ -91,13 +98,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
   });
 }
-
-const io = require("socket.io")(server, {
-  pingTimeout: 60000,
-  cors: {
-    origin: "http://localhost:4001",
-  },
-});
 
 io.on("connection", (socket) => {
   console.log("New client connected");
