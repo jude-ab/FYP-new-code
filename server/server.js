@@ -36,11 +36,11 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  {
-    res.send("Hello World");
-  }
-});
+// app.get("/", (req, res) => {
+//   {
+//     res.send("Hello World");
+//   }
+// });
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
@@ -74,9 +74,6 @@ app.post("/recommend", async (req, res) => {
   }
 });
 
-app.use(notFoundError);
-app.use(errorHandler);
-
 const PORT = process.env.PORT || 4000;
 
 const server = app.listen(PORT, () => {
@@ -95,9 +92,13 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 
   app.get('*', (req, res) => {
+    console.log('Serving index.html');
     res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
   });
 }
+
+app.use(notFoundError);
+app.use(errorHandler);
 
 io.on("connection", (socket) => {
   console.log("New client connected");
