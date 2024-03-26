@@ -141,10 +141,12 @@ function Chart() {
       setMoods(processedMoodsForPieChart);
       setMoodsByDate(processedMoodsForCalendar);
     } catch (error) {
-      console.error('Error fetching moods:', error); 
+      console.error('Error fetching moods:', error); // Log any errors that occur
     }
   }
 };
+
+
     fetchMoods();
   }, [userInfo]);
 
@@ -634,7 +636,7 @@ const updateChartDataForMonth = () => {
       isOpen={isFeedbackModalOpen}
       onClose={handleCloseFeedbackModal}
       onFeedback={handleFeedback}
-      healthPlanId={recommendation?._id} 
+      healthPlanId={recommendation?._id} // Use optional chaining here to prevent errors if recommendation is null.
     />
   </div>
 );

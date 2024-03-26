@@ -50,7 +50,6 @@ const LogMood = () => {
   const storedUserInfo = localStorage.getItem("userInfo");
   const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
     
-  // Fetch recommendations based on the user's mood
   async function fetchRecommendations(moodData) {
     try {
       const response = await fetch("/recommend", { 
@@ -143,7 +142,7 @@ function handleGetRecommendations(mood) {
 
      async function fetchYogaPoses() {
   try {
-    const response = await fetch('https://yogahub-python-c7c68bb19801.herokuapp.com/api/yoga/poses'); 
+    const response = await fetch('https://yogahub-backend-7cd139cc022f.herokuapp.com/api/yoga/poses'); 
     if (!response.ok) {
       throw new Error('Failed to fetch yoga poses');
     }
@@ -251,7 +250,7 @@ const renderPoseDetailsAccordion = (pose) => (
         {pose?.Benefits && <Text mb={2}>Benefits: {pose.Benefits}</Text>}
         {pose?.Breathing && <Text mb={2}>Breathing: {pose.Breathing}</Text>}
         {pose?.ImagePath && (
-          <Image src={`http://localhost:4001/${pose.ImagePath}`} alt={pose.AName} />
+          <Image src={`https://yogahub-869755b3f896.herokuapp.com/${pose.ImagePath}`} alt={pose.AName} />
         )}
       </AccordionPanel>
     </AccordionItem>
