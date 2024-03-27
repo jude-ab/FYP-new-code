@@ -1421,3 +1421,45 @@ Gradient Boosting Validation Accuracy: 1.0
 XGBoost Validation Accuracy: 1.0
 [1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 57ms/step[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 57ms/step
 Hybrid Ensemble Model Validation Accuracy: 1.0
+INFO:apscheduler.scheduler:Scheduler started
+INFO:apscheduler.scheduler:Added job "fetch_data" to job store "default"
+INFO:apscheduler.scheduler:Added job "scheduled_model_training" to job store "default"
+INFO:apscheduler.scheduler:Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO:apscheduler.scheduler:Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO:apscheduler.scheduler:Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO:apscheduler.scheduler:Added job "scheduled_model_training" to job store "default"
+INFO:apscheduler.scheduler:Added job "fetch_data" to job store "default"
+INFO:apscheduler.scheduler:Added job "full_update_pipeline" to job store "default"
+INFO:apscheduler.scheduler:Scheduler started
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+Data successfully fetched: 101 feedback records and 284 healthplan records.
+Traceback (most recent call last):
+  File "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/complex.py", line 247, in <module>
+    full_update_pipeline()
+  File "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/complex.py", line 205, in full_update_pipeline
+    fit_models(nn_model, lr_model, rf_model, gb_model, xgb_model, X_train_scaled, y_train)
+  File "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/complex.py", line 135, in fit_models
+    nn_model.fit(X_train_scaled, y_train, epochs=50, batch_size=10, verbose=1)
+  File "/Users/judeabouhajar/miniconda3/lib/python3.11/site-packages/tensorflow/python/keras/engine/training.py", line 1137, in fit
+    data_handler = data_adapter.get_data_handler(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/judeabouhajar/miniconda3/lib/python3.11/site-packages/tensorflow/python/keras/engine/data_adapter.py", line 1397, in get_data_handler
+    return DataHandler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/judeabouhajar/miniconda3/lib/python3.11/site-packages/tensorflow/python/keras/engine/data_adapter.py", line 1151, in __init__
+    adapter_cls = select_data_adapter(x, y)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/judeabouhajar/miniconda3/lib/python3.11/site-packages/tensorflow/python/keras/engine/data_adapter.py", line 987, in select_data_adapter
+    adapter_cls = [cls for cls in ALL_ADAPTER_CLS if cls.can_handle(x, y)]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/judeabouhajar/miniconda3/lib/python3.11/site-packages/tensorflow/python/keras/engine/data_adapter.py", line 987, in <listcomp>
+    adapter_cls = [cls for cls in ALL_ADAPTER_CLS if cls.can_handle(x, y)]
+                                                     ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/judeabouhajar/miniconda3/lib/python3.11/site-packages/tensorflow/python/keras/engine/data_adapter.py", line 706, in can_handle
+    _is_distributed_dataset(x))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/judeabouhajar/miniconda3/lib/python3.11/site-packages/tensorflow/python/keras/engine/data_adapter.py", line 1696, in _is_distributed_dataset
+    return isinstance(ds, input_lib.DistributedDatasetInterface)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tensorflow.python.distribute.input_lib' has no attribute 'DistributedDatasetInterface'. Did you mean: 'DistributedDatasetSpec'?
