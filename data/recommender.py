@@ -28,47 +28,32 @@ from keras.layers import Dense, Input
 import numpy as np
 import json
 import os
-from rq import Queue
-from redis import Redis
-from tasks import long_running_task
-from flask_apscheduler import APScheduler as _BaseAPScheduler
+from functools import wraps
+import signal
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
 # Flask app
-CORS(app, supports_credentials=True)  # This will allow all domains
+CORS(app, supports_credentials=True)
 
-redis_conn = Redis()
-q = Queue(connection=redis_conn) 
+class TimeoutError(Exception):
+    pass
 
-@app.route('/start_task', methods=['POST'])
-def start_task():
-    data = request.json
-    mood = data.get('moods')
-    if mood:
-        job = q.enqueue(long_running_task, mood)
-        return jsonify({"job_id": job.get_id()}), 202
-    else:
-        return jsonify({"error": "Mood not specified"}), 400
-    
-# Inside your Flask app
-
-@app.route("/results/<job_id>", methods=['GET'])
-def get_results(job_id):
-    job = q.fetch_job(job_id)
-
-    if job.is_finished:
-        return jsonify(job.result), 200
-    elif job.is_queued:
-        return jsonify("Job is queued"), 202
-    elif job.is_started:
-        return jsonify("Job is in progress"), 202
-    elif job.is_failed:
-        return jsonify("Job failed"), 400
-    else:
-        return jsonify("Unknown job status"), 404
-
-logging.basicConfig(level=logging.INFO)
+def timeout(seconds=10, error_message="Timeout"):
+    def decorator(func):
+        def _handle_timeout(signum, frame):
+            raise TimeoutError(error_message)
+        
+        def wrapper(*args, **kwargs):
+            signal.signal(signal.SIGALRM, _handle_timeout)
+            signal.alarm(seconds)
+            try:
+                result = func(*args, **kwargs)
+            finally:
+                signal.alarm(0)
+            return result
+        return wraps(func)(wrapper)
+    return decorator
 
 base_model_dir = '/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data'
 rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
@@ -93,14 +78,6 @@ df = pd.read_csv('healthplans_with_clusters.csv')
 
 # Generate a unique ID for each row and create a new '_id' column
 df['_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
-
-class APScheduler(_BaseAPScheduler):
-    def run_job(self, id, jobstore=None):
-        try:
-            super(APScheduler, self).run_job(id, jobstore=jobstore)
-        except Exception as e:
-            # Log the exception and any relevant information here
-            app.logger.error(f"Scheduler job failed: {e}")
 
 # Initialize and configure the scheduler
 scheduler = APScheduler()
@@ -181,6 +158,7 @@ def recommend_by_mood(mood, poses):
     return recommended_poses
 
 @app.route('/recommend', methods=['POST'])
+@timeout(30)
 def get_recommendation_by_mood():
     try:
         data = request.json
@@ -200,7 +178,7 @@ def get_pose_by_name():
         if not pose_name:
             return jsonify({"error": "Pose name is required"}), 400
 
-        pose = db.yogaposes.find_one({"AName": pose_name})  # Replace 'yoga_poses' with your collection name
+        pose = db.yogaposes.find_one({"AName": pose_name})  
         if not pose:
             return jsonify({"error": "Pose not found"}), 404
 
@@ -328,6 +306,7 @@ def prepare_prediction_input(input_data):
 
 
 @app.route('/health/recommend', methods=['POST'])
+@timeout(30)
 def get_health_plan_recommendation():
     try:
         data = request.json
