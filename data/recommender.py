@@ -31,6 +31,7 @@ import os
 from rq import Queue
 from redis import Redis
 from tasks import long_running_task
+from flask_apscheduler import APScheduler as _BaseAPScheduler
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
@@ -92,6 +93,14 @@ df = pd.read_csv('healthplans_with_clusters.csv')
 
 # Generate a unique ID for each row and create a new '_id' column
 df['_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
+
+class APScheduler(_BaseAPScheduler):
+    def run_job(self, id, jobstore=None):
+        try:
+            super(APScheduler, self).run_job(id, jobstore=jobstore)
+        except Exception as e:
+            # Log the exception and any relevant information here
+            app.logger.error(f"Scheduler job failed: {e}")
 
 # Initialize and configure the scheduler
 scheduler = APScheduler()
