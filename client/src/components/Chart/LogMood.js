@@ -142,7 +142,7 @@ function handleGetRecommendations(mood) {
 
      async function fetchYogaPoses() {
   try {
-    const response = await fetch('https://yogahub-backend-f62917043593.herokuapp.com/api/yoga/poses'); 
+    const response = await fetch('https://yogahub-python-02ea5c53d78f.herokuapp.com/api/yoga/poses'); 
     if (!response.ok) {
       throw new Error('Failed to fetch yoga poses');
     }
