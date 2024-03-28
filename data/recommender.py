@@ -28,14 +28,43 @@ from keras.layers import Dense, Input
 import numpy as np
 import json
 import os
+from rq import Queue
+from redis import Redis
+from tasks import long_running_task
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
 CORS(app)
 
+redis_conn = Redis()
+q = Queue(connection=redis_conn) 
 
-import sklearn
-print(sklearn.__version__)
+@app.route('/start_task', methods=['POST'])
+def start_task():
+    data = request.json
+    mood = data.get('moods')
+    if mood:
+        job = q.enqueue(long_running_task, mood)
+        return jsonify({"job_id": job.get_id()}), 202
+    else:
+        return jsonify({"error": "Mood not specified"}), 400
+    
+# Inside your Flask app
+
+@app.route("/results/<job_id>", methods=['GET'])
+def get_results(job_id):
+    job = q.fetch_job(job_id)
+
+    if job.is_finished:
+        return jsonify(job.result), 200
+    elif job.is_queued:
+        return jsonify("Job is queued"), 202
+    elif job.is_started:
+        return jsonify("Job is in progress"), 202
+    elif job.is_failed:
+        return jsonify("Job failed"), 400
+    else:
+        return jsonify("Unknown job status"), 404
 
 logging.basicConfig(level=logging.INFO)
 

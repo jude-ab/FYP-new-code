@@ -55,3 +55,6 @@ termcolor==2.4.0
 tornado
 Werkzeug==3.0.1
 xgboost==2.0.3
+rq==1.10.0
+redis==4.1.4
+
