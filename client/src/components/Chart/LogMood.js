@@ -142,7 +142,7 @@ function handleGetRecommendations(mood) {
 
      async function fetchYogaPoses() {
   try {
-    const response = await fetch('https://yogahub-backend-7cd139cc022f.herokuapp.com/api/yoga/poses'); 
+    const response = await fetch('https://yogahub-backend-f62917043593.herokuapp.com/api/yoga/poses'); 
     if (!response.ok) {
       throw new Error('Failed to fetch yoga poses');
     }
@@ -250,7 +250,7 @@ const renderPoseDetailsAccordion = (pose) => (
         {pose?.Benefits && <Text mb={2}>Benefits: {pose.Benefits}</Text>}
         {pose?.Breathing && <Text mb={2}>Breathing: {pose.Breathing}</Text>}
         {pose?.ImagePath && (
-          <Image src={`https://yogahub-869755b3f896.herokuapp.com/${pose.ImagePath}`} alt={pose.AName} />
+          <Image src={`https://yogahub-1511502ddbb4.herokuapp.com/${pose.ImagePath}`} alt={pose.AName} />
         )}
       </AccordionPanel>
     </AccordionItem>
