@@ -6,7 +6,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from pymongo import MongoClient, UpdateOne, DESCENDING
 from bson import ObjectId
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import pytz
 import pickle
 import uuid
@@ -28,37 +28,15 @@ from keras.layers import Dense, Input
 import numpy as np
 import json
 import os
-from functools import wraps
-import signal
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
 # Flask app
 CORS(app, supports_credentials=True)
 
-class TimeoutError(Exception):
-    pass
-
-def timeout(seconds=10, error_message="Timeout"):
-    def decorator(func):
-        def _handle_timeout(signum, frame):
-            raise TimeoutError(error_message)
-        
-        def wrapper(*args, **kwargs):
-            signal.signal(signal.SIGALRM, _handle_timeout)
-            signal.alarm(seconds)
-            try:
-                result = func(*args, **kwargs)
-            finally:
-                signal.alarm(0)
-            return result
-        return wraps(func)(wrapper)
-    return decorator
-
 base_model_dir = '/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data'
 rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
 rf_model = joblib.load(rf_model_path)
-
 
 # Define the connection string for MongoDB
 MONGODB_CONNECTION = "mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mongodb.net/yogahub"
@@ -158,7 +136,6 @@ def recommend_by_mood(mood, poses):
     return recommended_poses
 
 @app.route('/recommend', methods=['POST'])
-@timeout(30)
 def get_recommendation_by_mood():
     try:
         data = request.json
@@ -306,7 +283,6 @@ def prepare_prediction_input(input_data):
 
 
 @app.route('/health/recommend', methods=['POST'])
-@timeout(30)
 def get_health_plan_recommendation():
     try:
         data = request.json
@@ -355,7 +331,7 @@ def get_health_plan_recommendation():
 def get_most_common_mood_for_user(user_id):
     # Get today's date in UTC and calculate the date 7 days ago
     utc_zone = pytz.utc
-    end_date = datetime.utcnow().replace(tzinfo=utc_zone)
+    end_date = datetime.now(timezone.utc)
     start_date = end_date - timedelta(days=6)
 
     # Print or log the values of start_date and end_date

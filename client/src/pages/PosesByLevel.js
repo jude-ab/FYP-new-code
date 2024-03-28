@@ -44,7 +44,7 @@ const PosesByLevel = ({ match }) => {
     const fetchPoses = async () => {
       try {
         const response = await axios.get(
-          `https://yogahub-1511502ddbb4.herokuapp.com/api/yoga/poses?level=${(level)}`
+          `http://localhost:4001/api/yoga/poses?level=${(level)}`
         );
         console.log("API response:", response.data);
         setPoses(response.data);
@@ -183,7 +183,7 @@ const PosesByLevel = ({ match }) => {
               <Text mb={2}>Breathing: {selectedPose?.Breathing}</Text>
               <Text mb={2}>Awareness: {selectedPose?.awareness}</Text>
               {selectedPose?.ImagePath && (
-                  <img src={`https://yogahub-backend-f62917043593.herokuapp.com/${selectedPose.ImagePath}`} alt={selectedPose.AName} style={{ width: '100%', marginTop: '10px' }} />
+                  <img src={`http://localhost:4001/${selectedPose.ImagePath}`} alt={selectedPose.AName} style={{ width: '100%', marginTop: '10px' }} />
               )}
           </ModalBody>
           </ModalContent>

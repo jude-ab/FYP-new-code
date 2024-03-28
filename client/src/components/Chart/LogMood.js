@@ -41,8 +41,6 @@ const LogMood = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedPoses, setPaginatedPoses] = useState([]);
   const totalPages = Math.ceil(recommendationsM.length / posesPerPage);
-  const [selectedPose, setSelectedPose] = useState(null);
-  const { isOpen: isPoseDetailsOpen, onOpen: onPoseDetailsOpen, onClose: onPoseDetailsClose } = useDisclosure();
   const [yogaPoses, setYogaPoses] = useState([]);
     
   const [todaysMoods, setTodaysMoods] = useState([]);
@@ -124,25 +122,9 @@ function handleGetRecommendations(mood) {
   setPaginatedPoses(recommendationsM.slice(startIndex, endIndex));
 }, [currentPage, recommendationsM, posesPerPage]);
 
-// const handleMoreInfo = async (poseId) => {
-//   console.log('Clicked poseId:', poseId);
-//   try {
-//     const response = await fetch(`http://localhost:4000/api/yoga/poses/${poseId}`);
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok');
-//     }
-//     const poseDetails = await response.json();
-//     console.log('Pose details:', poseDetails); // Ensure this logs expected details
-//     setSelectedPose(poseDetails);
-//     onPoseDetailsOpen(); // Ensure this is being called
-//   } catch (error) {
-//     console.error('Error fetching pose details:', error);
-//   }
-// };
-
-     async function fetchYogaPoses() {
+  async function fetchYogaPoses() {
   try {
-    const response = await fetch('https://yogahub-python-02ea5c53d78f.herokuapp.com/api/yoga/poses'); 
+    const response = await fetch('http://localhost:4000/api/yoga/poses'); 
     if (!response.ok) {
       throw new Error('Failed to fetch yoga poses');
     }
@@ -250,7 +232,7 @@ const renderPoseDetailsAccordion = (pose) => (
         {pose?.Benefits && <Text mb={2}>Benefits: {pose.Benefits}</Text>}
         {pose?.Breathing && <Text mb={2}>Breathing: {pose.Breathing}</Text>}
         {pose?.ImagePath && (
-          <Image src={`https://yogahub-1511502ddbb4.herokuapp.com/${pose.ImagePath}`} alt={pose.AName} />
+          <Image src={`http://localhost:4001/${pose.ImagePath}`} alt={pose.AName} />
         )}
       </AccordionPanel>
     </AccordionItem>
