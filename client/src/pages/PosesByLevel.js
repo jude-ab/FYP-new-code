@@ -44,7 +44,7 @@ const PosesByLevel = ({ match }) => {
     const fetchPoses = async () => {
       try {
         const response = await axios.get(
-          `https://yogahub-backend-f62917043593.herokuapp.com/api/yoga/poses?level=${(level)}`
+          `https://yogahub-1511502ddbb4.herokuapp.com/api/yoga/poses?level=${(level)}`
         );
         console.log("API response:", response.data);
         setPoses(response.data);
