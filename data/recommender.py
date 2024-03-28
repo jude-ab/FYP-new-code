@@ -34,7 +34,8 @@ from tasks import long_running_task
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
-CORS(app)
+# Flask app
+CORS(app, supports_credentials=True)  # This will allow all domains
 
 redis_conn = Redis()
 q = Queue(connection=redis_conn) 
