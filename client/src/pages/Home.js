@@ -24,7 +24,7 @@ const Home = () => {
   useEffect(() => {
     const user_info = JSON.parse(localStorage.getItem('user_info'));
     if (user_info) {
-      history.push('/chats');
+      history.push('/yogaLibrary"');
     }
   }, [history]);
 

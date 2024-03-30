@@ -50,7 +50,7 @@ const LogMood = () => {
     
   async function fetchRecommendations(moodData) {
     try {
-      const response = await fetch("/recommend", { 
+      const response = await fetch("http://localhost:5000/recommend", { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ moods: moodData.mood }),
@@ -124,7 +124,7 @@ function handleGetRecommendations(mood) {
 
   async function fetchYogaPoses() {
   try {
-    const response = await fetch('http://localhost:4000/api/yoga/poses'); 
+    const response = await fetch('http://localhost:80/api/yoga/poses'); 
     if (!response.ok) {
       throw new Error('Failed to fetch yoga poses');
     }
@@ -232,13 +232,12 @@ const renderPoseDetailsAccordion = (pose) => (
         {pose?.Benefits && <Text mb={2}>Benefits: {pose.Benefits}</Text>}
         {pose?.Breathing && <Text mb={2}>Breathing: {pose.Breathing}</Text>}
         {pose?.ImagePath && (
-          <Image src={`http://localhost:4001/${pose.ImagePath}`} alt={pose.AName} />
-        )}
+          <Image src={`http://localhost:80/${pose.ImagePath}`} alt={pose.AName} />
+        )}     
       </AccordionPanel>
     </AccordionItem>
   </Accordion>
 );
-
 
     return (
   <Box position="relative" width="100vw" height="100vh" overflowY="auto" mt="50px">

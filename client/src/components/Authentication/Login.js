@@ -48,7 +48,7 @@ const Login = () => {
         },
       };
       const { data } = await axios.post(
-        "/api/user/login",
+        "http://localhost:4000/api/user/login",
         { username, password },
         config
       );
@@ -67,7 +67,7 @@ const Login = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Invalid credentials",
+        description: "Invalid credentials, Name is case sensitive. Please try again.",
         status: "error",
         duration: 5000,
         isClosable: true,

@@ -21,7 +21,7 @@ from flask_cors import CORS
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -102,8 +102,8 @@ def preprocess_data(input_X, input_y):
     # Assuming X_train_processed is your processed training data
     columns_after_preprocessing = X_processed.columns.tolist()   
 
-    with open('/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/model_columns.json', 'w') as file:
-        json.dump(columns_after_preprocessing, file) 
+    with open(os.path.join(base_model_dir, 'model_columns.json'), 'w') as file:
+        json.dump(columns_after_preprocessing, file)
 
     return X_processed, y_processed, feature_names
 

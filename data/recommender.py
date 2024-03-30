@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 import pandas as pd
 import nltk
 from nltk.stem import WordNetLemmatizer
@@ -34,9 +34,9 @@ app = Flask(__name__)
 # Flask app
 CORS(app, supports_credentials=True)
 
-base_model_dir = '/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data'
-rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
-rf_model = joblib.load(rf_model_path)
+base_model_dir = '/usr/src/app/data'
+# rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl'd)
+# rf_model = joblib.load(rf_model_path)
 
 # Define the connection string for MongoDB
 MONGODB_CONNECTION = "mongodb+srv://FYPmongoDB:FYPmongoDB@clusterfyp.is4kewv.mongodb.net/yogahub"
@@ -48,11 +48,9 @@ users_collection = db.users
 feedback_collection = db.feedbacks
 healthplans_collection = db.healthplans  
 
-poses_processed = pd.read_csv("poses_processed.csv")       
-
-# Load health plan data with clusters
-health_plans = pd.read_csv('healthplans_with_clusters_with_id.csv')
-df = pd.read_csv('healthplans_with_clusters.csv')
+poses_processed = pd.read_csv(os.path.join(base_model_dir, "poses_processed.csv"))
+health_plans = pd.read_csv(os.path.join(base_model_dir, 'healthplans_with_clusters_with_id.csv'))
+df = pd.read_csv(os.path.join(base_model_dir, 'healthplans_with_clusters.csv'))       
 
 # Generate a unique ID for each row and create a new '_id' column
 df['_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
@@ -71,17 +69,17 @@ lemmatizer = WordNetLemmatizer()
 stop_words = set(stopwords.words('english'))
 
 # Load serialized models and data
-with open('yoga_pose.pkl', 'rb') as file:
+with open(os.path.join(base_model_dir, 'yoga_pose.pkl'), 'rb') as file:
     yoga_pose = pickle.load(file)
-with open('similarity.pkl', 'rb') as file:
+with open(os.path.join(base_model_dir,'similarity.pkl'), 'rb') as file:
     similarity = pickle.load(file)
-with open('yoga_mood.pkl', 'rb') as file:
+with open(os.path.join(base_model_dir,'yoga_mood.pkl'), 'rb') as file:
     yoga_mood = pickle.load(file)
-with open('kmeans_model.pkl', 'rb') as file:
+with open(os.path.join(base_model_dir,'kmeans_model.pkl'), 'rb') as file:
     kmeans_model = pickle.load(file)
-with open('onehot_encoder.pkl', 'rb') as file:
+with open(os.path.join(base_model_dir,'onehot_encoder.pkl'), 'rb') as file:
     onehot_encoder = pickle.load(file)
-with open('mood_to_cluster_mapping.pkl', 'rb') as file:
+with open(os.path.join(base_model_dir,'mood_to_cluster_mapping.pkl'), 'rb') as file:
     mood_to_cluster_mapping = pickle.load(file)
 
 # Load serialized models and encoders
@@ -90,11 +88,11 @@ def load_pickle(file_name):
         return pickle.load(file)
     
 # Load the serialized models into memory using the load_model function
-nn_model = load_model('nn_model.keras')
-lr_model = joblib.load('lr_model.pkl')
-gb_model = joblib.load('gb_model.pkl')
-xgb_model = joblib.load('xgb_model.pkl')
-rf_model = joblib.load('rf_model.pkl') 
+lr_model = joblib.load(os.path.join(base_model_dir, 'lr_model.pkl'))
+nn_model = load_model(os.path.join(base_model_dir, 'nn_model.keras'))
+gb_model = joblib.load(os.path.join(base_model_dir, 'gb_model.pkl')) 
+xgb_model = joblib.load(os.path.join(base_model_dir, 'xgb_model.pkl'))
+rf_model = joblib.load(os.path.join(base_model_dir, 'rf_model.pkl'))
 
 # def test_job():
 #     logging.info("The test job has been executed.")
@@ -164,6 +162,20 @@ def get_pose_by_name():
         return jsonify(pose)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/health/recommend', methods=['OPTIONS'])
+def health_recommend_options():
+    resp = make_response()
+    # Reflect the origin back if it's in your whitelist, otherwise deny the request.
+    origin = request.headers.get('Origin')
+    if origin in ['http://127.0.0.1', 'http://localhost']:
+        resp.headers['Access-Control-Allow-Origin'] = origin
+    else:
+        resp.headers['Access-Control-Allow-Origin'] = 'null'
+    resp.headers['Access-Control-Allow-Methods'] = 'POST'
+    resp.headers['Access-Control-Allow-Headers'] = request.headers.get('Access-Control-Request-Headers', 'Content-Type, Authorization')
+    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    return resp
     
 # Function to convert MongoDB data to a pandas DataFrame
 def mongodb_to_dataframe_with_score_init(collection):
@@ -282,7 +294,7 @@ def prepare_prediction_input(input_data):
     return prepared_input_data
 
 
-@app.route('/health/recommend', methods=['POST'])
+@app.route('/api/health/recommend', methods=['POST'])
 def get_health_plan_recommendation():
     try:
         data = request.json
@@ -374,19 +386,12 @@ load_scaler()
 # Define the function to load or reload the models into memory
 def load_models():
     global nn_model, lr_model, rf_model, gb_model, xgb_model
-
     try:
-        nn_model_path = os.path.join(base_model_dir, 'nn_model.keras')
-        lr_model_path = os.path.join(base_model_dir, 'lr_model.pkl')
-        gb_model_path = os.path.join(base_model_dir, 'gb_model.pkl')
-        xgb_model_path = os.path.join(base_model_dir, 'xgb_model.pkl')
-        rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl')
-
-        nn_model = load_model(nn_model_path)
-        lr_model = joblib.load(lr_model_path)
-        gb_model = joblib.load(gb_model_path)
-        xgb_model = joblib.load(xgb_model_path)
-        rf_model = joblib.load(rf_model_path)
+        lr_model = joblib.load(os.path.join(base_model_dir, 'lr_model.pkl'))
+        nn_model = load_model(os.path.join(base_model_dir, 'nn_model.keras'))
+        gb_model = joblib.load(os.path.join(base_model_dir, 'gb_model.pkl')) 
+        xgb_model = joblib.load(os.path.join(base_model_dir, 'xgb_model.pkl'))
+        rf_model = joblib.load(os.path.join(base_model_dir, 'rf_model.pkl'))
         logging.info("All models loaded successfully.")
     except Exception as e:
         logging.error("Failed to load models: {}".format(e))
@@ -458,8 +463,8 @@ def preprocess_data(input_X, input_y):
     # Assuming X_train_processed is your processed training data
     columns_after_preprocessing = X_processed.columns.tolist()   
 
-    with open('/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/model_columns.json', 'w') as file:
-        json.dump(columns_after_preprocessing, file) 
+    with open(os.path.join(base_model_dir, 'model_columns.json'), 'w') as file:
+        json.dump(columns_after_preprocessing, file)
 
     return X_processed, y_processed, feature_names
 
@@ -534,12 +539,6 @@ def save_model(model, filename):
 
 # Full update pipeline integrating all models
 def full_update_pipeline():
-
-    # log_path = "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/log.txt"
-    
-    #  # Log when the cron job runs
-    # with open(log_path, "a") as log_file:
-    #     log_file.write(f"Cron job started at {datetime.now()}\n")
         
     X_new, y_new = fetch_data()
     X_processed, y_processed, feature_names = preprocess_data(X_new, y_new)
@@ -569,8 +568,8 @@ def full_update_pipeline():
         nn_model = load_model(model_path)
         save_model(lr_model, 'lr_model.pkl')
         try:
-            logging.info(f"Loading model from {rf_model_path}")
-            rf_model = joblib.load(rf_model_path)
+            logging.info(f"Loading model from rf_model.pkl...")
+            rf_model = joblib.load(os.path.join(base_model_dir, 'rf_model.pkl'))
             logging.info("Model loaded successfully.")
         except Exception as e:
             logging.error(f"Failed to load model: {e}")
@@ -593,7 +592,8 @@ def scheduled_model_training():
     
 
 def process_input_data_for_prediction(input_data):
-    scaler_file = 'scaler.pkl'
+    scaler_filename = 'scaler.pkl' 
+    scaler_file = os.path.join(base_model_dir, scaler_filename)
     if not os.path.exists(scaler_file):
         raise FileNotFoundError(f"{scaler_file} not found. Ensure the scaler is properly saved during the training phase.")
 
@@ -625,7 +625,11 @@ def process_input_data_for_prediction(input_data):
     return input_data_scaled
 
 def load_expected_columns():
-    with open('/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/model_columns.json', 'r') as file:
+    file_path = 'model_columns.json'  # Removed the duplicated 'data/' from the path
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Expected columns file not found: {file_path}")
+    
+    with open(file_path, 'r') as file:
         columns = json.load(file)
     return columns
 

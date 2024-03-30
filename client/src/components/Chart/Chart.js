@@ -106,10 +106,11 @@ function Chart() {
     const fetchMoods = async () => {
   if (userInfo && userInfo.token) {
     try {
-      const response = await fetch(`/api/user/${userInfo._id}/moods`, {
+      const response = await fetch(`http://localhost:4000/api/user/${userInfo._id}/moods`, { 
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
+        credentials: 'include',
       });
       if (!response.ok) {
         throw new Error('Failed to fetch mood entries');
@@ -215,16 +216,15 @@ const handleRecommendationClick = async () => {
   try {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const userId = userInfo?._id;
-    const response = await fetch('/api/health/recommend', {
+    const response = await fetch('http://localhost:5000/api/health/recommend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId })
+      body: JSON.stringify({ userId }),
+      credentials: 'include',
     });
-
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.status}`);
     }
-
     const data = await response.json();
     console.log("Received recommendation:", data);
     setRecommendation({

@@ -27,10 +27,9 @@ app.use('/yoga_images', (req, res, next) => {
   next();
 });
 
-
 app.use(
   cors({
-    origin: "http://localhost:4001", // allow requests from frontend
+    origin: ["http://127.0.0.1", "http://localhost", "http://127.0.0.1:80", "http://localhost:80"], 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // if you need to handle cookies
   })
@@ -51,7 +50,7 @@ app.use("/api/health", healthRoutes);
 app.post("/api/health/recommend", async (req, res) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/health/recommend",
+      "http://localhost:5000/api/health/recommend",
       req.body
     );
     res.json(response.data);
@@ -83,7 +82,7 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:4001",
+      origin: ["http://127.0.0.1", "http://localhost", "http://127.0.0.1:80", "http://localhost:80"], 
   },
 });
 
