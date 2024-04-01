@@ -12,7 +12,7 @@ import ScrollChat from "./ScrollChat";
 import "../App.css";
 import Profile from "./Mcomponents/Profile";
 
-const END_POINT = `http://localhost:4000`;
+const END_POINT = `https://yogahub-nodebackend-587807f134e2.herokuapp.com`;
 var socket, selectedChatC;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -34,7 +34,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
       };
       setLoading(true);
-      const { data } = await axios.get(`/api/messages/${selectedChat._id}`, config);
+      const { data } = await axios.get(`https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/messages/${selectedChat._id}`, config);
       setMessages(data);
       setLoading(false);
       socket.emit("join chat", selectedChat._id);
@@ -60,7 +60,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
         };
         setNewMessage("");
-        const { data } = await axios.post("/api/messages", { content: newMessage, chatId: selectedChat }, config);
+        const { data } = await axios.post("https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/messages", { content: newMessage, chatId: selectedChat }, config);
         socket.emit("newmessage", data);
         setMessages([...messages, data]);
       } catch (error) {

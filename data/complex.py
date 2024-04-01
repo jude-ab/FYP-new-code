@@ -21,7 +21,7 @@ from flask_cors import CORS
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, resources={r"/api/*": {"origins": "https://yogahub-frontend-46cb8ca421ea.herokuapp.com"}})
 
 logging.basicConfig(level=logging.INFO)
 

@@ -31,8 +31,7 @@ import os
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
-# Flask app
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["https://yogahub-frontend-46cb8ca421ea.herokuapp.com"])
 
 base_model_dir = '/usr/src/app/data'
 # rf_model_path = os.path.join(base_model_dir, 'rf_model.pkl'd)
@@ -133,8 +132,20 @@ def recommend_by_mood(mood, poses):
             recommended_poses.append(row['AName'])
     return recommended_poses
 
-@app.route('/recommend', methods=['POST'])
+@app.route('/recommend', methods=['POST', 'OPTIONS'])
 def get_recommendation_by_mood():
+    # The OPTIONS handling might be redundant if Flask-CORS is used
+     resp = make_response()
+    # Reflect the origin back if it's in your whitelist, otherwise deny the request.
+    origin = request.headers.get('Origin')
+    if origin in ['http://127.0.0.1', 'http://localhost', 'https://yogahub-frontend-46cb8ca421ea.herokuapp.com']:
+        resp.headers['Access-Control-Allow-Origin'] = origin
+    else:
+        resp.headers['Access-Control-Allow-Origin'] = 'null'
+    resp.headers['Access-Control-Allow-Methods'] = 'POST'
+    resp.headers['Access-Control-Allow-Headers'] = request.headers.get('Access-Control-Request-Headers', 'Content-Type, Authorization')
+    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    return resp
     try:
         data = request.json
         mood = data.get('moods')
@@ -168,7 +179,7 @@ def health_recommend_options():
     resp = make_response()
     # Reflect the origin back if it's in your whitelist, otherwise deny the request.
     origin = request.headers.get('Origin')
-    if origin in ['http://127.0.0.1', 'http://localhost']:
+    if origin in ['http://127.0.0.1', 'http://localhost', 'https://yogahub-frontend-46cb8ca421ea.herokuapp.com']:
         resp.headers['Access-Control-Allow-Origin'] = origin
     else:
         resp.headers['Access-Control-Allow-Origin'] = 'null'
@@ -216,6 +227,17 @@ def refine_recommendations(user_id):
 
 @app.route('/api/health/feedback', methods=['POST'])
 def collect_feedback():
+    resp = make_response()
+    # Reflect the origin back if it's in your whitelist, otherwise deny the request.
+    origin = request.headers.get('Origin')
+    if origin in ['http://127.0.0.1', 'http://localhost', 'https://yogahub-frontend-46cb8ca421ea.herokuapp.com']:
+        resp.headers['Access-Control-Allow-Origin'] = origin
+    else:
+        resp.headers['Access-Control-Allow-Origin'] = 'null'
+    resp.headers['Access-Control-Allow-Methods'] = 'POST'
+    resp.headers['Access-Control-Allow-Headers'] = request.headers.get('Access-Control-Request-Headers', 'Content-Type, Authorization')
+    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    return resp
     feedback_data = request.json
     user_id = feedback_data.get('userId')
     health_plan_id = feedback_data.get('healthPlanId')

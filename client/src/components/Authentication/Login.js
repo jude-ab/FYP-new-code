@@ -48,7 +48,7 @@ const Login = () => {
         },
       };
       const { data } = await axios.post(
-        "http://localhost:4000/api/user/login",
+        "https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user/login",
         { username, password },
         config
       );

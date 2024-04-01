@@ -106,7 +106,7 @@ function Chart() {
     const fetchMoods = async () => {
   if (userInfo && userInfo.token) {
     try {
-      const response = await fetch(`http://localhost:4000/api/user/${userInfo._id}/moods`, { 
+      const response = await fetch(`https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user/${userInfo._id}/moods`, { 
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
@@ -216,7 +216,7 @@ const handleRecommendationClick = async () => {
   try {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const userId = userInfo?._id;
-    const response = await fetch('http://localhost:5000/api/health/recommend', {
+    const response = await fetch('https://yogahub-pythonbackend-626bc24a0c6f.herokuapp.com/api/health/recommend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId }),
@@ -408,10 +408,10 @@ const updateChartDataForMonth = () => {
     console.log("Submitting feedback for:", userInfo._id, healthPlanId);
 
     // Make the POST request to your backend.
-    const response = await axios.post('/api/health/feedback', {
+    const response = await axios.post('https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/health/feedback', {
       userId: userInfo._id,
       healthPlanId, // Use the healthPlanId retrieved from state.
-      feedback: feedbackType
+      feedback: feedbackType,
     });
 
     // If the response is successful, show a success toast.

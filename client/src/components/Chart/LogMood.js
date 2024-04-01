@@ -50,10 +50,10 @@ const LogMood = () => {
     
   async function fetchRecommendations(moodData) {
     try {
-      const response = await fetch("http://localhost:5000/recommend", { 
+      const response = await fetch("https://yogahub-pythonbackend-626bc24a0c6f.herokuapp.com/recommend", { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ moods: moodData.mood }),
+        body: JSON.stringify({ moods: moodData.mood })
       });
       const result = await response.json();
       setRecommendationsM(result); 
@@ -74,13 +74,14 @@ const LogMood = () => {
   const token = userInfo.token;
 
   try {
-    const response = await fetch("/api/user/moods", {
+    const response = await fetch("https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user/moods", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(moodData),
+      credentials: 'include',
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -124,7 +125,7 @@ function handleGetRecommendations(mood) {
 
   async function fetchYogaPoses() {
   try {
-    const response = await fetch('http://localhost:80/api/yoga/poses'); 
+    const response = await fetch('https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/yoga/poses'); 
     if (!response.ok) {
       throw new Error('Failed to fetch yoga poses');
     }
@@ -158,7 +159,7 @@ const handleNextPage = () => {
     
 const fetchTodaysMoods = async () => {
   const today = new Date().toISOString().split('T')[0];
-  const response = await fetch(`/api/user/${userInfo._id}/moods?date=${today}`, {
+  const response = await fetch(`https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user/${userInfo._id}/moods?date=${today}`, {
     headers: {
       "Authorization": `Bearer ${userInfo.token}`,
     },
@@ -194,7 +195,7 @@ const deleteMood = async (moodId) => {
   }
 
   try {
-    const response = await fetch(`/api/user/moods/${moodId}`, {
+    const response = await fetch(`https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user/moods/${moodId}`, {
       method: 'DELETE',
       headers: {
         "Authorization": `Bearer ${userInfo.token}`, // Include the token in the authorization header
@@ -232,7 +233,7 @@ const renderPoseDetailsAccordion = (pose) => (
         {pose?.Benefits && <Text mb={2}>Benefits: {pose.Benefits}</Text>}
         {pose?.Breathing && <Text mb={2}>Breathing: {pose.Breathing}</Text>}
         {pose?.ImagePath && (
-          <Image src={`http://localhost:80/${pose.ImagePath}`} alt={pose.AName} />
+          <Image src={`https://yogahub-frontend-46cb8ca421ea.herokuapp.com/${pose.ImagePath}`} alt={pose.AName} />
         )}     
       </AccordionPanel>
     </AccordionItem>

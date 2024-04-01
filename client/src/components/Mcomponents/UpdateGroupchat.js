@@ -53,7 +53,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         },
       };
 
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user?search=${search}`, config);
        setUserDetails(null);
       console.log(data);
       setLoading(false);
@@ -84,7 +84,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       };
 
       const { data } = await axios.put(
-        "/api/chat/renamechat",
+        "https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/chat/renamechat",
         {
           chatId: selectedChat._id,
           chatName: groupChatN,
@@ -144,7 +144,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         },
       };
       const { data } = await axios.put(
-        "/api/chat/adduser",
+        "https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/chat/adduser",
         {
           chatId: selectedChat._id,
           userId: userC._id,
@@ -205,7 +205,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       };
 
       const { data } = await axios.put(
-        "/api/chat/removeuser",
+        "https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/chat/removeuser",
         {
           chatId: selectedChat._id,
           userId: userC._id,
@@ -233,7 +233,7 @@ const UpdateGroupchat = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   return (
     <>
       <EditIcon
-        boxSize={{ base: "5.5%", md: "24.5%" }}
+        boxSize={{ base: "10.5%", md: "24.5%" }}
         marginLeft={{ base: "38%", md: "87%" }}
         marginTop={{ base: "-1.5%", md: "-19.5%" }} 
         onClick={onOpen}

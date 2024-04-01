@@ -45,7 +45,7 @@ const GroupChatM = ({ children }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user?search=${search}`, config);
       //console.log(data);
       setSearchResults(data);
       setLoading(false);
@@ -80,7 +80,7 @@ const GroupChatM = ({ children }) => {
         },
       };
       const { data } = await axios.post(
-        "/api/chat/groupchat",
+        "https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/chat/groupchat",
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers.map((u) => u._id)),

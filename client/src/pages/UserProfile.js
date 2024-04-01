@@ -45,7 +45,7 @@ function UserProfile() {
     };
 
     try {
-      const { data } = await axios.get('/api/user/profile', config);
+      const { data } = await axios.get('https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user/profile', config); // Fetch user profile from the backend
       setUserProfile(data);
       setEditFields({
         username: data.username || '',
@@ -92,7 +92,7 @@ function UserProfile() {
       }
 
       // Send the PUT request to the backend with the user's updated information
-      const { data } = await axios.put('/api/user/profile', payload, config);
+      const { data } = await axios.put('https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user/profile', payload, config);
       setUserProfile(data);
       toast({
         title: "Profile Updated",

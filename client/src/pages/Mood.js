@@ -36,11 +36,11 @@ const Mood = () => {
   const token = userInfo.token;
 
   try {
-    const response = await fetch("/api/user/moods", {
+    const response = await fetch("https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user/moods", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // Include the token in the authorization header
+        "Authorization": `Bearer ${token}`, 
       },
       body: JSON.stringify(moodData),
     });

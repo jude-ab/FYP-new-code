@@ -38,7 +38,7 @@ const PoseDetailsModal = ({ isOpen, onClose, pose }) => {
           <Text mb={2}>Benefits: {pose?.Benefits}</Text>
           <Text mb={2}>Breathing: {pose?.Breathing}</Text>
           {pose?.ImagePath && (
-            <img src={`http://localhost:80/${pose.ImagePath}`} alt={pose.AName} style={{ width: '100%', marginTop: '10px' }} />
+            <img src={`https://yogahub-frontend-46cb8ca421ea.herokuapp.com/${pose.ImagePath}`} alt={pose.AName} style={{ width: '100%', marginTop: '10px' }} />
           )}
         </ModalBody>
       </ModalContent>

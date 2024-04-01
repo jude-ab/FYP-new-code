@@ -62,7 +62,7 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       //get users from db
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user?search=${search}`, config);
 
       setLoading(false);
       setSearchResults(data);
@@ -87,9 +87,10 @@ const MyChats = ({ fetchAgain }) => {
           "Content-type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
+        withCredentials: true,
       };
 
-      const { data } = await axios.post("/api/chat", { userId }, config);
+      const { data } = await axios.post("https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/chat", { userId }, config);
       if (!chats.find((chat) => chat._id === data._id))
         setChats([...chats, data]); //add new chat to chats
       setLoadingchat(true);
@@ -115,7 +116,7 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get(`/api/chat`, config);
+      const { data } = await axios.get(`https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/chat`, config);
 
       setChats(data);
     } catch (error) {
@@ -237,8 +238,8 @@ const MyChats = ({ fetchAgain }) => {
           fontSize={{ base: "sm", md: "sm" }}
           rightIcon={<AddIcon />}
           variant="ghost"
-          marginTop="-145%" 
-          marginLeft="330%"  
+          marginTop="-140%" 
+          marginLeft="326%"  
         >
             {/* Create New Group Chat */}
           </Button>

@@ -66,7 +66,7 @@ const Register = () => {
         },
       };
       const { data } = await axios.post(
-        "/api/user",
+        "https://yogahub-nodebackend-587807f134e2.herokuapp.com/api/user",
         { username, password, email, profilePic:pfp },
         config
       );

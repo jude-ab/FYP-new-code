@@ -1582,3 +1582,24 @@ Gradient Boosting Validation Accuracy: 1.0
 XGBoost Validation Accuracy: 1.0
 [1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 107ms/step[1m1/1[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 108ms/step
 Hybrid Ensemble Model Validation Accuracy: 1.0
+INFO:apscheduler.scheduler:Scheduler started
+INFO:apscheduler.scheduler:Added job "fetch_data" to job store "default"
+INFO:apscheduler.scheduler:Added job "scheduled_model_training" to job store "default"
+INFO:apscheduler.scheduler:Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO:apscheduler.scheduler:Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO:apscheduler.scheduler:Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO:apscheduler.scheduler:Added job "scheduled_model_training" to job store "default"
+INFO:apscheduler.scheduler:Added job "fetch_data" to job store "default"
+INFO:apscheduler.scheduler:Added job "full_update_pipeline" to job store "default"
+INFO:apscheduler.scheduler:Scheduler started
+Data successfully fetched: 104 feedback records and 284 healthplan records.
+Traceback (most recent call last):
+  File "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/complex.py", line 245, in <module>
+    full_update_pipeline()
+  File "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/complex.py", line 191, in full_update_pipeline
+    X_processed, y_processed, feature_names = preprocess_data(X_new, y_new)
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/judeabouhajar/My Drive/College/4th year /FYP/Final-Year-Project-master 2/data/complex.py", line 105, in preprocess_data
+    with open(os.path.join(base_model_dir, 'model_columns.json'), 'w') as file:
+                           ^^^^^^^^^^^^^^
+NameError: name 'base_model_dir' is not defined
