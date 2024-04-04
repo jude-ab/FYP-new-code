@@ -481,7 +481,7 @@ const updateChartDataForMonth = () => {
          {/* Text for current mood stats */}
       <Text fontFamily="Work sans" fontWeight="bold" fontSize="120%"
         marginLeft={{ base: "18%", md: "60%" }} // Adjusted marginLeft for mobile
-        marginTop={{ base: "65%", md: "-23.9%" }} // Adjusted marginTop for mobile
+        marginTop={{ base: "65%", md: "-22.9%" }} // Adjusted marginTop for mobile
       >
       Your Current Mood Stats for: {displayDate}
         </Text>
@@ -496,7 +496,7 @@ const updateChartDataForMonth = () => {
         borderRadius="20px"
         padding="1%"
         height={{ base: "35%", md: "60%" }}
-        marginTop={{ base: "8%", md: "0.5%" }}  
+        marginTop={{ base: "8%", md: "0.9%" }}  
         fontFamily="Work sans"  
         marginRight={{ base: "0", md: "2%" }} // Adjusted marginRight for mobile
         
@@ -602,20 +602,20 @@ const updateChartDataForMonth = () => {
         paddingTop= "5px"
         borderRadius= "20px"
         boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)" 
-        marginTop={{ base: "2%", md: "-15%" }} // Adjusted margin for mobile    
+        marginTop={{ base: "2%", md: "-5%" }} // Adjusted margin for mobile    
         marginBottom={{ base: "16%", md: "5%" }} // Adjusted marginBottom for mobile
        
     >
-      <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="5%">
-        A thoughtfully designed health plan is essential to preserving happiness and general wellbeing.
-        It includes a number of components that all play a major role in promoting mental and emotional stability, including food, exercise, supplements, and—most importantly—yoga.
-        A nutrient-dense, well-balanced diet not only powers the body but also nourishes the intellect, promoting energy and clarity.
-        Supplements help maintain healthy brain function, fill up nutritional shortages, and improve mood control.
-        Frequent exercise releases neurotransmitters called endorphins, which reduce stress and increase feelings of pleasure and happiness.
-        But yoga distinguishes itself as a comprehensive approach that combines breathing exercises, meditation, and physical postures to develop awareness, lower cortisol levels, and encourage relaxation.
-        Its capacity to connect mind, body, and spirit is what gives it its transformational power.
-        It has significant positive effects on mental health, such as lowered stress levels, happier moods, and increased emotional fortitude.
-        People can proactively cultivate their mental and emotional well-being and live a more vibrant and fulfilling life by adopting these comprehensive health plan pillars.
+      <Text fontFamily="Work sans" fontWeight="bold" fontSize="sm" marginTop="4%">
+       A well-thought-out health plan is necessary to maintain overall wellbeing and happiness.
+        It consists of several elements that are all very vital in supporting mental and emotional stability, such as food, exercise, supplements, and—above all—yoga.
+        A diet rich in nutrients and well-balanced not only fuels the body but also feeds the mind, encouraging vitality and clarity.
+        Supplements fill in nutritional gaps, support optimal brain function, and enhance emotional regulation.
+        Regular exercise releases endorphins, which are neurotransmitters that lower stress and raise emotions of happiness and pleasure.
+        However, yoga sets itself apart as a holistic method that incorporates physical postures, breathing techniques, and meditation to promote awareness, reduce cortisol, and promote relaxation.
+        Its transformative impact comes from its ability to link mind, body, and spirit.
+        It significantly improves mental health in a favorable way, resulting in reduced stress, brighter emotions, and stronger emotional resilience.
+        By embracing these comprehensive health plans, people can proactively nurture their mental and emotional well-being and lead more vibrant and rewarding lives.
         Find out here what health plan is recommended for you now based on your most common mood this week!
       </Text>
     </Box>
@@ -636,7 +636,7 @@ const updateChartDataForMonth = () => {
       isOpen={isFeedbackModalOpen}
       onClose={handleCloseFeedbackModal}
       onFeedback={handleFeedback}
-      healthPlanId={recommendation?._id} // Use optional chaining here to prevent errors if recommendation is null.
+      healthPlanId={recommendation?._id} 
     />
   </div>
 );

@@ -134,18 +134,6 @@ def recommend_by_mood(mood, poses):
 
 @app.route('/recommend', methods=['POST', 'OPTIONS'])
 def get_recommendation_by_mood():
-    # The OPTIONS handling might be redundant if Flask-CORS is used
-     resp = make_response()
-    # Reflect the origin back if it's in your whitelist, otherwise deny the request.
-    origin = request.headers.get('Origin')
-    if origin in ['http://127.0.0.1', 'http://localhost', 'https://yogahub-frontend-46cb8ca421ea.herokuapp.com']:
-        resp.headers['Access-Control-Allow-Origin'] = origin
-    else:
-        resp.headers['Access-Control-Allow-Origin'] = 'null'
-    resp.headers['Access-Control-Allow-Methods'] = 'POST'
-    resp.headers['Access-Control-Allow-Headers'] = request.headers.get('Access-Control-Request-Headers', 'Content-Type, Authorization')
-    resp.headers['Access-Control-Allow-Credentials'] = 'true'
-    return resp
     try:
         data = request.json
         mood = data.get('moods')
@@ -426,30 +414,29 @@ def fetch_data():
     feedback_collection = db.feedbacks.find()
     healthplans_collection = db.healthplans.find()
 
-    # Convert collections to pandas DataFrames
+    #convert mongodb data to pandas DataFrame
     feedback_df = pd.DataFrame(list(feedback_collection))
     healthplans_df = pd.DataFrame(list(healthplans_collection))
 
-    # Ensure the healthPlanId in feedback_df is a string
+    #ensuring the healthPlanId in feedback_df is a string
     feedback_df['healthPlanId'] = feedback_df['healthPlanId'].astype(str)
 
-    # Ensure the _id in healthplans_df is a string
+    #ensuring the _id in healthplans_df is a string
     healthplans_df['_id'] = healthplans_df['_id'].astype(str)
 
-    # Log the success of data fetching
     if not feedback_df.empty and not healthplans_df.empty:
         print(f"Data successfully fetched: {len(feedback_df)} feedback records and {len(healthplans_df)} healthplan records.")
     else:
         print("Failed to fetch data from MongoDB.")
 
-    # Join the DataFrames on the healthPlanId 
+    #join the two DataFrames on the healthPlanId column
     combined_df = pd.merge(feedback_df, healthplans_df, left_on='healthPlanId', right_on='_id', how='inner')
 
-    # Encoding categorical data and setting up features and target
+    #encode the feedback column using LabelEncoder
     label_encoder = LabelEncoder()
     combined_df['feedback_encoded'] = label_encoder.fit_transform(combined_df['feedback'])
 
-    # Drop non-feature columns and set the target
+    #drop unnecessary columns from the combined DataFrame
     columns_to_drop = ['_id_x', 'userId', 'healthPlanId', 'feedback', 'createdAt', 'updatedAt', '__v', '_id_y']
     X_new = combined_df.drop(columns=columns_to_drop)
     y_new = combined_df['feedback_encoded']
@@ -606,7 +593,7 @@ def full_update_pipeline():
     #     log_file.write(f"Cron job finished at {datetime.now()}\n")
 
 
-# Setup a scheduled job to train models periodically
+#scheduler to train models 
 @scheduler.task('interval', id='train_models_job', seconds=200, misfire_grace_time=900)
 def scheduled_model_training():
     full_update_pipeline()

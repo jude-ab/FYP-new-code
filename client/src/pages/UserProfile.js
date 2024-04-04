@@ -85,7 +85,6 @@ function UserProfile() {
     };
 
    try {
-      // Include the profile picture URL in the payload if it's been changed
       const payload = { ...editFields };
       if (editFields.profilePic) {
         payload.profilePic = editFields.profilePic;
