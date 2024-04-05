@@ -602,7 +602,7 @@ const updateChartDataForMonth = () => {
         paddingTop= "5px"
         borderRadius= "20px"
         boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)" 
-        marginTop={{ base: "2%", md: "-5%" }} // Adjusted margin for mobile    
+        marginTop={{ base: "2%", md: "-15%" }} // Adjusted margin for mobile    
         marginBottom={{ base: "16%", md: "5%" }} // Adjusted marginBottom for mobile
        
     >

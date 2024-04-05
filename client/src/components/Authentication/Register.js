@@ -199,7 +199,7 @@ const Register = () => {
             aria-label={show ? "Hide password" : "Show password"}
             variant="unstyled" // Removes the background and border styling
             marginBottom="12%" 
-            marginLeft="30%"   
+            marginLeft={{ base: "30%", md: "30%" }}  
           />
         </InputRightElement>
       </InputGroup>

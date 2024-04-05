@@ -114,9 +114,9 @@ const Login = () => {
                 size="sm"
                 onClick={handleClick}
                 aria-label={show ? "Hide password" : "Show password"}
-                variant="unstyled" // Removes the background and border styling
+                variant="unstyled" 
                 marginBottom="5%"  
-                marginRight="60%"
+                marginRight={{ base: "20%", md: "60%" }}
               />
             </InputRightElement>
           </InputGroup>

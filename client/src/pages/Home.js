@@ -88,6 +88,18 @@ const Home = () => {
         >
             {tabIndex === 0 ? 'Welcome to YogaHub' : 'Create New Account'}
         </Text>
+        {tabIndex === 0 && (
+          <Text
+            fontSize="sm" // Use a smaller font size for the subtext
+            color="black" // Choose a color that suits your design
+            marginLeft={{ base: "2%", md: '19.5%' }}
+            mb={4}
+            fontFamily="Work sans"
+          >
+            Sign in to access recommendations
+          </Text>
+        )}
+
         <Tabs onChange={handleTabsChange} isFitted width="85%">
           <TabList marginLeft={{ base: "1%", md: '28%' }} mb={4} color="black" colorScheme="white" width="100%" marginBottom="3%">
             <Tab _selected={{ color: "#0C301F", borderColor: "#0C301F" }}>Login</Tab>
