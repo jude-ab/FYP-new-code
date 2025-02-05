@@ -291,11 +291,11 @@ def prepare_prediction_input(input_data):
     expected_feature_names = [
         'Duration', 
         'Exercise Type_Cycling', 'Exercise Type_Dancing', 'Exercise Type_Hiking', 'Exercise Type_Strength Training',
-        'Meal Plan_Gluten-Free Diet',  # Add all other categories and features
+        'Meal Plan_Gluten-Free Diet',  
     ]
     # Initialize a DataFrame with zeros for all expected features
     prepared_input_data = pd.DataFrame(0, index=np.arange(len(input_data)), columns=expected_feature_names)
-    # Fill in the actual values for the features present in input_data
+
     for feature in input_data.columns:
         if feature in prepared_input_data.columns:
             prepared_input_data[feature] = input_data[feature]
@@ -340,7 +340,7 @@ def get_health_plan_recommendation():
         # Handle prediction results
         
         return jsonify({
-            "recommendedPlan": recommended_plan,  # Adjust based on your data structure
+            "recommendedPlan": recommended_plan, 
             "healthPlanId": recommended_plan.get('_id'),
             "mostCommonMood": most_common_mood
         })
@@ -467,7 +467,7 @@ def preprocess_data(input_X, input_y):
     encoder = LabelEncoder()
     y_processed = encoder.fit_transform(input_y)
 
-    # Assuming X_train_processed is your processed training data
+    # X_train_processed is processed training data
     columns_after_preprocessing = X_processed.columns.tolist()   
 
     with open(os.path.join(base_model_dir, 'model_columns.json'), 'w') as file:
@@ -551,7 +551,7 @@ def full_update_pipeline():
     X_processed, y_processed, feature_names = preprocess_data(X_new, y_new)
     X_train, X_val, y_train, y_val = train_test_split(X_processed, y_processed, test_size=0.2, random_state=42)
     
-    # Scale your data
+    # Scale data
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_val_scaled = scaler.transform(X_val)
@@ -571,7 +571,7 @@ def full_update_pipeline():
     os.chmod(model_path, 0o644) 
 
     # If ensemble model is satisfactory, save the models
-    if ensemble_accuracy > 0.85:  # Threshold accuracy for your use case
+    if ensemble_accuracy > 0.85:  # Threshold accuracy for use case
         nn_model = load_model(model_path)
         save_model(lr_model, 'lr_model.pkl')
         try:
@@ -604,13 +604,11 @@ def process_input_data_for_prediction(input_data):
     if not os.path.exists(scaler_file):
         raise FileNotFoundError(f"{scaler_file} not found. Ensure the scaler is properly saved during the training phase.")
 
-    # Directly load the scaler here
     scaler = joblib.load(scaler_file)
     
-    # The rest of your function...
     expected_columns = load_expected_columns()
     
-    # Preprocessing 'Duration' to numeric if it's a feature in your model
+    # Preprocessing 'Duration' to numeric
     if 'Duration' in input_data:
         input_data['Duration'] = input_data['Duration'].astype(str).str.replace(' mins', '').astype(int)
 
@@ -648,7 +646,7 @@ def get_predictions_from_models(X_to_predict):
     gb_predictions = gb_model.predict_proba(X_to_predict)[:, 1]
     xgb_predictions = xgb_model.predict_proba(X_to_predict)[:, 1]
 
-    # Combine predictions - here we take a simple average
+    # Combine predictions - take a simple average
     ensemble_predictions = np.mean([
         nn_predictions,
         lr_predictions,
@@ -673,5 +671,5 @@ scheduler.add_job(func=full_update_pipeline, trigger="interval", seconds=200, id
 scheduler.start()
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000)) # Default to 5000 if PORT not set
+    port = int(os.environ.get('PORT', 5000)) 
     app.run(debug=True, host='0.0.0.0', port=port)
