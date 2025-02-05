@@ -99,7 +99,6 @@ def preprocess_data(input_X, input_y):
     encoder = LabelEncoder()
     y_processed = encoder.fit_transform(input_y)
 
-    # Assuming X_train_processed is your processed training data
     columns_after_preprocessing = X_processed.columns.tolist()   
 
     with open(os.path.join(base_model_dir, 'model_columns.json'), 'w') as file:
