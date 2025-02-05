@@ -40,13 +40,13 @@ class TestIntegration(unittest.TestCase):
         refine_recommendations(user_id)
 
         # Fetch the updated recommendations for the user's most common mood
-        most_common_mood = 'happy'  # Assuming the most common mood is happy for simplicity
+        most_common_mood = 'happy' 
         # Make sure mood_to_cluster_mapping is loaded correctly
         mood_to_cluster_mapping = self.load_mood_to_cluster_mapping()
         updated_recommendation = recommend_health_plan(most_common_mood, mood_to_cluster_mapping)
 
         # Assert that the recommendations are updated accordingly
-        # This should be checking for a single plan now, not a list
+        # checking for a single plan 
         self.assertEqual('Cycling', updated_recommendation.get('Exercise Type'), "The updated recommendation does not contain 'Rowing'")
 
     def load_mood_to_cluster_mapping(self):
