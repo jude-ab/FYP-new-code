@@ -123,7 +123,7 @@ mood_keywords = {
     "happy": lemmatize_and_remove_stopwords("spiritual stronger plexus maintain eye chest")
 }
 
-# Adapted recommend function
+# recommend function
 def recommend_by_mood(mood, poses):
     recommended_poses = []
     keywords = mood_keywords.get(mood, [])
@@ -165,7 +165,7 @@ def get_pose_by_name():
 @app.route('/api/health/recommend', methods=['OPTIONS'])
 def health_recommend_options():
     resp = make_response()
-    # Reflect the origin back if it's in your whitelist, otherwise deny the request.
+    # Reflect the origin back if it's in list, otherwise deny the request.
     origin = request.headers.get('Origin')
     if origin in ['http://127.0.0.1', 'http://localhost', 'https://yogahub-frontend-46cb8ca421ea.herokuapp.com']:
         resp.headers['Access-Control-Allow-Origin'] = origin
@@ -216,7 +216,7 @@ def refine_recommendations(user_id):
 @app.route('/api/health/feedback', methods=['POST'])
 def collect_feedback():
     resp = make_response()
-    # Reflect the origin back if it's in your whitelist, otherwise deny the request.
+    # Reflect the origin back if it's in list, otherwise deny the request.
     origin = request.headers.get('Origin')
     if origin in ['http://127.0.0.1', 'http://localhost', 'https://yogahub-frontend-46cb8ca421ea.herokuapp.com']:
         resp.headers['Access-Control-Allow-Origin'] = origin
@@ -246,7 +246,6 @@ def collect_feedback():
     refine_recommendations(user_id)
     return jsonify({"message": "Feedback received"}), 201
 
-# This function should be defined in your Flask app to update the scores based on feedback.
 def update_scores_with_feedback(feedback_df, health_plans_df):
     for _, feedback in feedback_df.iterrows():
         plan_id = feedback['healthPlanId']
@@ -290,7 +289,7 @@ def recommend_health_plan(mood, mood_to_cluster_mapping):
 def prepare_prediction_input(input_data):
     # List of all expected feature names based on training
     expected_feature_names = [
-        'Duration',  # Assuming 'Duration' was included as a numerical feature
+        'Duration', 
         'Exercise Type_Cycling', 'Exercise Type_Dancing', 'Exercise Type_Hiking', 'Exercise Type_Strength Training',
         'Meal Plan_Gluten-Free Diet',  # Add all other categories and features
     ]
@@ -334,12 +333,11 @@ def get_health_plan_recommendation():
         recommended_plan_df = pd.DataFrame([recommended_plan])  # Convert dict to DataFrame
         prepared_data_for_prediction = prepare_prediction_input(recommended_plan_df)
         
-        # Now, use the preprocessed data for scaling and making predictions
+        # use the preprocessed data for scaling and making predictions
         processed_data_for_prediction = process_input_data_for_prediction(prepared_data_for_prediction)
         predictions = get_predictions_from_models(processed_data_for_prediction)
         
         # Handle prediction results
-        # Your logic to interpret predictions and respond accordingly
         
         return jsonify({
             "recommendedPlan": recommended_plan,  # Adjust based on your data structure
