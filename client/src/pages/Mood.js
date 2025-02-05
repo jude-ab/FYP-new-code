@@ -63,7 +63,7 @@ const Mood = () => {
       return;
     }
 
-    const userId = userInfo._id; // Assuming the user's ID is stored in the _id field
+    const userId = userInfo._id; 
     const moodData = { userId, mood };
     fetchRecommendations(moodData);
     saveUserMood(moodData);
